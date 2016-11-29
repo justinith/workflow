@@ -25,11 +25,11 @@ Sim Singh
 #Product Spec
 
 **User Goals**
-  *To feel a sense of relief that everything’s organized and accounted for, and that you don’t have to juggle everything in your head
-  *Getting list of to-do’s confidently
-  *Getting a grasp of what’s upcoming
-  *Seeing areas / times of potential stress
-  *Centralize tasks and schedule in one place
+  * To feel a sense of relief that everything’s organized and accounted for, and that you don’t have to juggle everything in your head
+  * Getting list of to-do’s confidently
+  * Getting a grasp of what’s upcoming
+  * Seeing areas / times of potential stress
+  * Centralize tasks and schedule in one place
 
 
 **Product Goal**
