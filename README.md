@@ -17,10 +17,10 @@ Bootstrap
 
 ## Contributors
 
-Fan (Linda) Yang
-Marika Rundle
-Justin Ith
-Sim Singh
+* Fan (Linda) Yang
+* Marika Rundle
+* Justin Ith
+* Sim Singh
 
 #Product Spec
 
@@ -37,43 +37,43 @@ Sim Singh
 
 
 **Product Requirements**
-  *Foundational Features
-    *There are ongoing, long-term “Responsibilities”
-      *Responsibilities do not have defined end dates
-    *Responsibilities have “Projects”
-    *Projects have “Phases” within it
-      *Phases cannot over overlap within a Project. They are distinct time boxes
-      *Phases are considered completed at a certain end date
-    *Projects and Phases have start and end dates
-    *Phases have “Tasks” within them
-      *Tasks are specific to the phases
-      *Tasks are binary; they are either incomplete or complete
-    *Project input should be working forward from start date
-      *Default start date to today
-    *Users should be able to view a day level, week level
+  * Foundational Features
+    * There are ongoing, long-term “Responsibilities”
+      * Responsibilities do not have defined end dates
+    * Responsibilities have “Projects”
+    * Projects have “Phases” within it
+      * Phases cannot over overlap within a Project. They are distinct time boxes
+      * Phases are considered completed at a certain end date
+    * Projects and Phases have start and end dates
+    * Phases have “Tasks” within them
+      * Tasks are specific to the phases
+      * Tasks are binary; they are either incomplete or complete
+    * Project input should be working forward from start date
+      * Default start date to today
+    * Users should be able to view a day level, week level
 
 
 **Basic Features**
-  *Projects can happening concurrently within and outside of Responsibilities
-  *Phases could also be considered complete if all the tasks within it are completed
-    *If Phase is time boxed: uncompleted tasks roll over into next phase (if a next phase exists)
-    *If Phase is task contingent: input expected completion date or amount of dates to complete (for the visual sake of the calendar)
-  *Tasks could or could not have expected time completion needs
-  *Tasks can be day specific or live across multiple days
-  *Tasks can be easily replicated from phase to phase
+  * Projects can happening concurrently within and outside of Responsibilities
+  * Phases could also be considered complete if all the tasks within it are completed
+    * If Phase is time boxed: uncompleted tasks roll over into next phase (if a next phase exists)
+    * If Phase is task contingent: input expected completion date or amount of dates to complete (for the visual sake of the calendar)
+  * Tasks could or could not have expected time completion needs
+  * Tasks can be day specific or live across multiple days
+  * Tasks can be easily replicated from phase to phase
 
 
 **Stretch Features**
-  *Tasks have “Sub-Tasks”
-    *Sub-Tasks are binary
-  *Tasks can be viewed as completion percentages
-  *Tasks can have more meta data
-  *Users should be able to view a month level
-  *Users can see the overall status of a project and phase
-  *Project input should also include working backwards from an end date or being able to define both and end and start date
+  * Tasks have “Sub-Tasks”
+    * Sub-Tasks are binary
+  * Tasks can be viewed as completion percentages
+  * Tasks can have more meta data
+  * Users should be able to view a month level
+  * Users can see the overall status of a project and phase
+  * Project input should also include working backwards from an end date or being able to define both and end and start date
 
 
 **Primary Use Cases / States**
-  *Creating new responsibilities
-  *Inputting projects / phases / tasks
-  *Viewing overall project status / to-do’s
+  * Creating new responsibilities
+  * Inputting projects / phases / tasks
+  * Viewing overall project status / to-do’s
