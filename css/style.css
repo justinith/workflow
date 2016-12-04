@@ -1,0 +1,83 @@
+body {
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	font-weight: 200;
+	height: 100%;
+}
+
+#dateDayRow .col-sm-1 {
+	text-align: center;
+}
+
+.categoryLane {
+	background: #CDE1EE;
+}
+	.categoryLane .col-sm-1 {
+		border-left: white 1px solid;
+		height: 150px;
+		padding: 0px;
+	}
+
+	.categoryLane .categoryName {
+		background-color: #2A79AE;
+		color: white;
+		text-align: center;
+		padding: 0px;
+		margin: 0px;
+		border-left: none;
+	}
+
+	.categoryLane .projectHolder {
+		background-color: #DCF1FF;
+		padding: 15px 0px;
+		margin: 20px 0px;
+	}
+
+	.categoryLane .dayContent {
+		background: #3498DB;
+		height: 80px;
+		color: white;
+	}
+		.categoryLane .dayContent .dayTitle {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding-bottom: 40px;
+			padding-left: 8px;
+		}
+
+	
+
+@media (max-width: 768px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 1450px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+.container {
+	width: 100vw;
+	padding: 0px;
+}
+
+.row {
+	margin: 0px;
+}
