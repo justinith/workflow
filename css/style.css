@@ -127,3 +127,6 @@ body {
 .row {
 	margin: 0px;
 }
+
+.form-control {width:120px;}
+.popover {max-width:400px;}
