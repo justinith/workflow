@@ -1,0 +1,129 @@
+body {
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	font-weight: 200;
+	height: 100%;
+}
+
+#dateDayRow {
+	height: 80px;
+}
+
+	#dateDayRow .col-sm-1 {
+		padding-top: 15px;
+		text-align: center;
+	}
+
+.categoryLane {
+	background: #CDE1EE;
+	margin-bottom: 10px;
+}
+	.categoryLane .col-sm-1 {
+		/*border-right: white 1px solid;*/
+		height: 150px;
+		padding: 0px;
+	}
+
+	.categoryLane .dayBlock:hover {
+		background-color: #DCF1FF;
+		cursor: pointer;
+	}
+
+	.categoryLane .categoryName {
+		background-color: #2A79AE;
+		color: white;
+		text-align: center;
+		padding: 0px;
+		margin: 0px;
+		border-left: none;
+		line-height: 150px;		
+	}
+
+	.categoryLane .addPhase {
+		background-color: transparent;
+		border: dashed #2A79AE 3px;
+		text-align: center;
+		margin: 10px;
+		height: 130px;
+		padding: 10px;
+		padding-top: 35px;
+		color: #2A79AE;
+		font-weight: 400;
+		font-size: 1.2em;
+	}
+
+	.categoryLane .projectHolder {
+		background-color: #DCF1FF;
+		padding: 15px 0px;
+		margin: 20px 0px;
+	}
+
+	.categoryLane .dayContent {
+		background: #3498DB;
+		height: 80px;
+		color: white;
+	}
+		.categoryLane .dayContent .dayTitle {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding-bottom: 40px;
+			padding-left: 8px;
+		}
+
+.addCategoryButton {
+	width: 100vw;
+	text-align: center;
+	background: #EAA669;
+	color: white;
+	padding: 20px 0px;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+}	
+	.addCategoryButton:hover {
+		cursor: pointer;
+		background: #F38524;
+	}
+
+.nextWeekButton {
+	line-height: 150px;
+	font-size: 25pt;
+	text-align: center;
+	color: white;
+	background: #2A79AE;
+}
+
+
+@media (max-width: 768px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 1450px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+.container {
+	width: 100vw;
+	padding: 0px;
+}
+
+.row {
+	margin: 0px;
+}
