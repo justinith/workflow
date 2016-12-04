@@ -1,17 +1,17 @@
 (function() {
 
     window.onload = function(){
-
         renderDateRow();
+        initListeners();
+    }
 
-    	$('.dayBlock').click(function(){
-            var newBlock = addBlock("Testing");
-            $(this).append(newBlock);
+    function initListeners(){
+        $('.dayBlock').click(function(){
+            if(!$(this).hasClass('occupied')){
+                attemptAddPhase($(this),'Testing Item',2);
+            }
+            
         });
-
-        var day = moment(new Date().getTime()).format('M' + '/' + 'D' + '<br>' + 'dd');
-
-        console.log(day);
     }
 
     function renderDateRow(){
@@ -31,6 +31,53 @@
         start += '</div>';
 
         $('#dateDayRow').append(start);
+    }
+
+    function checkAvailDays(startingBlock,days){
+        var isValid = true;
+        
+        for(var i = 1; i < days; i++){
+            if(!startingBlock.next('.col-sm-1').hasClass('occupied')){
+                startingBlock = startingBlock.next('.col-sm-1');
+            } else {
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
+    function attemptAddPhase(startingBlock,title,days){
+        // Check if there are available days
+        if(checkAvailDays(startingBlock,days)){
+            var newBlock = addBlock(title);
+            var blankBlock = addBlock("<br>");
+
+            // Populate the first block
+            startingBlock.append(newBlock);
+            startingBlock.addClass('occupied');
+            startingBlock.removeClass('dayBlock');
+
+            // if task spans one day
+            if(days > 1){
+                for(var i = 1; i < days; i++){
+                    // if the next day has the dayBlock class
+                    if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
+                        startingBlock.next('.col-sm-1').append(blankBlock);
+
+                        if(i + 1 == days){
+                            startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
+                        }
+
+                        startingBlock = startingBlock.next('.col-sm-1');
+                        startingBlock.addClass('occupied');
+                        startingBlock.removeClass('dayBlock');
+                    }
+                }
+            }
+        } else {
+            alert('Invalid Number of Days');
+        }
     }
 
     function addBlock(text){
