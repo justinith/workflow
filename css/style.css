@@ -4,6 +4,34 @@ body {
 	padding: 0px;
 	font-weight: 200;
 	height: 100%;
+    font-family: 'Slabo 27px', "Raleway", sans-serif;
+    font-size: 18px;
+}
+
+header {
+	background-position: top;
+	background-size: cover;
+	height: 60px;
+	background-color: #F4F5AB;
+}
+
+h3 {
+	text-align: left;
+	color: #333745;
+	margin-top: 0px;
+	margin-left: 15px;
+	padding-top: 15px;
+	font-size: 30px;
+	font-family: 'Homemade Apple', cursive;
+	font-weight: 60;
+}
+
+#signout {
+    font-family: 'Slabo 27px', "Raleway", sans-serif;
+    font-size: 20px;
+    color: #333745;
+	float: right;
+	margin-right: 25px;
 }
 
 #dateDayRow {
@@ -16,7 +44,7 @@ body {
 	}
 
 .categoryLane {
-	background: #CDE1EE;
+	background: #77C4D3;
 	margin-bottom: 10px;
 }
 	.categoryLane .col-sm-1 {
@@ -26,12 +54,12 @@ body {
 	}
 
 	.categoryLane .dayBlock:hover {
-		background-color: #DCF1FF;
+		background-color: #ecf2f9;
 		cursor: pointer;
 	}
 
 	.categoryLane .categoryName {
-		background-color: #2A79AE;
+		background-color: #333745;
 		color: white;
 		text-align: center;
 		padding: 0px;
@@ -42,27 +70,27 @@ body {
 
 	.categoryLane .addPhase {
 		background-color: transparent;
-		border: dashed #2A79AE 3px;
+		border: dashed #333745 3px;
 		text-align: center;
 		margin: 10px;
 		height: 130px;
 		padding: 10px;
 		padding-top: 35px;
-		color: #2A79AE;
+		color: #333745;
 		font-weight: 400;
 		font-size: 1.2em;
 	}
 
 	.categoryLane .projectHolder {
-		background-color: #DCF1FF;
+		background-color: white;
 		padding: 15px 0px;
 		margin: 20px 0px;
 	}
 
 	.categoryLane .dayContent {
-		background: #3498DB;
+		background: #bdccdb;
 		height: 80px;
-		color: white;
+		color: #333745;
 	}
 		.categoryLane .dayContent .dayTitle {
 			position: absolute;
@@ -75,7 +103,7 @@ body {
 .addCategoryButton {
 	width: 100vw;
 	text-align: center;
-	background: #EAA669;
+	background: #EA2E49;
 	color: white;
 	padding: 20px 0px;
 	text-transform: uppercase;
@@ -83,7 +111,7 @@ body {
 }	
 	.addCategoryButton:hover {
 		cursor: pointer;
-		background: #F38524;
+		background: #F55F65;
 	}
 
 	.addCategoryButton input {
@@ -111,7 +139,7 @@ body {
 	font-size: 25pt;
 	text-align: center;
 	color: white;
-	background: #2A79AE;
+	background: #333745;
 }
 
 
