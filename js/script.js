@@ -5,11 +5,11 @@
     }
 
     function initListeners(){
-        $('.dayBlock').click(function(){
-            if(!$(this).hasClass('occupied')){
-                attemptAddPhase($(this),'Testing Item',2);
-            }
-        });
+        // $('.dayBlock').click(function(){
+        //     if(!$(this).hasClass('occupied')){
+        //         attemptAddPhase($(this),'Testing Item',2);
+        //     }
+        // });
 
         $(".addCategoryButton").click(function(){
             $('.buttonTitle').css('display','none');
@@ -24,18 +24,19 @@
             }
         });
 
-        $("[data-toggle=popover]").popover({
-            html: true, 
-            content: function() {
-                return $('#popover-content').html();
-            }
-        });
-
-        $(document.body).on('submit','#class-add-form',function (e) {
-            e.preventDefault();
-            var classToAdd = document.getElementById("class-name");
-            alert('Form submitted');
-            console.log("length", classToAdd.value.length);
+         $('.dayBlock').popover({
+            placement: 'bottom',
+            title: 'Add Project',
+            html:true,
+            content:  $('#myForm').html()
+        }).on('click', function(){
+            var targetDayBlock = $(this);
+            
+            $('.btn-primary').click(function(){
+                if(!targetDayBlock.hasClass('occupied')){
+                    attemptAddPhase(targetDayBlock,'Testing Item',3);
+                }
+            })
         });
     }
 
@@ -97,19 +98,21 @@
 
             // if task spans one day
             if(days > 1){
+                console.log('more than 1 day');
                 for(var i = 1; i < days; i++){
-                    // if the next day has the dayBlock class
-                    if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
-                        startingBlock.next('.col-sm-1').append(blankBlock);
+                    console.log('iteration ' + i);
+                    startingBlock.next('.col-sm-1').append(blankBlock);
 
-                        if(i + 1 == days){
-                            startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
-                        }
-
-                        startingBlock = startingBlock.next('.col-sm-1');
-                        startingBlock.addClass('occupied');
-                        startingBlock.removeClass('dayBlock');
+                    if(i + 1 == days){
+                        startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
                     }
+
+                    startingBlock = startingBlock.next('.col-sm-1');
+                    startingBlock.addClass('occupied');
+                    startingBlock.removeClass('dayBlock');
+                    // if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
+                        
+                    // }
                 }
             }
         } else {
