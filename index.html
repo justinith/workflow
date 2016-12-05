@@ -11,8 +11,6 @@
 		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>-->
 		<script type="text/javascript" src="js/script.js"></script>
 	</head>
 	<body>
@@ -107,11 +105,11 @@
 					</div>
 				</div>
 			</div>
-			<h3>Bootstrap 3 Popover Form Example</h3>
+			<!--<h3>Bootstrap 3 Popover Form Example</h3>
 			<ul class="list-unstyled">
 				<li><a data-placement="bottom" data-toggle="popover" data-title="Login" data-container="body" type="button" data-html="true" href="#" >Add Class</a></li>
 				<div id="popover-content" class="hide">
-				<form class="form-inline" role="form" id="class-add-form" onsubmit="myFunction()">
+				<form class="form-inline" role="form" id="class-add-form">
 					<div class="form-group row">
 						<label for="class-name" class="col-xs-2 col-form-label">Class</label>
 						<div class="col-xs-10">
@@ -130,11 +128,28 @@
 							<input class="form-control" type="date" value="2011-08-19" id="example-date-input">
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary">Add Class</button>                                  
+					<button type="submit" class="btn btn-primary" id="class-submit">Add Class</button>                                  
 					</div>
 				</form>
 				</div>
-			</ul>
+			</ul>-->
+			<div class="well">
+				<button type="button" id="login" class="btn">Login sign up Form</button>
+			</div>
+				<div id="myForm" class="hide">
+					<form action="/echo/html/" id="popForm" method="get">
+						<div>
+							<label for="email">Project Name:</label>
+							<input type="email" name="email" id="email" placeholder="web app develop" class="form-control input-md">
+							<label for="name">Durations (Day)</label>
+							<input type="text" name="name" id="name" placeholder="123 days" class="form-control input-md">
+							<label for="about">Descr:</label>
+							<textarea rows="3" name="about" id="about" class="form-control input-md"></textarea>
+							<button type="button" class="btn btn-primary" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
+						</div>
+					</form>
+				</div>
+			<div id="result"></div>
 		</div>
 	</body>
 </html>

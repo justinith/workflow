@@ -1,26 +1,36 @@
 "use strict";
-$(document).ready(function(){
-    $("[data-toggle=popover]").popover({
-        html: true, 
-        content: function() {
-            return $('#popover-content').html();
-        }
-    })
-    $(document.body).on('submit','#class-add-form',function (e) {
-        e.preventDefault();
-        var classToAdd = document.getElementById("class-name");
-        alert('Form submitted');
-        console.log("length", classToAdd.value.length);
-    })
+// $(function(){
+//     $("[data-toggle=popover]").popover({
+//         html: true, 
+//         content: $('#popover-content').html()
+//     }).on('click',function () {
+//         $("#class-submit").click(function(){
+//             alert("Value: " + $("#class-name").val());
+//             console.log("length", classToAdd.length);
+//         })
+//     })
+// })
+$(function(){
+    $('#login').popover({
+       
+        placement: 'bottom',
+        title: 'Add Project',
+        html:true,
+        content:  $('#myForm').html()
+    }).on('click', function(){
+      // had to put it within the on click action so it grabs the correct info on submit
+      $('.btn-primary').click(function(){
+       $('#result').after("form submitted by " + $('#email').val())
+        // $.post('/echo/html/',  {
+        //     email: $('#email').val(),
+        //     name: $('#name').val(),
+        //     gender: $('#gender').val()
+        // }, function(r){
+        //   $('#pops').popover('hide')
+        //   $('#result').html('resonse from server could be here' )
+        // })
+      })
+  })
 })
 
-function myFunction() {
-    var classAdd = document.getElementById("class-name");
-       console.log(classAdd.value);
-}
-// var addClass = document.getElementById("class-add-form");
-//         addClass.addEventListener("submit", function(){
-//         var classToAdd = addClass.querySelector(".class-name");
-//         console.log(classToAdd.value);
-//         });
-// });
+
