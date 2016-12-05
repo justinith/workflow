@@ -25,31 +25,36 @@
 
 		<div class="container">
 			<div id="dateDayRow"></div>
-			<div class="categoryLane">
-				<div class="row">
-					<div class="col-sm-1 categoryName">INFO 360</div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 dayBlock"></div>
-					<div class="col-sm-1 nextWeekButton">
-						<i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+			<div id="allClasses">
+				<div class="categoryLane">
+					<div class="row">
+						<div class="col-sm-1 categoryName">INFO 360</div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 nextWeekButton">
+							<i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="addCategoryButton">
-				Add Class
-			</div>
+			
+			<!--<a data-placement="bottom" data-toggle="popover" data-title="Login" data-container="body" type="button" data-html="true" href="#" >-->
+				<div class="addCategoryButton">
+					<span class="buttonTitle">Add Class</span>
+					<input id="newClassName" type="text" placeholder="Type name of class">
+				</div>
+			<!--</a>-->
+			
 					
-			<h3>Bootstrap 3 Popover Form Example</h3>
 			<ul class="list-unstyled">
-				<li><a data-placement="bottom" data-toggle="popover" data-title="Login" data-container="body" type="button" data-html="true" href="#" >Add Class</a></li>
 				<div id="popover-content" class="hide">
 				<form class="form-inline" role="form" id="class-add-form" onsubmit="myFunction()">
 					<div class="form-group row">

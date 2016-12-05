@@ -86,6 +86,26 @@ body {
 		background: #F38524;
 	}
 
+	.addCategoryButton input {
+		text-align: center;
+		width: 100%;
+		text-transform: uppercase;
+	letter-spacing: 5px;
+	}
+
+	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	color: white;
+	}
+	::-moz-placeholder { /* Firefox 19+ */
+	color: white;
+	}
+	:-ms-input-placeholder { /* IE 10+ */
+	color: white;
+	}
+	:-moz-placeholder { /* Firefox 18- */
+	color: white;
+	}
+
 .nextWeekButton {
 	line-height: 150px;
 	font-size: 25pt;
@@ -130,3 +150,12 @@ body {
 
 .form-control {width:120px;}
 .popover {max-width:400px;}
+
+#newClassName {
+	background: transparent;
+	border: none;
+	display: none;
+}
+	#newClassName:focus {
+		outline: none;
+	}

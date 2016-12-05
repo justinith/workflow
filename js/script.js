@@ -1,4 +1,3 @@
-"use strict";
 (function() {
     window.onload = function(){
         renderDateRow();
@@ -10,21 +9,34 @@
             if(!$(this).hasClass('occupied')){
                 attemptAddPhase($(this),'Testing Item',2);
             }
-            
+        });
+
+        $(".addCategoryButton").click(function(){
+            $('.buttonTitle').css('display','none');
+            $('#newClassName').css('display','inherit');
+            $('#newClassName').focus();
+        });
+
+        $("#newClassName").keyup(function(event){
+            if(event.keyCode == 13){
+                var val = $(this).val();
+                renderNewClass(val);
+            }
         });
 
         $("[data-toggle=popover]").popover({
-        html: true, 
-        content: function() {
-            return $('#popover-content').html();
-        }
-    });
-    $(document.body).on('submit','#class-add-form',function (e) {
-        e.preventDefault();
-        var classToAdd = document.getElementById("class-name");
-        alert('Form submitted');
-        console.log("length", classToAdd.value.length);
-    });
+            html: true, 
+            content: function() {
+                return $('#popover-content').html();
+            }
+        });
+
+        $(document.body).on('submit','#class-add-form',function (e) {
+            e.preventDefault();
+            var classToAdd = document.getElementById("class-name");
+            alert('Form submitted');
+            console.log("length", classToAdd.value.length);
+        });
     }
 
     function renderDateRow(){
@@ -44,6 +56,18 @@
         start += '</div>';
 
         $('#dateDayRow').append(start);
+    }
+
+    function renderNewClass(className){
+        var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
+
+        $('#allClasses').append(blankLane);
+
+        $('.buttonTitle').css('display','inherit');
+        $('#newClassName').css('display','none');
+        $('#newClassName').val("");
+
+        initListeners();
     }
 
     function checkAvailDays(startingBlock,days){
@@ -89,7 +113,7 @@
                 }
             }
         } else {
-            alert('Invalid Number of Days');
+            // alert('Invalid Number of Days');
         }
     }
 
@@ -100,15 +124,3 @@
     }
 
 })();
-=======
-function myFunction() {
-    var classAdd = document.getElementById("class-name");
-       console.log(classAdd.value);
-}
-// var addClass = document.getElementById("class-add-form");
-//         addClass.addEventListener("submit", function(){
-//         var classToAdd = addClass.querySelector(".class-name");
-//         console.log(classToAdd.value);
-//         });
-// });
->>>>>>> origin/fyang-branch
