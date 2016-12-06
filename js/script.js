@@ -70,7 +70,9 @@
                 var projectName = $('#project-name').val();
                 var projectDuration = $('#project-duration').val();
                 var projectDescr = $('#about').val();
+                // user + "/" + className
                 if(projectName.length > 0 && projectDuration.length > 0){
+<<<<<<< HEAD
                     //create new instance of new project
                     var newProject = {
                         projectInfo:{
@@ -96,10 +98,45 @@
                     if(!targetDayBlock.hasClass('occupied')){
                         attemptAddPhase(targetDayBlock,projectName,projectDuration);
                     }
+=======
+                    var ref = firebase.database().ref(user + "/" + className);
+                    ref.once("value")
+                    .then(function(snapshot) {
+                        if(snapshot.child(projectName).exists()){
+                        alert("duplicated");
+                        }else{
+                        //create new instance of new project
+                            var newProject = {
+                                projectInfo:{
+                                    title: projectName.trim(),
+                                    duration: projectDuration.trim(),
+                                    course: "info 360",
+                                    createdOn: firebase.database.ServerValue.TIMESTAMP,
+                                    done: false
+                                },
+                                createdBy: {
+                                    uid: "yangf6",                   //the unique user id
+                                    displayName: "Fan Yang",   //the user's display name
+                                    email: "yangf6@uw.edu",                //the user's email address
+                                    photoUrl: null
+                                },
+                                projectTask: {}
+                            }
+                            //send to firebase
+                            var dataRef = firebase.database().ref(user + "/" + className + "/" + projectName);
+                            dataRef.push(newProject);
+                            //update the calendar
+                            if(!targetDayBlock.hasClass('occupied')){
+                            attemptAddPhase(targetDayBlock,projectName,3);
+                            }
+                        }
+                    });   
+>>>>>>> 6b2365f21d8c09a9dced9872529516466c0a998f
                 }else{
-                    alert("Project Name and Durations (Day) are required");
-                }
+                    alert("Project Name and Durations (Day) are required, and project name should be unique");
+                }    
             })
+                    
         });
     }
 
@@ -184,9 +221,10 @@
     }
 
     function addBlock(text){
-        var projectText = '<div class="projectHolder"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
-
+        var projectText = '<div class="projectHolder"><div class="dayContent" onclick=sidebar()><div class="dayTitle">' + text + '</div></div></div>';
         return projectText;
     }
+
+    //populate task slide out bar
 
 })();

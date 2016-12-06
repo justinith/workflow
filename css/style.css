@@ -4,7 +4,7 @@ body {
 	padding: 0px;
 	font-weight: 200;
 	height: 100%;
-    font-family: 'Slabo 27px', "Raleway", sans-serif;
+    font-family: 'News Cycle', sans-serif;
     font-size: 18px;
 }
 
@@ -27,7 +27,7 @@ h3 {
 }
 
 #signout {
-    font-family: 'Slabo 27px', "Raleway", sans-serif;
+    font-family: 'News Cycle', sans-serif;
     font-size: 20px;
     color: #333745;
 	float: right;
@@ -177,6 +177,22 @@ h3 {
 }
 
 
+
+
+.form-control {width:300px;}
+.popover {max-width:400px;}
+
+#newClassName {
+	background: transparent;
+	border: none;
+	display: none;
+}
+	#newClassName:focus {
+		outline: none;
+	}
+
+/* slide out panel*/
+
 .form-control {width:120px;}
 .popover {max-width:400px;}
 
@@ -190,49 +206,57 @@ h3 {
 	}
 
 
-/*POTENTIAL: for slide - in panel
 
-.cd-panel {
-	/*...
-  	visibility: hidden;
-	transition: visibility 0s 0.6s;
+#slideout {
+	color: white;
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 45px;
+    height: 60px;
+    padding: 8px 0;
+    text-align: center;
+    background: #EA2E49;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -webkit-border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    border-radius: 5px 0 0 5px;
 }
- 
-.cd-panel.is-visible {
-	visibility: visible;
-	transition: visibility 0s 0s;
+
+#slideout_inner {
+    position: fixed;
+    float: right;
+    top: 60px;
+    right: -250px;
+    background: #EA2E49;
+    width: 200px;
+    padding: 10px;
+    height: 510px;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    text-align: left;
+    -webkit-border-radius: 0 0 5px 0;
+    -moz-border-radius: 0 0 5px 0;
+    border-radius: 0 0 5px 0;
 }
- 
-.cd-panel-header {
-	/*...
-	position: fixed;
-	top: -50px;
-	width: 90%;
-	height: 50px;
-	transition: top 0.3s 0s;
+
+#slideout_inner textarea {
+	float: right
+    width: 200px;
+    height: 500px;
+    margin-bottom: 6px;
+    color: #000;
 }
- 
-.is-visible .cd-panel-header {
-	top: 0;
-	transition: top 0.3s 0.3s;
+
+#slideout:hover {
+    right: 250px;
 }
- 
-.cd-panel-container {
-	/*...
-	position: fixed;
-	width: 90%;
-	height: 100%;
-	top: 0;
-	right: 0;
- 
-	transition-property: transform;
-	transition-duration: 0.3s;
-	transition-delay: 0.3s;
- 
- 	transform: translate3d(100%, 0, 0);
+
+#slideout:hover #slideout_inner {
+    right: 0;
 }
- 
-.is-visible .cd-panel-container {
-	transform: translate3d(0, 0, 0);
-	transition-delay: 0s;
-}*/
