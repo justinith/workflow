@@ -217,7 +217,7 @@ h3 {
     right: -350px;
     background: #EA2E49;
     width: 175px;
-    padding: 3px;
+    padding: 4px;
     height: 510px;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
@@ -232,7 +232,7 @@ h3 {
 #slideout_inner textarea {
 	float: right
     width: 260px;
-    height: 500px;
+    height: 450px;
     margin-bottom: 6px;
     color: #000;
 }
