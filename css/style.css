@@ -191,7 +191,6 @@ h3 {
 
 /* slide out panel*/
 
-
 #slideout {
 	color: white;
     position: fixed;
@@ -210,6 +209,7 @@ h3 {
     -moz-border-radius: 0 5px 5px 0;
     border-radius: 5px 0 0 5px;
 }
+
 #slideout_inner {
     position: fixed;
     float: right;
@@ -228,15 +228,18 @@ h3 {
     -moz-border-radius: 0 0 5px 0;
     border-radius: 0 0 5px 0;
 }
+
 #slideout_inner textarea {
 	float: right
     width: 200px;
     height: 500px;
     margin-bottom: 6px;
 }
+
 #slideout:hover {
     right: 250px;
 }
+
 #slideout:hover #slideout_inner {
     right: 0;
 }
