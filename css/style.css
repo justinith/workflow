@@ -177,6 +177,8 @@ h3 {
 }
 
 
+
+
 .form-control {width:300px;}
 .popover {max-width:400px;}
 
@@ -190,6 +192,20 @@ h3 {
 	}
 
 /* slide out panel*/
+
+.form-control {width:120px;}
+.popover {max-width:400px;}
+
+#newClassName {
+	background: transparent;
+	border: none;
+	display: none;
+}
+	#newClassName:focus {
+		outline: none;
+	}
+
+
 
 #slideout {
 	color: white;
