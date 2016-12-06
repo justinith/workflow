@@ -162,8 +162,12 @@
     }
 
     function addBlock(text){
-        var projectText = '<div class="projectHolder"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+        var projectText = '<div class="projectHolder"><div class="dayContent" onclick=sidebar()><div class="dayTitle">' + text + '</div></div></div>';
         return projectText;
+    }
+
+    function sidebar(){
+        $(".cd-panel").css("visibility","hidden");
     }
 
 })();
