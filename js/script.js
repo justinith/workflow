@@ -166,8 +166,4 @@
         return projectText;
     }
 
-    function sidebar(){
-        $(".cd-panel").css("visibility","hidden");
-    }
-
 })();
