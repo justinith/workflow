@@ -194,7 +194,7 @@ h3 {
 #slideout {
 	color: white;
     position: fixed;
-    top: 70px;
+    top: 60px;
     right: 0;
     width: 45px;
     height: 60px;
@@ -214,10 +214,10 @@ h3 {
     position: fixed;
     float: right;
     top: 60px;
-    right: -250px;
+    right: -350px;
     background: #EA2E49;
-    width: 200px;
-    padding: 10px;
+    width: 175px;
+    padding: 3px;
     height: 510px;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
@@ -231,14 +231,14 @@ h3 {
 
 #slideout_inner textarea {
 	float: right
-    width: 200px;
+    width: 260px;
     height: 500px;
     margin-bottom: 6px;
     color: #000;
 }
 
 #slideout:hover {
-    right: 250px;
+    right: 170px;
 }
 
 #slideout:hover #slideout_inner {
