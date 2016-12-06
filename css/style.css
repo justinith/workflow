@@ -114,6 +114,26 @@ h3 {
 		background: #F55F65;
 	}
 
+	.addCategoryButton input {
+		text-align: center;
+		width: 100%;
+		text-transform: uppercase;
+	letter-spacing: 5px;
+	}
+
+	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	color: white;
+	}
+	::-moz-placeholder { /* Firefox 19+ */
+	color: white;
+	}
+	:-ms-input-placeholder { /* IE 10+ */
+	color: white;
+	}
+	:-moz-placeholder { /* Firefox 18- */
+	color: white;
+	}
+
 .nextWeekButton {
 	line-height: 150px;
 	font-size: 25pt;
@@ -156,6 +176,7 @@ h3 {
 	margin: 0px;
 }
 
+<<<<<<< HEAD
 
 /*POTENTIAL: for slide - in panel
 
@@ -204,3 +225,16 @@ h3 {
 	transition-delay: 0s;
 }*/
 
+=======
+.form-control {width:120px;}
+.popover {max-width:400px;}
+
+#newClassName {
+	background: transparent;
+	border: none;
+	display: none;
+}
+	#newClassName:focus {
+		outline: none;
+	}
+>>>>>>> 78c5265fe3c279cecb2ef09f5e43635cb18f15e9
