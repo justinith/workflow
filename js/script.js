@@ -166,4 +166,6 @@
         return projectText;
     }
 
+    //populate task slide out bar
+
 })();
