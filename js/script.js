@@ -1,4 +1,13 @@
 (function() {
+    var config = {
+            apiKey: "AIzaSyDkBifE9dCgqzn4ivf5uD7RXSwfN99Na_o",
+            authDomain: "workflow-462a4.firebaseapp.com",
+            databaseURL: "https://workflow-462a4.firebaseio.com",
+            storageBucket: "workflow-462a4.appspot.com",
+            messagingSenderId: "889877406021"
+        };
+    firebase.initializeApp(config);
+    var user = "yangf6@uw*edu";
     window.onload = function(){
         renderDateRow();
         initListeners();
@@ -10,7 +19,6 @@
         //         attemptAddPhase($(this),'Testing Item',2);
         //     }
         // });
-
         $(".addCategoryButton").click(function(){
             $('.buttonTitle').css('display','none');
             $('#newClassName').css('display','inherit');
@@ -24,17 +32,50 @@
             }
         });
 
+        //popover the add project window
          $('.dayBlock').popover({
             placement: 'bottom',
             title: 'Add Project',
             html:true,
             content:  $('#myForm').html()
-        }).on('click', function(){
+        }).on('click', function(event){
             var targetDayBlock = $(this);
-            
-            $('.btn-primary').click(function(){
-                if(!targetDayBlock.hasClass('occupied')){
-                    attemptAddPhase(targetDayBlock,'Testing Item',3);
+            var parent = $(event.target).parent();
+            var className = $($(event.target).parent()).attr('id');
+            //collect the info from user and send it to firebase
+            $('#project-submit').click(function(){
+                $('.dayBlock').popover('hide');
+                var projectName = $('#project-name').val();
+                var projectDuration = $('#project-duration').val();
+                var projectDescr = $('#about').val();
+                if(projectName.length > 0 && projectDuration.length > 0){
+                    //create new instance of new project
+                    var newProject = {
+                        projectInfo:{
+                            title: projectName.trim(),
+                            duration: projectDuration.trim(),
+                            course: "info 360",
+                            createdOn: firebase.database.ServerValue.TIMESTAMP,
+                            done: false
+                        },
+                        createdBy: {
+                            uid: "yangf6",                   //the unique user id
+                            displayName: "Fan Yang",   //the user's display name
+                            email: "yangf6@uw.edu",                //the user's email address
+                            photoUrl: null
+                        },
+                        projectTask: {}
+                    }
+                    console.log(newProject);
+                    //send to firebase
+                    var dataRef = firebase.database().ref(user + "/" + className + "/" + projectName);
+                    dataRef.push(newProject);
+                    //update the calendar
+                    if(!targetDayBlock.hasClass('occupied')){
+                    attemptAddPhase(targetDayBlock,projectName,3);
+                    }
+                }else{
+                    alert("Project Name and Durations (Day) are required");
                 }
             })
         });
@@ -60,7 +101,7 @@
     }
 
     function renderNewClass(className){
-        var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
+        var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
 
         $('#allClasses').append(blankLane);
 
@@ -122,7 +163,6 @@
 
     function addBlock(text){
         var projectText = '<div class="projectHolder"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
-
         return projectText;
     }
 
