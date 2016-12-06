@@ -1,14 +1,26 @@
 (function() {
     var config = {
-            apiKey: "AIzaSyDkBifE9dCgqzn4ivf5uD7RXSwfN99Na_o",
-            authDomain: "workflow-462a4.firebaseapp.com",
-            databaseURL: "https://workflow-462a4.firebaseio.com",
-            storageBucket: "workflow-462a4.appspot.com",
-            messagingSenderId: "889877406021"
-        };
+        apiKey: "AIzaSyDkBifE9dCgqzn4ivf5uD7RXSwfN99Na_o",
+        authDomain: "workflow-462a4.firebaseapp.com",
+        databaseURL: "https://workflow-462a4.firebaseio.com",
+        storageBucket: "workflow-462a4.appspot.com",
+        messagingSenderId: "889877406021"
+    };
+
     firebase.initializeApp(config);
     var user = "yangf6@uw*edu";
+
     window.onload = function(){
+        firebase.auth().onAuthStateChanged(function(currUser) {
+            if (currUser) {
+                // User is signed in.
+                console.log(currUser);
+            } else {
+                // No user is signed in.
+                window.location.href = "signup.html";
+            }
+        });
+
         renderDateRow();
         initListeners();
     }
@@ -19,6 +31,16 @@
         //         attemptAddPhase($(this),'Testing Item',2);
         //     }
         // });
+
+        $("#signout").click(function(){
+            firebase.auth().signOut().then(function() {
+                console.log('Signed Out');
+                window.location.href = "signin.html";
+            }, function(error) {
+                console.error('Sign Out Error', error);
+            });
+        });
+
         $(".addCategoryButton").click(function(){
             $('.buttonTitle').css('display','none');
             $('#newClassName').css('display','inherit');
@@ -72,7 +94,7 @@
                     dataRef.push(newProject);
                     //update the calendar
                     if(!targetDayBlock.hasClass('occupied')){
-                    attemptAddPhase(targetDayBlock,projectName,3);
+                        attemptAddPhase(targetDayBlock,projectName,projectDuration);
                     }
                 }else{
                     alert("Project Name and Durations (Day) are required");
