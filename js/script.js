@@ -52,9 +52,9 @@
                 if(projectName.length > 0 && projectDuration.length > 0){
                     var ref = firebase.database().ref(user + "/" + className);
                     ref.once("value")
-                    .then(function(snapshot) {
+                        .then(function(snapshot) {
                         if(snapshot.child(projectName).exists()){
-                        alert("duplicated");
+                            alert("duplicated");
                         }else{
                         //create new instance of new project
                             var newProject = {
