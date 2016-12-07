@@ -6,7 +6,9 @@
 		<link rel="icon" href="img/page-icon.png">
 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link href="https://fonts.googleapis.com/css?family=Homemade+Apple" rel="stylesheet">
@@ -14,14 +16,16 @@
 		
 		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script> 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 		<script src="js/moment.js"></script>
 
 		<script type="text/javascript" src="js/script.js"></script>
 	</head>
 	<body>
 		<header>
-            <h3>WorkFlow
+            <h3 id="topLogo">WorkFlow
 			<span id="signout">Sign Out</span></h3>	
     	</header>
 		<div class="container">
@@ -30,16 +34,16 @@
 				<div class="categoryLane">
 					<div class="row" id="INFO 360">
 						<div class="col-sm-1 categoryName">INFO 360</div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
+						<div class="col-sm-1 dayBlock freeDay"></div>
 						<div class="col-sm-1 nextWeekButton">
 							<i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
 						</div>
@@ -52,8 +56,9 @@
 				<input id="newClassName" type="text" placeholder="Type name of class">
 			</div>
 			
+			<!-- Add Phase Popover HTML-->
 			<div id="myForm" class="hide">
-				<form action="/echo/html/" id="popForm" method="get">
+				
 					<div>
 						<label for="project-name">Project Name:</label>
 						<input type="text" name="project-name" id="project-name" placeholder="web app develop" class="form-control input-md" required>
@@ -63,9 +68,13 @@
 						<textarea rows="3" name="about" id="about" class="form-control input-md"></textarea>
 						<button type="button" class="btn btn-primary" id="project-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
 					</div>
-				</form>
+				
 			</div>
+
+
 			<div id="result"></div>
+
+
 			<div class="cd-panel from-right">
 				<header class="cd-panel-header">
 					<h1>Your Tasks</h1>
@@ -80,12 +89,10 @@
 			</div>
 		</div>
 					<!-- Slide-in Panel, to be populated-->
-
-<<<<<<< HEAD
 					<!--<main class="cd-main-content">
 						main content here 
 					</main>-->
-=======
+
 		<!-- Slide-in Panel, to be populated
 		source: http://jsfiddle.net/FUAQJ/714/ -->
 		<div id="slideout">tasks
@@ -98,7 +105,6 @@
 		    </div>
 		</div>
 
->>>>>>> fdc33f6ee07f8904b91cc2c62384a9d6c8cff7a2
 	</body>
 </html>
 
