@@ -4,6 +4,7 @@
     // GLOBAL VARIABLES
     var USER; // the current user
     var PROJECT_ID = 'project_1';
+    var HAS_PROJECTS = false;
     
     var DB = firebase.database();
 
@@ -11,6 +12,7 @@
 
     window.onload = function(){
         renderDateRow();
+        
         initListeners();
     }
 
@@ -20,6 +22,11 @@
                 // User is signed in.
                 console.log(currUser);
                 USER = currUser;
+
+                renderUserPlanner();
+
+                
+
             } else {
                 // No user is signed in.
                 window.location.href = "signup.html";
@@ -38,12 +45,6 @@
             });
         });
 
-        $('.dayBlock').click(function(){
-            if(!$(this).hasClass('occupied')){
-                attemptAddPhase($(this),'Testing Item',2);
-            }
-        });
-
         $(".addCategoryButton").click(function(){
             $('.buttonTitle').css('display','none');
             $('#newClassName').css('display','inherit');
@@ -53,9 +54,21 @@
         $("#newClassName").keyup(function(event){
             if(event.keyCode == 13){
                 var val = $(this).val();
-                renderNewClass(val);
+                attemptNewClass(val);
             }
         });
+    }
+
+    function addDayBlockListeners(){
+        $('.dayBlock').on("click",function(){
+            if(!$(this).hasClass('occupied')){
+                attemptAddPhase($(this),'Testing Item',2);
+            }
+        });
+    }
+
+    function removeDayBlockListeners(){
+        $('.dayBlock').off('click');
     }
 
     function renderDateRow(){
@@ -77,80 +90,122 @@
         $('#dateDayRow').append(start);
     }
 
-    function renderNewClass(className){
+    // Renders all saved classes and phases of user
+    function renderUserPlanner(){
 
-        // Add Class to firebase
-
-        // Check if class already exists
+        var allClasses;
 
         DB.ref('users/' + USER.uid + '/classes').once('value')
         .then(function(snapshot){
-            var classes = snapshot.val();
-            console.log(classes);
-        });
+            allClasses = snapshot.val();
 
-        DB.ref('users/' + USER.uid + '/classes/' + className).set({
-            occupiedDates: ['blank']
-        })
-        .then(function(){
-            // Render class
+            console.log("ALL CLASSES");
+            console.log(allClasses);
 
-            var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
+            // For each class, render the phases
+            for(var className in allClasses){
+                // Create the lane
+                renderClassRow(className);
 
-            var dayMilli = new Date().getTime();
-            
-            var newLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div>';
+                // Check if the lane has projects
+                if('projects' in allClasses[className]){
+                    var allPhases = allClasses[className].projects.project_1;
 
-            for(var i = 0; i <= 9; i++){
-                dayFormatted = milliToDate(dayMilli);
-                newLane += '<div class="col-sm-1 dayBlock" data-class="' + className + '" data-date="' + dayFormatted + '" data-dateMilli="'+ dayMilli + '"></div>';
-                dayMilli += 86400000;
+                    // Get the phases
+                    // find which phases have dates within the current 10-day range
+                    // render those phases into the current 10-day range
+
+                    for(var phaseID in allPhases){
+
+                        var phaseInfo = allPhases[phaseID].projectInfo;
+
+                        console.log(allPhases[phaseID]);
+                        // find the div on the screen that matches
+                        var phaseStartDate = milliToDate(phaseInfo.startDateMilli);
+                        var jquerySelector = formattedDateDivID(className,phaseStartDate);
+                        var targetDayBlock = $("#" + jquerySelector);
+
+                        console.log(targetDayBlock);
+                        renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
+                    }
+                }
             }
-
-            newLane += '<div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
-
-            $('#allClasses').append(newLane);
-
-            $('.buttonTitle').css('display','inherit');
-            $('#newClassName').css('display','none');
-            $('#newClassName').val("");
-
-            initListeners();
         });
     }
 
-    // function checkAvailDays(className, milliSeconds,days){
+    function attemptNewClass(className){
 
-    //     // Get all the dates they want to put stuff in
-    //     // Check if those are available dates
+        // Check if class already exists
 
-    //     var occupiedDates;
-    //     var isValid = true;
+        // Check if user has made classes yet
+
+        DB.ref('users').once('value')
+        .then(function(snapshot){
+            var users = snapshot.val();
+            if(USER.uid in users){
+                DB.ref('users/' + USER.uid + '/classes').once('value')
+                .then(function(snapshot){
+                    var classes = Object.keys(snapshot.val());
+
+                    if(classes.includes(className)){
+                        alert('You already have a class with that name! Please use a different name.');
+                    } else {
+                        DB.ref('users/' + USER.uid + '/classes/' + className).set({
+                            occupiedDates: ['blank']
+                        })
+                        .then(function(){
+                            // Render class
+                            renderClassRow(className);
+                        });
+                    }
+                });
+            } else {
+                DB.ref('users/' + USER.uid + '/classes/' + className).set({
+                    occupiedDates: ['blank']
+                })
+                .then(function(){
+                    // Render class
+                    renderClassRow(className);
+                });
+            }
+        });
+
         
-    //     DB.ref('users/' + USER.uid + '/' + className + '/occupiedDates').once('value')
-    //     .then(function(snapshot){
-    //         occupiedDates = snapshot.val();
 
-    //         console.log(occupiedDates);
+        
+    }
 
-    //         for(var i = 0; i < days; i++){
-    //             var formattedDate = milliToDate(milliSeconds);
-    //             if(occupiedDates.includes(formattedDate)){
-    //                 isValid = false;
-    //             }
-    //             milliSeconds += 86400000;
-    //         }
+    function renderClassRow(className){
+        var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
 
-    //         console.log(isValid);
+        var dayMilli = new Date().getTime();
+        
+        var newLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div>';
 
-    //         return isValid;
+        for(var i = 0; i <= 9; i++){
+            dayFormatted = milliToDate(dayMilli);
+            newLane += '<div id="' + formattedDateDivID(className,dayFormatted) + '" class="col-sm-1 dayBlock" data-class="' + className + '" data-date="' + dayFormatted + '" data-dateMilli="'+ dayMilli + '"></div>';
+            dayMilli += 86400000;
+        }
 
-    //     });
-    // }
+        newLane += '<div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
+
+        $('#allClasses').append(newLane);
+
+        $('.buttonTitle').css('display','inherit');
+        $('#newClassName').css('display','none');
+        $('#newClassName').val("");
+
+        removeDayBlockListeners();
+        addDayBlockListeners();
+    }
 
     function milliToDate(milli){
-        console.log(milli);
         return moment(milli).format('M' + '/' + 'D' + '/' + 'YYYY');
+    }
+
+    function formattedDateDivID(className,day){
+        return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
     }
 
     function attemptAddPhase(startingBlock,title,days){
@@ -193,7 +248,7 @@
                     projectInfo:{
                         title: title.trim(),
                         duration: days,
-                        dateMilli: firstDateMilli,
+                        startDateMilli: firstDateMilli,
                         course: phaseClass,
                         createdOn: firebase.database.ServerValue.TIMESTAMP,
                         done: false
@@ -212,6 +267,7 @@
                     var newOccupiedDates = occupiedDates.concat(desiredDates);
 
                     DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').update(newOccupiedDates)
+                    // Render phase into UI
                     .then(function(){
                         renderNewPhase(startingBlock,title,days);
                     });                    
@@ -222,32 +278,81 @@
         });
     }
 
+    // function renderNewPhase(startingBlock,title,days){
+    //     var newBlock = addBlock(title);
+    //     var blankBlock = addBlock("<br>");
+
+    //     // Populate the first block
+    //     startingBlock.append(newBlock);
+    //     startingBlock.addClass('occupied');
+    //     startingBlock.removeClass('dayBlock');
+
+    //     // if task spans one day
+    //     if(days > 1){
+    //         for(var i = 1; i < days; i++){
+    //             // if the next day has the dayBlock class
+    //             if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
+    //                 startingBlock.next('.col-sm-1').append(blankBlock);
+
+    //                 if(i + 1 == days){
+    //                     startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
+    //                 }
+
+    //                 startingBlock = startingBlock.next('.col-sm-1');
+    //                 startingBlock.addClass('occupied');
+    //                 startingBlock.removeClass('dayBlock');
+    //             }
+    //         }
+    //     }
+    // }
+
     function renderNewPhase(startingBlock,title,days){
         var newBlock = addBlock(title);
         var blankBlock = addBlock("<br>");
 
         // Populate the first block
-        startingBlock.append(newBlock);
-        startingBlock.addClass('occupied');
-        startingBlock.removeClass('dayBlock');
-
+        // startingBlock.addClass('occupied');
+        // startingBlock.removeClass('dayBlock');
+        // startingBlock.append(newBlock);
+        
         // if task spans one day
-        if(days > 1){
-            for(var i = 1; i < days; i++){
-                // if the next day has the dayBlock class
-                if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
-                    startingBlock.next('.col-sm-1').append(blankBlock);
+       
+        for(var i = 0; i < days; i++){
 
-                    if(i + 1 == days){
-                        startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
-                    }
-
-                    startingBlock = startingBlock.next('.col-sm-1');
-                    startingBlock.addClass('occupied');
-                    startingBlock.removeClass('dayBlock');
-                }
+            // If this is the first day
+            if(i == 0){
+                startingBlock.append(newBlock);
+            } else {
+                startingBlock.append(blankBlock);
             }
+
+            startingBlock.addClass('occupied');
+            startingBlock.removeClass('dayBlock');
+
+            if(i + 1 == days){
+                startingBlock.css('border-right','white 1px solid')
+            }
+
+            startingBlock = startingBlock.next('.col-sm-1');
+
+            
+
+            // if the next day has the dayBlock class
+            // if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
+            //     startingBlock.next('.col-sm-1').append(blankBlock);
+
+            //     if(i + 1 == days){
+            //         startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
+            //     }
+
+            //     startingBlock.addClass('occupied');
+            //     startingBlock.removeClass('dayBlock');
+
+            //     startingBlock = startingBlock.next('.col-sm-1');
+                
+            // }
         }
+        
     }
 
     function addBlock(text){
