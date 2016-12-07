@@ -148,8 +148,19 @@ body {
 	margin: 0px;
 }
 
-.form-control {width:120px;}
-.popover {max-width:400px;}
+/*.form-control {width:120px;}*/
+.popover {
+	width: 100%;
+	max-width: 400px;
+}
+
+#phase-submit {
+	width: 100%;
+    margin-top: 10px;
+    background: #F38524;
+    padding: 15px 0px;
+	border: none;
+}
 
 #newClassName {
 	background: transparent;

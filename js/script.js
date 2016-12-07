@@ -1,37 +1,15 @@
 (function() {
 
-
     // GLOBAL VARIABLES
     var USER; // the current user
-    var PROJECT_ID = 'project_1';
-    var HAS_PROJECTS = false;
-    
+    var PROJECT_ID = 'project_1';    
     var DB = firebase.database();
 
     authenticateUser();
 
     window.onload = function(){
         renderDateRow();
-        
         initListeners();
-    }
-
-    function authenticateUser(){
-        firebase.auth().onAuthStateChanged(function(currUser) {
-            if (currUser) {
-                // User is signed in.
-                console.log(currUser);
-                USER = currUser;
-
-                renderUserPlanner();
-
-                
-
-            } else {
-                // No user is signed in.
-                window.location.href = "signup.html";
-            }
-        });
     }
 
     function initListeners(){
@@ -59,18 +37,30 @@
         });
     }
 
-    function addDayBlockListeners(){
-        $('.dayBlock').on("click",function(){
-            if(!$(this).hasClass('occupied')){
-                attemptAddPhase($(this),'Testing Item',2);
+    // ============================================
+    // ==                                        ==
+    // ==        Page Start Functions            ==
+    // ==                                        ==
+    // ============================================
+
+    function authenticateUser(){
+        firebase.auth().onAuthStateChanged(function(currUser) {
+            if (currUser) {
+                // User is signed in.
+                console.log(currUser);
+                USER = currUser;
+
+                renderUserPlanner();
+
+                
+
+            } else {
+                // No user is signed in.
+                window.location.href = "signup.html";
             }
         });
     }
-
-    function removeDayBlockListeners(){
-        $('.dayBlock').off('click');
-    }
-
+    
     function renderDateRow(){
 
         var dayMilli = new Date().getTime();
@@ -133,32 +123,37 @@
         });
     }
 
-    function attemptNewClass(className){
+    // ============================================
+    // ==                                        ==
+    // ==            Class Functions             ==
+    // ==                                        ==
+    // ============================================
 
-        // Check if class already exists
+    function attemptNewClass(className){       
 
         // Check if user has made classes yet
-
         DB.ref('users').once('value')
         .then(function(snapshot){
             var users = snapshot.val();
             if(USER.uid in users){
-                DB.ref('users/' + USER.uid + '/classes').once('value')
-                .then(function(snapshot){
-                    var classes = Object.keys(snapshot.val());
 
-                    if(classes.includes(className)){
-                        alert('You already have a class with that name! Please use a different name.');
-                    } else {
-                        DB.ref('users/' + USER.uid + '/classes/' + className).set({
-                            occupiedDates: ['blank']
-                        })
-                        .then(function(){
-                            // Render class
-                            renderClassRow(className);
-                        });
-                    }
-                });
+                var classes = Object.keys(users[USER.uid].classes);
+
+                // Check if class already exists                
+                if(classes.includes(className)){
+                    alert('You already have a class with that name! Please use a different name.');
+                } else {
+                    DB.ref('users/' + USER.uid + '/classes/' + className).set({
+                        occupiedDates: ['blank']
+                    })
+                    .then(function(){
+                        // Render class
+                        renderClassRow(className);
+                    });
+                }
+                
+            
+            // Add user's first class to DB
             } else {
                 DB.ref('users/' + USER.uid + '/classes/' + className).set({
                     occupiedDates: ['blank']
@@ -169,9 +164,6 @@
                 });
             }
         });
-
-        
-
         
     }
 
@@ -200,13 +192,11 @@
         addDayBlockListeners();
     }
 
-    function milliToDate(milli){
-        return moment(milli).format('M' + '/' + 'D' + '/' + 'YYYY');
-    }
-
-    function formattedDateDivID(className,day){
-        return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
-    }
+    // ============================================
+    // ==                                        ==
+    // ==            Phase Functions             ==
+    // ==                                        ==
+    // ============================================
 
     function attemptAddPhase(startingBlock,title,days){
 
@@ -261,7 +251,7 @@
                     },
                     projectTask: {}
                 })
-                // Add dates to occupied dates
+                // Add dates to occupied dates in DB
                 .then(function(){
 
                     var newOccupiedDates = occupiedDates.concat(desiredDates);
@@ -278,46 +268,15 @@
         });
     }
 
-    // function renderNewPhase(startingBlock,title,days){
-    //     var newBlock = addBlock(title);
-    //     var blankBlock = addBlock("<br>");
-
-    //     // Populate the first block
-    //     startingBlock.append(newBlock);
-    //     startingBlock.addClass('occupied');
-    //     startingBlock.removeClass('dayBlock');
-
-    //     // if task spans one day
-    //     if(days > 1){
-    //         for(var i = 1; i < days; i++){
-    //             // if the next day has the dayBlock class
-    //             if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
-    //                 startingBlock.next('.col-sm-1').append(blankBlock);
-
-    //                 if(i + 1 == days){
-    //                     startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
-    //                 }
-
-    //                 startingBlock = startingBlock.next('.col-sm-1');
-    //                 startingBlock.addClass('occupied');
-    //                 startingBlock.removeClass('dayBlock');
-    //             }
-    //         }
-    //     }
-    // }
-
     function renderNewPhase(startingBlock,title,days){
         var newBlock = addBlock(title);
         var blankBlock = addBlock("<br>");
-
-        // Populate the first block
-        // startingBlock.addClass('occupied');
-        // startingBlock.removeClass('dayBlock');
-        // startingBlock.append(newBlock);
         
         // if task spans one day
        
         for(var i = 0; i < days; i++){
+
+            console.log('new phase adding')
 
             // If this is the first day
             if(i == 0){
@@ -328,31 +287,60 @@
 
             startingBlock.addClass('occupied');
             startingBlock.removeClass('dayBlock');
+            startingBlock.popover('destroy');
 
             if(i + 1 == days){
                 startingBlock.css('border-right','white 1px solid')
             }
 
             startingBlock = startingBlock.next('.col-sm-1');
+        }   
+    }
 
-            
+    function addDayBlockListeners(){
+        $('.dayBlock').popover({
+            placement: 'bottom',
+            title: 'Add Project',
+            html:true,
+            content:  $('#addPhasePopup').html()
+        }).on('click', function (e) {
 
-            // if the next day has the dayBlock class
-            // if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
-            //     startingBlock.next('.col-sm-1').append(blankBlock);
+            var targetDayBlock = $(this);
 
-            //     if(i + 1 == days){
-            //         startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
-            //     }
-
-            //     startingBlock.addClass('occupied');
-            //     startingBlock.removeClass('dayBlock');
-
-            //     startingBlock = startingBlock.next('.col-sm-1');
+            $('.dayBlock').not(this).popover('hide');
+            $('#phase-submit').on('click',function(){
                 
-            // }
-        }
-        
+                // Handle phase detail submission
+
+                var projectName = $('#project-name').val();
+                var projectDuration = $('#project-duration').val();
+                var projectDescr = $('#about').val();
+
+                if(projectName.length > 0 && projectDuration.length > 0){
+                    attemptAddPhase(targetDayBlock,projectName,projectDuration);
+                }else{
+                    alert("Project Name and Duration (Days) are required");
+                }
+
+                $('.dayBlock').popover('hide');
+            });
+        }).on('hide.bs.popover',function(){
+            $('#phase-submit').off('click');
+        });
+    }
+
+    // ============================================
+    // ==                                        ==
+    // ==        Micro Helper Functions          ==
+    // ==                                        ==
+    // ============================================
+
+    function milliToDate(milli){
+        return moment(milli).format('M' + '/' + 'D' + '/' + 'YYYY');
+    }
+
+    function formattedDateDivID(className,day){
+        return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
     }
 
     function addBlock(text){
@@ -360,5 +348,12 @@
 
         return projectText;
     }
+
+    function removeDayBlockListeners(){
+        // $('.dayBlock').off('click');
+
+        $('.dayBlock').popover('destroy');
+    }
+    
 
 })();

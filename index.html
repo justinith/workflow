@@ -25,33 +25,26 @@
 
 		<div class="container">
 			<div id="dateDayRow"></div>
-			<div id="allClasses">
-				<!--<div class="categoryLane">
-					<div class="row">
-						<div class="col-sm-1 categoryName">INFO 360</div>
-						<div class="col-sm-1 dayBlock" data-date="12/4/16"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 dayBlock"></div>
-						<div class="col-sm-1 nextWeekButton">
-							<i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-						</div>
-					</div>
-				</div>-->
-			</div>
+			<div id="allClasses"></div>
 			
-			<!--<a data-placement="bottom" data-toggle="popover" data-title="Login" data-container="body" type="button" data-html="true" href="#" >-->
-				<div class="addCategoryButton">
-					<span class="buttonTitle">Add Class</span>
-					<input id="newClassName" type="text" placeholder="Type name of class">
+			<div class="addCategoryButton">
+				<span class="buttonTitle">Add Class</span>
+				<input id="newClassName" type="text" placeholder="Type name of class">
+			</div>
+		</div>
+
+		<div id="addPhasePopup" class="hide">
+			<form action="/echo/html/" id="popForm" method="get">
+				<div>
+					<label for="project-name">Project Name:</label>
+					<input type="text" name="project-name" id="project-name" placeholder="web app develop" class="form-control input-md" required>
+					<label for="project-duration">Durations (Day)</label>
+					<input type="text" name="project-duration" id="project-duration" placeholder="123 days" class="form-control input-md" required>
+					<label for="about">Descr:</label>
+					<textarea rows="3" name="about" id="about" class="form-control input-md"></textarea>
+					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
 				</div>
-			<!--</a>-->
+			</form>
 		</div>
 	</body>
 </html>
