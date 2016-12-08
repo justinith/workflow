@@ -4,6 +4,7 @@
     var USER; // the current user
     var PROJECT_ID = 'project_1';    
     var DB = firebase.database();
+    var DAYS_AHEAD = 7;
 
     authenticateUser();
 
@@ -35,6 +36,20 @@
                 attemptNewClass(val);
             }
         });
+
+        $("#nextWeekBut").click(function(){
+            DAYS_AHEAD++;
+            clearCal();
+            renderDateRow();
+            renderUserPlanner();
+        });
+
+        $("#prevWeekBut").click(function(){
+            DAYS_AHEAD--;
+            clearCal();
+            renderDateRow();
+            renderUserPlanner();
+        });
     }
 
     // ============================================
@@ -47,13 +62,8 @@
         firebase.auth().onAuthStateChanged(function(currUser) {
             if (currUser) {
                 // User is signed in.
-                console.log(currUser);
                 USER = currUser;
-
                 renderUserPlanner();
-
-                
-
             } else {
                 // No user is signed in.
                 window.location.href = "signup.html";
@@ -64,12 +74,18 @@
     function renderDateRow(){
 
         var dayMilli = new Date().getTime();
-
+        
+        if(DAYS_AHEAD > 0){
+            dayMilli = dayMilli + (86400000 * DAYS_AHEAD);
+        } else if(DAYS_AHEAD < 0){
+            dayMilli = dayMilli - (86400000 * DAYS_AHEAD);
+        }
+        
         var currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
 
         var start = '<div class="row"><div class="col-sm-offset-1 col-sm-1">' + currentDayFormatted + '</div>';
 
-        for(var i = 0; i <= 8; i++){
+        for(var i = 0; i <= 9; i++){
             dayMilli += 86400000;
             dayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
             start += '<div class="col-sm-1">' + dayFormatted + '</div>'
@@ -164,23 +180,28 @@
                 });
             }
         });
-        
     }
 
     function renderClassRow(className){
         var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
 
         var dayMilli = new Date().getTime();
+
+        if(DAYS_AHEAD > 0){
+            dayMilli = dayMilli + (86400000 * DAYS_AHEAD);
+        } else if(DAYS_AHEAD < 0){
+            dayMilli = dayMilli - (86400000 * DAYS_AHEAD);
+        }
         
         var newLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div>';
 
-        for(var i = 0; i <= 9; i++){
+        for(var i = 0; i <= 10; i++){
             dayFormatted = milliToDate(dayMilli);
             newLane += '<div id="' + formattedDateDivID(className,dayFormatted) + '" class="col-sm-1 dayBlock" data-class="' + className + '" data-date="' + dayFormatted + '" data-dateMilli="'+ dayMilli + '"></div>';
             dayMilli += 86400000;
         }
 
-        newLane += '<div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
+        newLane += '</div></div>';
 
         $('#allClasses').append(newLane);
 
@@ -353,6 +374,11 @@
         // $('.dayBlock').off('click');
 
         $('.dayBlock').popover('destroy');
+    }
+
+    function clearCal(){
+        $('#dateDayRow').html("");
+        $('#allClasses').html("");
     }
     
 

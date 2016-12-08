@@ -15,6 +15,14 @@ body {
 		text-align: center;
 	}
 
+#calControl button {
+	/*float: right;*/
+}
+
+	#nextWeekBut {
+		float: right;
+	}
+
 .categoryLane {
 	background: #CDE1EE;
 	margin-bottom: 10px;
