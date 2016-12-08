@@ -87,6 +87,10 @@ label {
 	padding: 10px;
 }
 
+#signup-form input:focus {
+	outline: none;
+}
+
 input {
     width: 20%;
     padding: 0.5rem;

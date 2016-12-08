@@ -20,20 +20,27 @@ header {
 	color: #333745;
 	margin-top: 0px;
 	margin-left: 15px;
-	padding-top: 20px;
-	font-size: 45px;
+	padding-top: 27px;
+	padding-left: 8px;
+	font-size: 33px;
 	font-family: 'Homemade Apple', cursive;
 	font-weight: 60;
+	color: white;
 }
 
 #signout {
     font-family: 'News Cycle', sans-serif;
  	font-weight: bold;
-    font-size: 20px;
-    color: #333745;
+    font-size: 17px;
+    color: white;
 	float: right;
 	margin-right: 25px;
+	letter-spacing: 5px;
+	text-transform: uppercase;
 }
+	#signout:hover {
+		cursor: pointer;
+	}
 
 #dateDayRow {
 	height: 80px;
@@ -128,11 +135,8 @@ header {
 		color: #10222B;
 	}
 		.categoryLane .dayContent .dayTitle {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			padding-bottom: 40px;
 			padding-left: 8px;
+			padding-top: 3px;
 		}
 
 .addCategoryButton {
