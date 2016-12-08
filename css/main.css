@@ -1,9 +1,9 @@
 body {
-	font-family: 'Slabo 27px', "Raleway", sans-serif;
+	font-family: 'News Cycle', sans-serif;
     font-size: 16px;
     margin: 5px;
     padding: 10px;
-    background-color: #DAEDE2;
+    background-color: #fff;
 }
 
 .container {
@@ -13,6 +13,7 @@ body {
     align-content: right;
     text-align: center;
     margin-top: 30px;
+    background-color: #FAF5F2;
 }
 
 header {
@@ -40,11 +41,12 @@ button {
     padding-top: 0.5rem;
     padding-left: 7rem;
     padding-right: 7rem;
-    font-family: 'Slabo 27px', "Raleway", sans-serif;
+	font-family: 'News Cycle', sans-serif;
     font-size: 20px;
-    color: #333745;
+    color: #fff;
     border-radius: 3px;
-    background-color: #F6F792;
+    background-color: #5AC7B2;
+    border: none;
 }
 
 label {
