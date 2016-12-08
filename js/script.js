@@ -77,7 +77,7 @@
             if (currUser) {
                 // User is signed in.
                 USER = currUser;
-                renderUserPlanner();
+                fetchUserClasses();
             } else {
                 // No user is signed in.
                 window.location.href = "signup.html";
@@ -86,7 +86,6 @@
     }
     
     function renderDateRow(){
-
         var dayMilli = new Date().getTime();
         
         if(DAYS_AHEAD > 0){
@@ -113,20 +112,11 @@
     }
 
     // Renders all saved classes and phases of user
-    function renderUserPlanner(){
-        console.log('dates shown:');
-        console.log(DATES_SHOWN);
-
-        var allClasses;
-
+    function fetchUserClasses(){
         DB.ref('users/' + USER.uid + '/classes').once('value')
         .then(function(snapshot){
-            allClasses = snapshot.val();
-
-            USER_CLASSES = allClasses;
-
-            renderUserData(allClasses);
-            // For each class, render the phases
+            USER_CLASSES = snapshot.val();
+            renderUserData(USER_CLASSES);
         });
     }
 
@@ -330,7 +320,9 @@
                     DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').update(newOccupiedDates)
                     // Render phase into UI
                     .then(function(){
-                        renderNewPhase(startingBlock,title,days);
+                        clearCal();
+                        renderDateRow();
+                        fetchUserClasses();
                     });                    
                 });
             } else {
@@ -339,8 +331,8 @@
         });
     }
 
-    function renderNewPhase(startingBlock,title,days){
-        var newBlock = addBlock(title);
+    function renderNewPhase(startingBlock,title,days,desc){
+        var newBlock = addBlock(title,desc);
         var blankBlock = addBlock("<br>");
         
         // if task spans one day
@@ -416,8 +408,8 @@
         return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
     }
 
-    function addBlock(text){
-        var projectText = '<div class="projectHolder"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+    function addBlock(text,desc){
+        var projectText = '<div class="projectHolder" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
 
         return projectText;
     }
@@ -442,7 +434,11 @@
         }
         clearCal();
         renderDateRow();
-        renderUserData(USER_CLASSES);
+        if(USER_CLASSES == null){
+            fetchUserClasses();
+        } else {
+            renderUserData(USER_CLASSES);
+        }
     }
     
     function checkKey(e) {

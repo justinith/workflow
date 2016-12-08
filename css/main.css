@@ -87,8 +87,9 @@ label {
 	padding: 10px;
 }
 
-#signup-form input:focus {
-	outline: none;
+input:focus {
+	/*outline: none;*/
+	outline: #5AC7B2 solid 1px;
 }
 
 input {
