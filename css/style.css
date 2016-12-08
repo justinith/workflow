@@ -46,7 +46,7 @@ header {
 	height: 80px;
 }
 
-	#dateDayRow .col-sm-1 {
+	#dateDayRow .col-xs-1, #dateDayRow .col-xs-2, #dateDayRow .col-xs-3, #dateDayRow .col-xs-4 {
 		padding-top: 15px;
 		text-align: center;
 	}
@@ -79,7 +79,7 @@ header {
 	background: #FAAF84;
 	margin-bottom: 10px;
 }
-	.categoryLane .col-sm-1 {
+	.categoryLane .col-xs-1, .categoryLane .col-xs-2, .categoryLane .col-xs-3, .categoryLane .col-xs-4 {
 		/*border-right: white 1px solid;*/
 		height: 150px;
 		padding: 0px;

@@ -6,8 +6,11 @@ var passwordInput = document.getElementById("password-input");
 var reenterPasswordInput = document.getElementById("reenter-password-input");
 var displayNameInput = document.getElementById("display-name-input");
 
+authenticateUser();
+
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
+
 
 if (displayNameInput.value != "" && passwordInput.value == reenterPasswordInput.value) { 
     	firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
@@ -25,3 +28,12 @@ if (displayNameInput.value != "" && passwordInput.value == reenterPasswordInput.
     return false;
 	}
 });
+
+function authenticateUser(){
+    firebase.auth().onAuthStateChanged(function(currUser) {
+        if (currUser) {
+            // User is signed in.
+            // window.location.href = "index.html";
+        }
+    });
+}

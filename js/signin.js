@@ -4,6 +4,8 @@ var signUpForm = document.getElementById("signin-form");
 var emailInput = document.getElementById("email-input");
 var passwordInput = document.getElementById("password-input");
 
+authenticateUser();
+
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
 
@@ -18,3 +20,12 @@ signUpForm.addEventListener("submit", function(evt) {
 	    return false;
 	}
 });
+
+function authenticateUser(){
+    firebase.auth().onAuthStateChanged(function(currUser) {
+        if (currUser) {
+            // User is signed in.
+            window.location.href = "index.html";
+        }
+    });
+}

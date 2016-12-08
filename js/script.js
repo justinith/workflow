@@ -97,13 +97,18 @@
         var currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
         DATES_SHOWN.push(milliToDate(dayMilli));
 
-        var start = '<div class="row"><div class="col-sm-offset-1 col-sm-1">' + currentDayFormatted + '</div>';
+        
+        var dateColCount = getPageCol('total') - 1;
+        var btCol = getPageCol('btcol');
+        
+        var start = '<div class="row"><div class="col-xs-offset-' + btCol + ' col-xs-' + btCol + '">' + currentDayFormatted + '</div>';
 
-        for(var i = 0; i <= 9; i++){
+        for(var i = 1; i < dateColCount; i++){
+            console.log('date row ' + i);
             dayMilli += 86400000;
             currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
             DATES_SHOWN.push(milliToDate(dayMilli));
-            start += '<div class="col-sm-1">' + currentDayFormatted + '</div>';
+            start += '<div class="col-xs-' + btCol + '">' + currentDayFormatted + '</div>';
         }
 
         start += '</div>';
@@ -145,7 +150,7 @@
                         var targetDayBlock = $("#" + jquerySelector);
 
                         renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
-                    // If it doesnt, render the partial view of the phase
+                    // If it doesn't, render the partial view of the phase
                     } else {
                         var phaseDateMilli = phaseInfo.startDateMilli;
                         for(var i = 0; i < phaseInfo.duration; i++){
@@ -189,6 +194,8 @@
         DB.ref('users').once('value')
         .then(function(snapshot){
             var users = snapshot.val();
+
+            // If user has classes
             if(USER.uid in users){
 
                 var classes = Object.keys(users[USER.uid].classes);
@@ -205,7 +212,6 @@
                         renderClassRow(className);
                     });
                 }
-                
             
             // Add user's first class to DB
             } else {
@@ -221,7 +227,8 @@
     }
 
     function renderClassRow(className){
-        var blankLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 dayBlock"></div><div class="col-sm-1 nextWeekButton"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div></div></div>';
+        var dateColCount = getPageCol('total') - 1;
+        var btCol = getPageCol('btcol');
 
         var dayMilli = new Date().getTime();
 
@@ -231,11 +238,11 @@
             dayMilli = dayMilli - (86400000 * Math.abs(DAYS_AHEAD));
         }
         
-        var newLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div>';
+        var newLane = '<div class="categoryLane"><div class="row"><div class="col-xs-' + btCol + ' categoryName">' + className + '</div>';
 
-        for(var i = 0; i <= 10; i++){
+        for(var i = 1; i <= dateColCount; i++){
             dayFormatted = milliToDate(dayMilli);
-            newLane += '<div id="' + formattedDateDivID(className,dayFormatted) + '" class="col-sm-1 dayBlock" data-class="' + className + '" data-date="' + dayFormatted + '" data-dateMilli="'+ dayMilli + '"></div>';
+            newLane += '<div id="' + formattedDateDivID(className,dayFormatted) + '" class="col-xs-' + btCol + ' dayBlock" data-class="' + className + '" data-date="' + dayFormatted + '" data-dateMilli="'+ dayMilli + '"></div>';
             dayMilli += 86400000;
         }
 
@@ -334,6 +341,7 @@
     function renderNewPhase(startingBlock,title,days,desc){
         var newBlock = addBlock(title,desc);
         var blankBlock = addBlock("<br>");
+        var btCol = getPageCol('btcol');
         
         // if task spans one day
        
@@ -342,10 +350,8 @@
             // If this is the first day
             if(i == 0){
                 startingBlock.append(newBlock);
-                console.log("RENDERING FULL " + i + " OF PHASE: " + title);
             } else {
                 startingBlock.append(blankBlock);
-                console.log("RENDERING BLANK " + i + " OF PHASE: " + title);
             }
 
             startingBlock.addClass('occupied');
@@ -356,7 +362,7 @@
                 startingBlock.css('border-right','white 1px solid')
             }
 
-            startingBlock = startingBlock.next('.col-sm-1');
+            startingBlock = startingBlock.next('.col-xs-' + btCol);
 
             
         }   
@@ -392,6 +398,8 @@
         }).on('hide.bs.popover',function(){
             $('#phase-submit').off('click');
         });
+
+
     }
 
     // ============================================
@@ -448,6 +456,29 @@
         }
         else if (e.keyCode == '39') {
             shiftDaysX(1,'next');
+        }
+    }
+
+    function getPageCol(type){
+        var pageWidth = window.innerWidth;
+        if(pageWidth < 1300 && pageWidth > 900){
+            if(type == 'total'){
+                return 6;
+            } else if(type == 'btcol'){
+                return "2";
+            }
+        } else if(pageWidth <= 900 && pageWidth){
+            if(type == 'total'){
+                return 3;
+            } else if(type == 'btcol'){
+                return "4";
+            }
+        } else {
+            if(type == 'total'){
+                return 12;
+            } else if(type == 'btcol'){
+                return "1";
+            }
         }
     }
 
