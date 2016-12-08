@@ -102,16 +102,17 @@
         DATES_SHOWN.push(milliToDate(dayMilli));
 
         
-        var dateColCount = getPageCol('total') - 1;
+        var dateColCount = getPageCol('total');
         var btCol = getPageCol('btcol');
         
-        var start = '<div class="row"><div class="col-xs-offset-' + btCol + ' col-xs-' + btCol + '">' + currentDayFormatted + '</div>';
+        var start = '<div class="row">';
 
-        for(var i = 1; i < dateColCount; i++){
-            dayMilli += 86400000;
+        for(var i = 0; i < dateColCount; i++){
+            
             currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
             DATES_SHOWN.push(milliToDate(dayMilli));
             start += '<div class="col-xs-' + btCol + '">' + currentDayFormatted + '</div>';
+            dayMilli += 86400000;
         }
 
         start += '</div>';
@@ -230,7 +231,7 @@
     }
 
     function renderClassRow(className){
-        var dateColCount = getPageCol('total') - 1;
+        var dateColCount = getPageCol('total');
         var btCol = getPageCol('btcol');
 
         var dayMilli = new Date().getTime();
@@ -241,7 +242,7 @@
             dayMilli = dayMilli - (86400000 * Math.abs(DAYS_AHEAD));
         }
         
-        var newLane = '<div class="categoryLane"><div class="row"><div class="col-xs-' + btCol + ' categoryName">' + className + '</div>';
+        var newLane = '<div class="categoryLane"><div class="laneInfo"><p>' + className + '</p></div><div class="row">';
 
         for(var i = 1; i <= dateColCount; i++){
             dayFormatted = milliToDate(dayMilli);
@@ -405,90 +406,38 @@
 
     // ============================================
     // ==                                        ==
-    // ==        Micro Helper Functions          ==
+    // ==     Resize / Re-Render Functions       ==
     // ==                                        ==
     // ============================================
 
-    function milliToDate(milli){
-        return moment(milli).format('M' + '/' + 'D' + '/' + 'YYYY');
-    }
-
-    function formattedDateDivID(className,day){
-        return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
-    }
-
-    function addBlock(text,desc){
-        var projectText = '<div class="projectHolder" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
-
-        return projectText;
-    }
-
-    function removeDayBlockListeners(){
-        // $('.dayBlock').off('click');
-
-        $('.dayBlock').popover('destroy');
-    }
-
-    function clearCal(){
-        $('#dateDayRow').html("");
-        $('#allClasses').html("");
-        DATES_SHOWN = [];
-    }
-
-    function shiftDaysX(amount,direction){
-        if(direction == 'next'){
-            DAYS_AHEAD += amount;
-        } else {
-            DAYS_AHEAD -= amount;
-        }
-        clearCal();
-        renderDateRow();
-        if(USER_CLASSES == null){
-            fetchUserClasses();
-        } else {
-            renderUserData(USER_CLASSES);
-        }
-    }
-    
-    function checkKey(e) {
-        e = e || window.event;
-        if (e.keyCode == '37') {
-            shiftDaysX(1,'prev');
-        }
-        else if (e.keyCode == '39') {
-            shiftDaysX(1,'next');
-        }
-    }
-
+    // Checks the width of the window and rerenders the page if 
+    // the width is in a different size category than current one 
     function resizeScreen(){
         var screenWidth = window.innerWidth;
         // set as large but screen is smaller
         if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 900){
-            clearCal();
-            renderDateRow();
-            renderUserData(USER_CLASSES);
+            reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is smaller
         } else if(SCREEN_SIZE == 'm' && screenWidth <= 900){
-            clearCal();
-            renderDateRow();
-            renderUserData(USER_CLASSES);
+            reRenderPage('localReset');
             SCREEN_SIZE = 's';
         // set as small but screen is medium
         } else if(SCREEN_SIZE == 's' && screenWidth > 900 && screenWidth < 1300){
-            clearCal();
-            renderDateRow();
-            renderUserData(USER_CLASSES);
+            reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is large
         } else if(SCREEN_SIZE == 'm' && screenWidth >= 1300){
-            clearCal();
-            renderDateRow();
-            renderUserData(USER_CLASSES);
+            reRenderPage('localReset');
             SCREEN_SIZE = 'l';
         }
     }
 
+    // Input:  Accepts the type of column length needed, either 
+    //         'total' (the total columns in the page) or
+    //         'btcol' (the width of each bootstrap column) 
+    // Output: Returns the number value of either the total columns
+    //         of the page, or the width of bootstrap columns
     function getPageCol(type){
         var pageWidth = window.innerWidth;
         if(pageWidth < 1300 && pageWidth > 900){
@@ -512,4 +461,69 @@
         }
     }
 
+    // Input:  Accepts the type of page reset 
+    // Output: Resets the page by either re-fetching the user data from
+    //         firebase or by using the stored data locally
+    function reRenderPage(type){
+        clearCal();
+        renderDateRow();
+        if(type == 'fetchReset'){
+            fetchUserClasses();
+        } else if(type == 'localReset'){
+            renderUserData(USER_CLASSES);
+        }
+    }
+
+    // ============================================
+    // ==                                        ==
+    // ==        Micro Helper Functions          ==
+    // ==                                        ==
+    // ============================================
+
+    function milliToDate(milli){
+        return moment(milli).format('M' + '/' + 'D' + '/' + 'YYYY');
+    }
+
+    function formattedDateDivID(className,day){
+        return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
+    }
+
+    function addBlock(text,desc){
+        var projectText = '<div class="projectHolder" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+        return projectText;
+    }
+
+    function removeDayBlockListeners(){
+        $('.dayBlock').popover('destroy');
+    }
+
+    function clearCal(){
+        $('#dateDayRow').html("");
+        $('#allClasses').html("");
+        DATES_SHOWN = [];
+    }
+
+    function shiftDaysX(amount,direction){
+        if(direction == 'next'){
+            DAYS_AHEAD += amount;
+        } else {
+            DAYS_AHEAD -= amount;
+        }
+
+        if(USER_CLASSES == null){
+            reRenderPage('fetchReset');
+        } else {
+            reRenderPage('localReset');
+        }
+    }
+    
+    function checkKey(e) {
+        e = e || window.event;
+        if (e.keyCode == '37') {
+            shiftDaysX(1,'prev');
+        }
+        else if (e.keyCode == '39') {
+            shiftDaysX(1,'next');
+        }
+    }
 })();
