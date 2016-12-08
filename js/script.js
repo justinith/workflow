@@ -39,6 +39,15 @@
             }
         });
 
+        $("#addClassInputTop").keyup(function(event){
+            if(event.keyCode == 13){
+                var val = $(this).val().toUpperCase();
+                attemptNewClass(val);
+                $("#triggerAddClassTop").css('display','inherit');
+                $('.addClassArea').css('display','none');
+            }
+        });
+
         $("#nextDayBut").click(function(){
             shiftDaysX(1,'next');
         });
@@ -63,9 +72,23 @@
             }
         });
 
+        $('#triggerAddClassTop').click(function(){
+            $("#triggerAddClassTop").css('display','none');
+            $('.addClassArea').css('display','inherit');
+            $('#addClassInputTop').focus();
+        });
+
+        $('#addClassButtonTop').click(function(){
+            var val = $('#addClassInputTop').val();
+            attemptNewClass(val);
+            $("#triggerAddClassTop").css('display','inherit');
+            $('.addClassArea').css('display','none');
+        });
+
         $(window).resize(function(){
             resizeScreen();
         });
+        
 
         document.onkeydown = checkKey;
     }
@@ -365,8 +388,6 @@
             }
 
             startingBlock = startingBlock.next('.col-xs-' + btCol);
-
-            
         }   
     }
 

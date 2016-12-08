@@ -54,17 +54,45 @@ header {
 #calControl {
 	position: relative;
 	overflow: auto;
-	text-align: right;
+	padding: 10px;
 }
-	.dayShiftButtons {
+	#calControl .dayShiftButtons {
 		display: inline-block;
+		float: right;
 	}
 
-	.shiftDayViewBut {
-		
-		margin: 10px;
-		margin-top: 20px;
-		margin-bottom: 5px;		
+	#calControl .addClassArea {
+		float: left;
+		position: relative;
+		overflow: auto;
+		display: none;
+	}
+		#addClassInputTop {
+			padding: 7px 10px;
+			font-size: 15px;
+			outline: none;
+			border: solid lightgray 2px;
+			float: left;
+			width: 40vw;
+			max-width: 300px;
+		}
+			#addClassInputTop:focus {
+				border: solid 2px #efc943;
+			}
+
+		.addClassButtonTop {
+			background: #efc943;
+			border: solid 2px #efc943;
+			outline: none;
+			color: white;
+			padding: 7px 22px;
+			font-size: 15px;
+			float: left;
+			text-transform: uppercase;
+			letter-spacing: 3px;
+		}
+
+	#calControl .shiftDayViewBut {
 		background-color: #334d5c;
 		color: white;
 		font-size: 20px;
@@ -73,6 +101,7 @@ header {
 		border: none;
 		padding-left: 10px;
 		padding-right: 10px;
+		margin: 0px 4px;
 	}
 
 	/*#nextWeekBut, #nextDayBut {
@@ -153,6 +182,7 @@ header {
 	text-transform: uppercase;
 	letter-spacing: 5px;
 	margin-bottom: 20px;
+	display: none;
 }	
 	.addCategoryButton:hover {
 		cursor: pointer;
@@ -187,7 +217,7 @@ header {
 	background: #2A79AE;
 }
 
-
+/*Mobile View*/
 @media (max-width: 768px) {
 	.container {
 		width: 100vw;
@@ -199,6 +229,14 @@ header {
 
 	.shiftDayViewBut {
 		float: none;
+	}
+
+	.addCategoryButton {
+		display: inherit;
+	}
+
+	#triggerAddClassTop, .addClassArea {
+		display: none;
 	}
 }
 
