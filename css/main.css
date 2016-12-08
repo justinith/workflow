@@ -1,5 +1,5 @@
 body {
-	font-family: 'Slabo 27px', "Raleway", sans-serif;
+	font-family: 'News Cycle', sans-serif;
     font-size: 16px;
     margin: 5px;
     padding: 10px;
@@ -40,7 +40,7 @@ button {
     padding-top: 0.5rem;
     padding-left: 7rem;
     padding-right: 7rem;
-    font-family: 'Slabo 27px', "Raleway", sans-serif;
+	font-family: 'News Cycle', sans-serif;
     font-size: 20px;
     color: #333745;
     border-radius: 3px;
