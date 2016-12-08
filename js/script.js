@@ -55,6 +55,14 @@
             shiftDaysX(7,'prev');
         });
 
+        $("#showTodayBut").click(function(){
+            if(DAYS_AHEAD < 0){
+                shiftDaysX(Math.abs(DAYS_AHEAD),'next');
+            } else if(DAYS_AHEAD > 0) {
+                shiftDaysX(DAYS_AHEAD,'prev');
+            }
+        });
+
         document.onkeydown = checkKey;
     }
 
@@ -446,5 +454,5 @@
             shiftDaysX(1,'next');
         }
     }
-    
+
 })();

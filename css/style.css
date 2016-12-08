@@ -51,10 +51,12 @@ header {
 		text-align: center;
 	}
 
-#calControl button {
-	/*float: right;*/
+#calControl {
+	position: relative;
+	overflow: auto;
 }
 	.shiftDayViewBut {
+		float: right;;
 		margin: 10px;
 		margin-top: 20px;
 		margin-bottom: 5px;		
@@ -68,9 +70,9 @@ header {
 		padding-right: 10px;
 	}
 
-	#nextWeekBut, #nextDayBut {
+	/*#nextWeekBut, #nextDayBut {
 		float: right;
-	}
+	}*/
 
 
 .categoryLane {
@@ -123,6 +125,7 @@ header {
 		color: #10222B;
 	}
 		.categoryLane .dayContent .dayTitle {
+			font-family: 'Helvetica Neue', sans-serif;
 			padding-left: 8px;
 			padding-top: 3px;
 		}
