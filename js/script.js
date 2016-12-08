@@ -4,7 +4,8 @@
     var USER; // the current user
     var PROJECT_ID = 'project_1';    
     var DB = firebase.database();
-    var DAYS_AHEAD = 7;
+    var DAYS_AHEAD = 0;
+    var DATES_SHOWN = [];
 
     authenticateUser();
 
@@ -32,7 +33,7 @@
 
         $("#newClassName").keyup(function(event){
             if(event.keyCode == 13){
-                var val = $(this).val();
+                var val = $(this).val().toUpperCase();
                 attemptNewClass(val);
             }
         });
@@ -78,17 +79,19 @@
         if(DAYS_AHEAD > 0){
             dayMilli = dayMilli + (86400000 * DAYS_AHEAD);
         } else if(DAYS_AHEAD < 0){
-            dayMilli = dayMilli - (86400000 * DAYS_AHEAD);
+            dayMilli = dayMilli - (86400000 * Math.abs(DAYS_AHEAD));
         }
         
         var currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
+        DATES_SHOWN.push(milliToDate(dayMilli));
 
         var start = '<div class="row"><div class="col-sm-offset-1 col-sm-1">' + currentDayFormatted + '</div>';
 
         for(var i = 0; i <= 9; i++){
             dayMilli += 86400000;
-            dayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
-            start += '<div class="col-sm-1">' + dayFormatted + '</div>'
+            currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
+            DATES_SHOWN.push(milliToDate(dayMilli));
+            start += '<div class="col-sm-1">' + currentDayFormatted + '</div>';
         }
 
         start += '</div>';
@@ -98,6 +101,9 @@
 
     // Renders all saved classes and phases of user
     function renderUserPlanner(){
+        console.log('dates shown:');
+        console.log(DATES_SHOWN);
+
 
         var allClasses;
 
@@ -117,22 +123,49 @@
                 if('projects' in allClasses[className]){
                     var allPhases = allClasses[className].projects.project_1;
 
-                    // Get the phases
+                    // Get the phases of the project
                     // find which phases have dates within the current 10-day range
                     // render those phases into the current 10-day range
-
                     for(var phaseID in allPhases){
 
                         var phaseInfo = allPhases[phaseID].projectInfo;
-
-                        console.log(allPhases[phaseID]);
-                        // find the div on the screen that matches
                         var phaseStartDate = milliToDate(phaseInfo.startDateMilli);
-                        var jquerySelector = formattedDateDivID(className,phaseStartDate);
-                        var targetDayBlock = $("#" + jquerySelector);
+                        var allDatesInPhase = [];
+                        var earliestDateShown = DATES_SHOWN[0];
 
-                        console.log(targetDayBlock);
-                        renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
+                        // check if first date in phase exists in the dates shown
+                        if(DATES_SHOWN.includes(phaseStartDate)){
+                            var jquerySelector = formattedDateDivID(className,phaseStartDate);
+                            var targetDayBlock = $("#" + jquerySelector);
+
+                            renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
+                        // If it doesnt, render the partial view of the phase
+                        } else {
+                            var phaseDateMilli = phaseInfo.startDateMilli;
+                            for(var i = 0; i < phaseInfo.duration; i++){
+                                allDatesInPhase.push(milliToDate(phaseDateMilli));
+                                phaseDateMilli += 86400000;
+                            }
+
+                            for(var i = 0; i < allDatesInPhase.length; i++){
+                                if(allDatesInPhase[i] == earliestDateShown){
+                                    var amountOfDays = allDatesInPhase.length - i;
+                                    var newStartDateMilli = phaseInfo.startDateMilli;
+
+                                    // get start date in milli format
+                                    for(var j = 0; j < i; j++){
+                                        newStartDateMilli += 86400000;
+                                    }
+
+                                    newStartDateMilli = milliToDate(newStartDateMilli);
+
+                                    var jquerySelector = formattedDateDivID(className,newStartDateMilli);
+                                    var targetDayBlock = $("#" + jquerySelector);
+
+                                    renderNewPhase(targetDayBlock,phaseInfo.title,amountOfDays);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -190,7 +223,7 @@
         if(DAYS_AHEAD > 0){
             dayMilli = dayMilli + (86400000 * DAYS_AHEAD);
         } else if(DAYS_AHEAD < 0){
-            dayMilli = dayMilli - (86400000 * DAYS_AHEAD);
+            dayMilli = dayMilli - (86400000 * Math.abs(DAYS_AHEAD));
         }
         
         var newLane = '<div class="categoryLane"><div class="row"><div class="col-sm-1 categoryName">' + className + '</div>';
@@ -272,6 +305,7 @@
                     },
                     projectTask: {}
                 })
+
                 // Add dates to occupied dates in DB
                 .then(function(){
 
@@ -296,8 +330,6 @@
         // if task spans one day
        
         for(var i = 0; i < days; i++){
-
-            console.log('new phase adding')
 
             // If this is the first day
             if(i == 0){
@@ -379,6 +411,7 @@
     function clearCal(){
         $('#dateDayRow').html("");
         $('#allClasses').html("");
+        DATES_SHOWN = [];
     }
     
 
