@@ -51,6 +51,8 @@ header {
 	#nextWeekBut {
 		float: right;
 		margin: 10px;
+		margin-top: 20px;
+		margin-bottom: 5px;		
 		background-color: #334d5c;
 		color: white;
 		font-size: 20px;
@@ -64,6 +66,8 @@ header {
 
 	#prevWeekBut {
 		margin: 10px;
+		margin-top: 20px;
+		margin-bottom: 5px;
 		background-color: #334d5c;
 		color: white;	
 		font-size: 20px;
@@ -139,6 +143,7 @@ header {
 	padding: 20px 0px;
 	text-transform: uppercase;
 	letter-spacing: 5px;
+	margin-bottom: 20px;
 }	
 	.addCategoryButton:hover {
 		cursor: pointer;
