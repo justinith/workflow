@@ -6,6 +6,7 @@
     var DB = firebase.database();
     var DAYS_AHEAD = 0;
     var DATES_SHOWN = [];
+    var USER_CLASSES;
 
     authenticateUser();
 
@@ -38,19 +39,23 @@
             }
         });
 
+        $("#nextDayBut").click(function(){
+            shiftDaysX(1,'next');
+        });
+
+        $("#prevDayBut").click(function(){
+            shiftDaysX(1,'prev');
+        });
+
         $("#nextWeekBut").click(function(){
-            DAYS_AHEAD++;
-            clearCal();
-            renderDateRow();
-            renderUserPlanner();
+            shiftDaysX(7,'next');
         });
 
         $("#prevWeekBut").click(function(){
-            DAYS_AHEAD--;
-            clearCal();
-            renderDateRow();
-            renderUserPlanner();
+            shiftDaysX(7,'prev');
         });
+
+        document.onkeydown = checkKey;
     }
 
     // ============================================
@@ -104,72 +109,74 @@
         console.log('dates shown:');
         console.log(DATES_SHOWN);
 
-
         var allClasses;
 
         DB.ref('users/' + USER.uid + '/classes').once('value')
         .then(function(snapshot){
             allClasses = snapshot.val();
 
-            console.log("ALL CLASSES");
-            console.log(allClasses);
+            USER_CLASSES = allClasses;
 
+            renderUserData(allClasses);
             // For each class, render the phases
-            for(var className in allClasses){
-                // Create the lane
-                renderClassRow(className);
+        });
+    }
 
-                // Check if the lane has projects
-                if('projects' in allClasses[className]){
-                    var allPhases = allClasses[className].projects.project_1;
+    function renderUserData(allClasses){
+        for(var className in allClasses){
+            // Create the lane
+            renderClassRow(className);
 
-                    // Get the phases of the project
-                    // find which phases have dates within the current 10-day range
-                    // render those phases into the current 10-day range
-                    for(var phaseID in allPhases){
+            // Check if the lane has projects
+            if('projects' in allClasses[className]){
+                var allPhases = allClasses[className].projects.project_1;
 
-                        var phaseInfo = allPhases[phaseID].projectInfo;
-                        var phaseStartDate = milliToDate(phaseInfo.startDateMilli);
-                        var allDatesInPhase = [];
-                        var earliestDateShown = DATES_SHOWN[0];
+                // Get the phases of the project
+                // find which phases have dates within the current 10-day range
+                // render those phases into the current 10-day range
+                for(var phaseID in allPhases){
 
-                        // check if first date in phase exists in the dates shown
-                        if(DATES_SHOWN.includes(phaseStartDate)){
-                            var jquerySelector = formattedDateDivID(className,phaseStartDate);
-                            var targetDayBlock = $("#" + jquerySelector);
+                    var phaseInfo = allPhases[phaseID].projectInfo;
+                    var phaseStartDate = milliToDate(phaseInfo.startDateMilli);
+                    var allDatesInPhase = [];
+                    var earliestDateShown = DATES_SHOWN[0];
 
-                            renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
-                        // If it doesnt, render the partial view of the phase
-                        } else {
-                            var phaseDateMilli = phaseInfo.startDateMilli;
-                            for(var i = 0; i < phaseInfo.duration; i++){
-                                allDatesInPhase.push(milliToDate(phaseDateMilli));
-                                phaseDateMilli += 86400000;
-                            }
+                    // check if first date in phase exists in the dates shown
+                    if(DATES_SHOWN.includes(phaseStartDate)){
+                        var jquerySelector = formattedDateDivID(className,phaseStartDate);
+                        var targetDayBlock = $("#" + jquerySelector);
 
-                            for(var i = 0; i < allDatesInPhase.length; i++){
-                                if(allDatesInPhase[i] == earliestDateShown){
-                                    var amountOfDays = allDatesInPhase.length - i;
-                                    var newStartDateMilli = phaseInfo.startDateMilli;
+                        renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
+                    // If it doesnt, render the partial view of the phase
+                    } else {
+                        var phaseDateMilli = phaseInfo.startDateMilli;
+                        for(var i = 0; i < phaseInfo.duration; i++){
+                            allDatesInPhase.push(milliToDate(phaseDateMilli));
+                            phaseDateMilli += 86400000;
+                        }
 
-                                    // get start date in milli format
-                                    for(var j = 0; j < i; j++){
-                                        newStartDateMilli += 86400000;
-                                    }
+                        for(var i = 0; i < allDatesInPhase.length; i++){
+                            if(allDatesInPhase[i] == earliestDateShown){
+                                var amountOfDays = allDatesInPhase.length - i;
+                                var newStartDateMilli = phaseInfo.startDateMilli;
 
-                                    newStartDateMilli = milliToDate(newStartDateMilli);
-
-                                    var jquerySelector = formattedDateDivID(className,newStartDateMilli);
-                                    var targetDayBlock = $("#" + jquerySelector);
-
-                                    renderNewPhase(targetDayBlock,phaseInfo.title,amountOfDays);
+                                // get start date in milli format
+                                for(var j = 0; j < i; j++){
+                                    newStartDateMilli += 86400000;
                                 }
+
+                                newStartDateMilli = milliToDate(newStartDateMilli);
+
+                                var jquerySelector = formattedDateDivID(className,newStartDateMilli);
+                                var targetDayBlock = $("#" + jquerySelector);
+
+                                renderNewPhase(targetDayBlock,phaseInfo.title,amountOfDays);
                             }
                         }
                     }
                 }
             }
-        });
+        }
     }
 
     // ============================================
@@ -252,7 +259,7 @@
     // ==                                        ==
     // ============================================
 
-    function attemptAddPhase(startingBlock,title,days){
+    function attemptAddPhase(startingBlock,title,days,desc){
 
         var occupiedDates;
         var isValid = true;
@@ -292,10 +299,11 @@
                     projectInfo:{
                         title: title.trim(),
                         duration: days,
+                        description: desc,
                         startDateMilli: firstDateMilli,
                         course: phaseClass,
                         createdOn: firebase.database.ServerValue.TIMESTAMP,
-                        done: false
+                        done: false,
                     },
                     createdBy: {
                         uid: USER.uid,                    //the unique user id
@@ -334,8 +342,10 @@
             // If this is the first day
             if(i == 0){
                 startingBlock.append(newBlock);
+                console.log("RENDERING FULL " + i + " OF PHASE: " + title);
             } else {
                 startingBlock.append(blankBlock);
+                console.log("RENDERING BLANK " + i + " OF PHASE: " + title);
             }
 
             startingBlock.addClass('occupied');
@@ -347,6 +357,8 @@
             }
 
             startingBlock = startingBlock.next('.col-sm-1');
+
+            
         }   
     }
 
@@ -367,10 +379,10 @@
 
                 var projectName = $('#project-name').val();
                 var projectDuration = $('#project-duration').val();
-                var projectDescr = $('#about').val();
+                var projectDescr = $('#phaseDescription').val();
 
                 if(projectName.length > 0 && projectDuration.length > 0){
-                    attemptAddPhase(targetDayBlock,projectName,projectDuration);
+                    attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr);
                 }else{
                     alert("Project Name and Duration (Days) are required");
                 }
@@ -413,6 +425,26 @@
         $('#allClasses').html("");
         DATES_SHOWN = [];
     }
-    
 
+    function shiftDaysX(amount,direction){
+        if(direction == 'next'){
+            DAYS_AHEAD += amount;
+        } else {
+            DAYS_AHEAD -= amount;
+        }
+        clearCal();
+        renderDateRow();
+        renderUserData(USER_CLASSES);
+    }
+    
+    function checkKey(e) {
+        e = e || window.event;
+        if (e.keyCode == '37') {
+            shiftDaysX(1,'prev');
+        }
+        else if (e.keyCode == '39') {
+            shiftDaysX(1,'next');
+        }
+    }
+    
 })();

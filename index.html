@@ -28,8 +28,11 @@
 
 		<div class="container">
 			<div id="calControl">
-				<button id="prevWeekBut"><</button>
-				<button id="nextWeekBut">></button>
+				<button class="shiftDayViewBut" id="prevWeekBut"><<</button>
+				<button class="shiftDayViewBut" id="prevDayBut"><</button>
+				<button class="shiftDayViewBut" id="nextWeekBut">>></button>
+				<button class="shiftDayViewBut" id="nextDayBut">></button>
+				
 			</div>
 			<div id="dateDayRow"></div>
 			<div id="allClasses"></div>
@@ -44,11 +47,11 @@
 			<form action="/echo/html/" id="popForm" method="get">
 				<div>
 					<label for="project-name">Project Name:</label>
-					<input type="text" name="project-name" id="project-name" placeholder="web app develop" class="form-control input-md" required>
+					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
 					<label for="project-duration">Durations (Day)</label>
-					<input type="text" name="project-duration" id="project-duration" placeholder="123 days" class="form-control input-md" required>
-					<label for="about">Descr:</label>
-					<textarea rows="3" name="about" id="about" class="form-control input-md"></textarea>
+					<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+					<label for="about">Description</label>
+					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
 					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
 				</div>
 			</form>
