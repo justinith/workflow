@@ -1,0 +1,253 @@
+body {
+	font-family: 'News Cycle', sans-serif;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	font-weight: 200;
+	height: 100%;
+	background-color: #FFF;
+}
+
+header {
+	background-position: top;
+	background-size: cover;
+	height: 80px;
+	background-color: #5AC7B2;
+}
+
+#topLogo {
+	text-align: left;
+	color: #333745;
+	margin-top: 0px;
+	margin-left: 15px;
+	padding-top: 27px;
+	padding-left: 8px;
+	font-size: 33px;
+	font-family: 'Homemade Apple', cursive;
+	font-weight: 60;
+	color: white;
+}
+
+#signout {
+    font-family: 'News Cycle', sans-serif;
+ 	font-weight: bold;
+    font-size: 17px;
+    color: white;
+	float: right;
+	margin-right: 25px;
+	letter-spacing: 5px;
+	text-transform: uppercase;
+}
+	#signout:hover {
+		cursor: pointer;
+	}
+
+#dateDayRow {
+	height: 80px;
+}
+
+	#dateDayRow .col-xs-1, #dateDayRow .col-xs-2, #dateDayRow .col-xs-3, #dateDayRow .col-xs-4 {
+		padding-top: 15px;
+		text-align: center;
+	}
+
+#calControl {
+	position: relative;
+	overflow: auto;
+	text-align: right;
+}
+	.dayShiftButtons {
+		display: inline-block;
+	}
+
+	.shiftDayViewBut {
+		
+		margin: 10px;
+		margin-top: 20px;
+		margin-bottom: 5px;		
+		background-color: #334d5c;
+		color: white;
+		font-size: 20px;
+		align-items: center;
+		border-radius: 3px;
+		border: none;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	/*#nextWeekBut, #nextDayBut {
+		float: right;
+	}*/
+
+
+.categoryLane {
+	background: #FAAF84;
+	margin-bottom: 10px;
+}
+	.categoryLane .col-xs-1, .categoryLane .col-xs-2, .categoryLane .col-xs-3, .categoryLane .col-xs-4 {
+		/*border-right: white 1px solid;*/
+		height: 150px;
+		padding: 0px;
+	}
+
+	.categoryLane .laneInfo {
+		background-color: #E27A3F;
+		color: white;
+		padding: 8px;
+	}
+		.categoryLane .laneInfo p {
+			margin: 0;
+		}
+
+	.categoryLane .dayBlock:hover {
+		background-color: #ffc9ad;
+		cursor: pointer;
+	}
+
+	.categoryLane .categoryName {
+		background-color: #E27A3F;
+		color: white;
+		text-align: center;
+		padding: 0px;
+		margin: 0px;
+		border-left: none;
+		line-height: 150px;		
+	}
+
+	.categoryLane .addPhase {
+		background-color: transparent;
+		border: dashed #2A79AE 3px;
+		text-align: center;
+		margin: 10px;
+		height: 130px;
+		padding: 10px;
+		padding-top: 35px;
+		color: #2A79AE;
+		font-weight: 400;
+		font-size: 1.2em;
+	}
+
+	.categoryLane .projectHolder {
+		background-color: #ffc9ad;
+		padding: 15px 0px;
+		margin: 20px 0px;
+	}
+
+	.categoryLane .dayContent {
+		background: #FAF5F2;
+		height: 80px;
+		color: #10222B;
+	}
+		.categoryLane .dayContent .dayTitle {
+			font-family: 'Helvetica Neue', sans-serif;
+			padding-left: 8px;
+			padding-top: 3px;
+		}
+
+.addCategoryButton {
+	width: 100vw;
+	text-align: center;
+	background: #efc943;
+	color: white;
+	padding: 20px 0px;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	margin-bottom: 20px;
+}	
+	.addCategoryButton:hover {
+		cursor: pointer;
+		background: #FCD965;
+	}
+
+	.addCategoryButton input {
+		text-align: center;
+		width: 100%;
+		text-transform: uppercase;
+	letter-spacing: 5px;
+	}
+
+	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	color: white;
+	}
+	::-moz-placeholder { /* Firefox 19+ */
+	color: white;
+	}
+	:-ms-input-placeholder { /* IE 10+ */
+	color: white;
+	}
+	:-moz-placeholder { /* Firefox 18- */
+	color: white;
+	}
+
+.nextWeekButton {
+	line-height: 150px;
+	font-size: 25pt;
+	text-align: center;
+	color: white;
+	background: #2A79AE;
+}
+
+
+@media (max-width: 768px) {
+	.container {
+		width: 100vw;
+	}
+
+	#calControl {
+		text-align: center;
+	}
+
+	.shiftDayViewBut {
+		float: none;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 1450px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.container {
+		width: 100vw;
+	}
+}
+
+.container {
+	width: 100vw;
+	padding: 0px;
+}
+
+.row {
+	margin: 0px;
+}
+
+/*.form-control {width:120px;}*/
+.popover {
+	width: 100%;
+	max-width: 400px;
+}
+
+#phase-submit {
+	width: 100%;
+    margin-top: 10px;
+    background: #F38524;
+    padding: 15px 0px;
+	border: none;
+}
+
+#newClassName {
+	background: transparent;
+	border: none;
+	display: none;
+}
+	#newClassName:focus {
+		outline: none;
+	}

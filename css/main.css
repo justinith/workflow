@@ -1,0 +1,110 @@
+body {
+	font-family: 'News Cycle', sans-serif;
+    font-size: 16px;
+    margin: 5px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.container {
+	max-width: 500px;
+    margin: 0 auto;
+    padding: 5px;
+    align-content: right;
+    text-align: center;
+    margin-top: 30px;
+    background-color: #FAF5F2;
+}
+
+header {
+	background-position: top;
+	background-size: cover;
+	height: 80px;
+}
+
+footer {
+	height: 40px;
+	color: #333745;
+	font-size: 10px;
+	padding: 5px;
+	text-align: right;
+}
+
+img {
+	width: 80px;
+	height: 80px;
+}
+
+button {
+	margin-bottom: 10px;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    padding-left: 7rem;
+    padding-right: 7rem;
+	font-family: 'News Cycle', sans-serif;
+    font-size: 20px;
+    color: #fff;
+    border-radius: 3px;
+    background-color: #5AC7B2;
+    border: none;
+}
+
+label {
+	display: block;
+    height: 30px;
+    border: 10px blue;
+}
+
+#email-input {
+	padding: 10px;
+	margin-bottom: 10px;
+	width: 400px;
+}
+
+#password-input {
+	padding: 10px;
+	margin-bottom: 10px;
+	width: 400px;
+}
+
+.password-input {
+	padding: 10px;
+}
+
+#reenter-password-input {
+	padding: 10px;
+	margin-bottom: 10px;
+	width: 400px;
+}
+
+#display-name-input {
+	padding: 10px;
+	margin-bottom: 10px;
+	width: 400px;
+}
+
+.signin-form {
+	padding: 10px;
+}
+
+input:focus {
+	/*outline: none;*/
+	outline: #5AC7B2 solid 1px;
+}
+
+input {
+    width: 20%;
+    padding: 0.5rem;
+    padding-left: 7rem;
+    padding-right: 7rem;
+}
+
+h3, h4 {
+	text-align: center;
+	color: #333745;
+	margin-top: 0;
+	padding-top: 10px;
+	font-size: 60px;
+	font-family: 'Homemade Apple', cursive;
+	font-weight: 100;
+}

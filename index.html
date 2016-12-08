@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Workflow</title>
+		<meta name="viewport" content="width=device-width">
+		<link rel="shortcut icon" href="img/favicon.ico">
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Homemade+Apple" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
+		
+		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script> 
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/moment.js"></script>
+
+		<script src="js/common.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+	</head>
+	<body>
+
+		<header>
+            <h3 id="topLogo">WorkFlow
+			<span id="signout">Sign Out</span></h3>	
+    	</header>
+
+		<div class="container">
+			<div id="calControl">
+				<div class="dayShiftButtons">
+					<button class="shiftDayViewBut" id="prevWeekBut"><<</button>
+					<button class="shiftDayViewBut" id="prevDayBut"><</button>
+					<button class="shiftDayViewBut" id="showTodayBut">TODAY</button>
+					<button class="shiftDayViewBut" id="nextDayBut">></button>
+					<button class="shiftDayViewBut" id="nextWeekBut">>></button>
+				</div>
+			</div>
+			<div id="dateDayRow"></div>
+			<div id="allClasses"></div>
+			<div class="addCategoryButton">
+				<span class="buttonTitle">Add Class</span>
+				<input id="newClassName" type="text" placeholder="Type name of class">
+			</div>
+		</div>
+
+		<div id="addPhasePopup" class="hide">
+			<form action="/echo/html/" id="popForm" method="get">
+				<div>
+					<label for="project-name">Project Name:</label>
+					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
+					<label for="project-duration">Durations (Day)</label>
+					<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+					<label for="about">Description</label>
+					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
+					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
