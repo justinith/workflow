@@ -7,6 +7,7 @@
     var DAYS_AHEAD = 0;
     var DATES_SHOWN = [];
     var USER_CLASSES;
+    var SCREEN_SIZE = 'l';
 
     authenticateUser();
 
@@ -60,6 +61,10 @@
             } else if(DAYS_AHEAD > 0) {
                 shiftDaysX(DAYS_AHEAD,'prev');
             }
+        });
+
+        $(window).resize(function(){
+            resizeScreen();
         });
 
         document.onkeydown = checkKey;
@@ -452,6 +457,35 @@
         }
         else if (e.keyCode == '39') {
             shiftDaysX(1,'next');
+        }
+    }
+
+    function resizeScreen(){
+        var screenWidth = window.innerWidth;
+        // set as large but screen is smaller
+        if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 900){
+            clearCal();
+            renderDateRow();
+            renderUserData(USER_CLASSES);
+            SCREEN_SIZE = 'm';
+        // set as medium but screen is smaller
+        } else if(SCREEN_SIZE == 'm' && screenWidth <= 900){
+            clearCal();
+            renderDateRow();
+            renderUserData(USER_CLASSES);
+            SCREEN_SIZE = 's';
+        // set as small but screen is medium
+        } else if(SCREEN_SIZE == 's' && screenWidth > 900 && screenWidth < 1300){
+            clearCal();
+            renderDateRow();
+            renderUserData(USER_CLASSES);
+            SCREEN_SIZE = 'm';
+        // set as medium but screen is large
+        } else if(SCREEN_SIZE == 'm' && screenWidth >= 1300){
+            clearCal();
+            renderDateRow();
+            renderUserData(USER_CLASSES);
+            SCREEN_SIZE = 'l';
         }
     }
 
