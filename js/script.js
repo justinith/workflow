@@ -19,7 +19,6 @@
 
         $("#signout").click(function(){
             firebase.auth().signOut().then(function() {
-                console.log('Signed Out');
                 window.location.href = "signin.html";
             }, function(error) {
                 console.error('Sign Out Error', error);
@@ -104,7 +103,6 @@
         var start = '<div class="row"><div class="col-xs-offset-' + btCol + ' col-xs-' + btCol + '">' + currentDayFormatted + '</div>';
 
         for(var i = 1; i < dateColCount; i++){
-            console.log('date row ' + i);
             dayMilli += 86400000;
             currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
             DATES_SHOWN.push(milliToDate(dayMilli));
@@ -278,8 +276,6 @@
         DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').once('value')
         .then(function(snapshot){
             occupiedDates = snapshot.val();
-
-            console.log(occupiedDates);
 
             var desiredDates = [];
 
