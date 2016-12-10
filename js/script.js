@@ -44,6 +44,7 @@
                 var val = $(this).val().toUpperCase();
                 attemptNewClass(val);
                 $("#triggerAddClassTop").css('display','inherit');
+                $("#addClassInputTop").val("");
                 $('.addClassArea').css('display','none');
             }
         });
@@ -82,6 +83,7 @@
             var val = $('#addClassInputTop').val();
             attemptNewClass(val);
             $("#triggerAddClassTop").css('display','inherit');
+            $("#addClassInputTop").val("");
             $('.addClassArea').css('display','none');
         });
 
@@ -217,19 +219,35 @@
 
     function attemptNewClass(className){       
 
-        // Check if user has made classes yet
-        DB.ref('users').once('value')
-        .then(function(snapshot){
-            var users = snapshot.val();
+        // Check if class name is empty
+        if(className == ""){
+            alert('Please write name');
+        // Check if value has any bad characters
+        } else {
+            // Check if user has made classes yet
+            DB.ref('users').once('value')
+            .then(function(snapshot){
+                var users = snapshot.val();
 
-            // If user has classes
-            if(USER.uid in users){
+                // If user has classes
+                if(USER.uid in users){
 
-                var classes = Object.keys(users[USER.uid].classes);
+                    var classes = Object.keys(users[USER.uid].classes);
 
-                // Check if class already exists                
-                if(classes.includes(className)){
-                    alert('You already have a class with that name! Please use a different name.');
+                    // Check if class already exists                
+                    if(classes.includes(className)){
+                        alert('You already have a class with that name! Please use a different name.');
+                    } else {
+                        DB.ref('users/' + USER.uid + '/classes/' + className).set({
+                            occupiedDates: ['blank']
+                        })
+                        .then(function(){
+                            // Render class
+                            renderClassRow(className);
+                        });
+                    }
+                
+                // Add user's first class to DB
                 } else {
                     DB.ref('users/' + USER.uid + '/classes/' + className).set({
                         occupiedDates: ['blank']
@@ -239,18 +257,9 @@
                         renderClassRow(className);
                     });
                 }
-            
-            // Add user's first class to DB
-            } else {
-                DB.ref('users/' + USER.uid + '/classes/' + className).set({
-                    occupiedDates: ['blank']
-                })
-                .then(function(){
-                    // Render class
-                    renderClassRow(className);
-                });
-            }
-        });
+            });
+        }
+        
     }
 
     function renderClassRow(className){
@@ -407,11 +416,18 @@
                 // Handle phase detail submission
 
                 var projectName = $('#project-name').val();
-                var projectDuration = $('#project-duration').val();
+                var projectDuration = parseInt($('#project-duration').val());
                 var projectDescr = $('#phaseDescription').val();
 
-                if(projectName.length > 0 && projectDuration.length > 0){
-                    attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr);
+                console.log(projectDuration);
+
+                if(projectName.length > 0){
+                    if(projectDuration != NaN){
+                        console.log('attempting to add class');
+                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr);
+                    } else {
+                        alert('Duration must be an integer - ie: 2,16,etc');
+                    }
                 }else{
                     alert("Project Name and Duration (Days) are required");
                 }

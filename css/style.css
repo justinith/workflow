@@ -56,9 +56,8 @@ header {
 	overflow: auto;
 	padding: 10px;
 }
-	#calControl .dayShiftButtons {
-		display: inline-block;
-		float: right;
+	#triggerAddClassTop {
+		border-radius: 3px;
 	}
 
 	#calControl .addClassArea {
@@ -91,18 +90,23 @@ header {
 			text-transform: uppercase;
 			letter-spacing: 3px;
 		}
-
-	#calControl .shiftDayViewBut {
-		background-color: #334d5c;
-		color: white;
-		font-size: 20px;
-		align-items: center;
-		border-radius: 3px;
-		border: none;
-		padding-left: 10px;
-		padding-right: 10px;
-		margin: 0px 4px;
+	
+	#calControl .dayShiftButtons {
+		display: inline-block;
+		float: left;
+		margin-left: 20px;
 	}
+
+		#calControl .dayShiftButtons .shiftDayViewBut {
+			background-color: #334d5c;
+			color: white;
+			font-size: 15px;
+			align-items: center;
+			border-radius: 3px;
+			border: none;
+			padding: 9px 17px;
+			margin: 0px 4px;
+		}
 
 	/*#nextWeekBut, #nextDayBut {
 		float: right;
@@ -238,6 +242,10 @@ header {
 	#triggerAddClassTop, .addClassArea {
 		display: none;
 	}
+
+	#calControl .dayShiftButtons {
+		float: none;
+	}
 }
 
 @media (min-width: 768px) {
@@ -276,7 +284,7 @@ header {
 #phase-submit {
 	width: 100%;
     margin-top: 10px;
-    background: #F38524;
+    background: #efc943;
     padding: 15px 0px;
 	border: none;
 }
