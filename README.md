@@ -9,8 +9,11 @@ Nowadays, people usually have multiple projects that have their own workflow and
 
 ## Features
 Individual Project View
+
 Individual project timeline
+
 Add phases to define role in a project
+
 Weekly view, 10-day view that can be altered towards the past/ future
 
 ## Framework and Libraries:
