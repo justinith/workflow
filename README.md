@@ -33,20 +33,20 @@ Sim Singh
 ## License:
 MIT License found in Repository
 
-Product Spec
+#Product Spec
 
-User Goals
-To feel a sense of relief that everything’s organized and accounted for
-Minimize stress of multiple planners
-View list of segregated to-do’s for each project
-Understand and visualize upcoming responsibilities 
-View areas / times of potential stress
+##User Goals
+To feel a sense of relief that everything’s organized and accounted for, 
+Minimize stress of multiple planners, 
+View list of segregated to-do’s for each project, 
+Understand and visualize upcoming responsibilities, 
+View areas / times of potential stress, 
 Centralize tasks and schedule in one place
 
-Product Goal:
+##Product Goal:
 To help organize and centralize tasks & projects across multiple categories (classes) happening concurrently
 
-Product Requirements
+##Product Requirements
 Foundational Features
 User can sign in and out through firebase
 All information is saved on the Firebase Database
@@ -61,12 +61,12 @@ Project input should be working forward from start date
 Default start date to today
 Users should be able to view a week level, 10-day level
 
-Primary Use Cases / States
+##Primary Use Cases / States
 Creating new responsibilities
 Inputting projects / phases / tasks
 Viewing overall project status / to-do’s
 
-Timeline
+##Timeline
 Week 1 Nov.28 - Dec.4:
 Finish Basic View of Calendar
 Weekly View
@@ -88,7 +88,7 @@ Make available to others
 Expand users
 
 
-Thinking into the Future:
+##Thinking into the Future:
 These are the features that we would like to implement past the due date of this project in INFO 343.  They include but are not limited to:
 
 
