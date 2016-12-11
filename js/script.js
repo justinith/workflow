@@ -16,6 +16,7 @@
         initListeners();
     }
 
+    //initilize the signout, addClass,addproject Button
     function initListeners(){
 
         $("#signout").click(function(){
@@ -178,7 +179,7 @@
                         var jquerySelector = formattedDateDivID(className,phaseStartDate);
                         var targetDayBlock = $("#" + jquerySelector);
 
-                        renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration);
+                        renderNewPhase(targetDayBlock,phaseInfo,phaseInfo.duration);
                     // If it doesn't, render the partial view of the phase
                     } else {
                         var phaseDateMilli = phaseInfo.startDateMilli;
@@ -202,7 +203,7 @@
                                 var jquerySelector = formattedDateDivID(className,newStartDateMilli);
                                 var targetDayBlock = $("#" + jquerySelector);
 
-                                renderNewPhase(targetDayBlock,phaseInfo.title,amountOfDays);
+                                renderNewPhase(targetDayBlock,phaseInfo,amountOfDays);
                             }
                         }
                     }
@@ -274,7 +275,7 @@
             dayMilli = dayMilli - (86400000 * Math.abs(DAYS_AHEAD));
         }
         
-        var newLane = '<div class="categoryLane"><div class="laneInfo"><p>' + className + '</p></div><div class="row">';
+        var newLane = '<div class="categoryLane" id="' + className + '"><div class="laneInfo"><p>' + className + '</p></div><div class="row">';
 
         for(var i = 1; i <= dateColCount; i++){
             dayFormatted = milliToDate(dayMilli);
@@ -300,39 +301,28 @@
     // ==                                        ==
     // ============================================
 
-    function attemptAddPhase(startingBlock,title,days,desc){
+    function attemptAddPhase(startingBlock,title,days,desc,group){
 
         var occupiedDates;
         var isValid = true;
-
+        var result = {};
         var firstDateMilli = parseInt(startingBlock.attr('data-dateMilli'));
         var dateMilli = firstDateMilli;
-        
         var phaseClass = startingBlock.attr('data-class');
-        
         // Check if dates are available with firebase
         DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').once('value')
         .then(function(snapshot){
-            occupiedDates = snapshot.val();
-
             var desiredDates = [];
-
-            for(var i = 0; i < days; i++){
-                var formattedDate = milliToDate(dateMilli);
-                if(occupiedDates.includes(formattedDate)){
-                    isValid = false;
-                } else {
-                    desiredDates.push(formattedDate);
-                }
-                dateMilli += 86400000;
-            }
-
+            occupiedDates = snapshot.val();
+            result = checkDayAval(days,dateMilli,desiredDates,occupiedDates,isValid);
+            isValid = result.c;
             // If the desired dates don't exist in the occupied dates
             if(isValid){
-                
+                desiredDates = result.a;
                 var currentTime = new Date().getTime();
                 var phaseID = title + "::" + parseInt(currentTime) + "::" + days;
-
+                var groupArray = group.split(";");
+                
                 // Add phases to class
                 DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/projects/' + PROJECT_ID + '/' + phaseID).set({
                     projectInfo:{
@@ -342,6 +332,7 @@
                         startDateMilli: firstDateMilli,
                         course: phaseClass,
                         createdOn: firebase.database.ServerValue.TIMESTAMP,
+                        groupMember: groupArray,
                         done: false,
                     },
                     createdBy: {
@@ -369,12 +360,12 @@
             } else {
                 alert('Invalid Number of Days');
             }
-        });
+        })
     }
 
     function renderNewPhase(startingBlock,title,days,desc){
-        var newBlock = addBlock(title,desc);
-        var blankBlock = addBlock("<br>");
+        var newBlock = addBlock(title,title.title);
+        var blankBlock = addBlock("<br>", title.title);
         var btCol = getPageCol('btcol');
         
         // if task spans one day
@@ -418,13 +409,14 @@
                 var projectName = $('#project-name').val();
                 var projectDuration = parseInt($('#project-duration').val());
                 var projectDescr = $('#phaseDescription').val();
+                var projectGroup = $('#phaseGroup').val();
 
                 console.log(projectDuration);
 
                 if(projectName.length > 0){
                     if(projectDuration != NaN){
                         console.log('attempting to add class');
-                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr);
+                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectGroup);
                     } else {
                         alert('Duration must be an integer - ie: 2,16,etc');
                     }
@@ -437,9 +429,8 @@
         }).on('hide.bs.popover',function(){
             $('#phase-submit').off('click');
         });
-
-
     }
+
 
     // ============================================
     // ==                                        ==
@@ -526,7 +517,16 @@
     }
 
     function addBlock(text,desc){
-        var projectText = '<div class="projectHolder" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+        if(text != "<br>"){
+            console.log(text);
+            textDescr = (typeof text.description.length > 0 ? text.description : "N/A");
+            textGroup = (typeof text.groupMember.length > 0 ? text.groupMember : "N/A");
+            text = text.title;
+        }
+        var projectText = '<div class="projectHolder" data-description="' + desc + '"><div class="dayContent" placement="top" data-toggle="tooltip" title="<div><h4>'+desc+'</h4><br><p>Descr: <br>'+ textDescr +'</p><br><p>Group: <br>'+textGroup+'</p></div>" data-html="true"><div class="dayTitle">' + text + '</div></div></div>';
+        $('div[data-toggle=tooltip]').tooltip('destroy');
+        $('div[data-toggle=tooltip]').tooltip();
+        //$('div[data-toggle=tooltip]').tooltip('destroy');
         return projectText;
     }
 
@@ -586,5 +586,21 @@
             }
         }
     }
-
+    
+    function checkDayAval(day,dateMill,desiredDate,occupiedDate,isValid){
+        console.log(day,dateMill,desiredDate,occupiedDate,isValid);
+        for(var i = 0; i < day; i++){
+            var formattedDate = milliToDate(dateMill);
+            if(occupiedDate.includes(formattedDate)){
+                isValid =  false;
+            } else {
+                desiredDate.push(formattedDate);
+            }
+            dateMill += 86400000;
+        }
+        var finalRes = new Object();
+        finalRes = {a: desiredDate, c: isValid};
+        console.log(finalRes);
+        return finalRes;
+    }
 })();

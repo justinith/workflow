@@ -52,12 +52,19 @@
 		<div id="addPhasePopup" class="hide">
 			<form action="/echo/html/" id="popForm" method="get">
 				<div>
-					<label for="project-name">Project Name:</label>
+					<label for="project-name">Project Name</label>
 					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
 					<label for="project-duration">Durations (Day)</label>
-					<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
-					<label for="about">Description</label>
-					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
+					<input type="number" min=1 name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+					<label for="about" data-toggle="collapse" href="#collapseAbout" aria-expanded="false" aria-controls="collapseAbout">Add Description</label>
+					<div class="collapse" id="collapseAbout">
+						<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
+					</div>
+					<br>
+					<label for="addGroup" data-toggle="collapse" href="#collapseGroup" aria-expanded="false" aria-controls="collapseGroup">Add Group</label>
+					<div class="collapse" id="collapseGroup">
+						<textarea rows="1" name="addGroup" id="phaseGroup" class="form-control input-md" placeholder="Seperate member email by ';'"></textarea>
+					</div>
 					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
 				</div>
 			</form>
