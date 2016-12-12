@@ -5,6 +5,7 @@ var emailInput = document.getElementById("email-input");
 var passwordInput = document.getElementById("password-input");
 var reenterPasswordInput = document.getElementById("reenter-password-input");
 var displayNameInput = document.getElementById("display-name-input");
+var DB = firebase.database();
 
 authenticateUser();
 
@@ -21,6 +22,15 @@ if (displayNameInput.value != "" && passwordInput.value == reenterPasswordInput.
         })
         .then(function() {
             window.location = "index.html";
+        })
+        .then(function(){
+            var user = firebase.auth().currentUser;
+            DB.ref('users/' + user.uid + '/userInfo').set({
+                UserInfo :{
+                    userEmail: user.email,
+                    userDisplayName: displayNameInput.value
+                }
+            })
         })
         .catch(function(err) {
             alert(err.message);

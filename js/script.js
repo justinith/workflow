@@ -16,11 +16,12 @@
         initListeners();
     }
 
-    //initilize the signout, addClass,addproject Button
     function initListeners(){
 
+        // Logs user out when the user clicks "Sign Out" button
         $("#signout").click(function(){
             firebase.auth().signOut().then(function() {
+                console.log('Signed Out');
                 window.location.href = "signin.html";
             }, function(error) {
                 console.error('Sign Out Error', error);
@@ -39,7 +40,6 @@
                 attemptNewClass(val);
             }
         });
-
         $("#addClassInputTop").keyup(function(event){
             if(event.keyCode == 13){
                 var val = $(this).val().toUpperCase();
@@ -343,10 +343,8 @@
                     },
                     projectTask: {}
                 })
-
                 // Add dates to occupied dates in DB
                 .then(function(){
-
                     var newOccupiedDates = occupiedDates.concat(desiredDates);
 
                     DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').update(newOccupiedDates)
@@ -502,6 +500,33 @@
         }
     }
 
+        // // Populate the first block
+        // startingBlock.append(newBlock);
+        // startingBlock.addClass('occupied');
+        // startingBlock.removeClass('freeDay');
+        // startingBlock.removeClass('dayBlock');
+
+        // // if task spans one day
+        // if(days > 1){
+        //     console.log('more than 1 day');
+        //     for(var i = 1; i < days; i++){
+        //         console.log('iteration ' + i);
+
+        //         startingBlock.next('.col-sm-1').append(blankBlock);
+
+        //         if(i + 1 == days){
+        //             startingBlock.next('.col-sm-1').css('border-right','white 1px solid')
+        //         }
+
+        //         startingBlock = startingBlock.next('.col-sm-1');
+        //         startingBlock.addClass('occupied');
+        //         startingBlock.removeClass('dayBlock');
+        //         // if(startingBlock.next('.col-sm-1').hasClass('dayBlock')){
+                    
+        //         // }
+        //     }
+        // }
+
     // ============================================
     // ==                                        ==
     // ==        Micro Helper Functions          ==
@@ -518,15 +543,14 @@
 
     function addBlock(text,desc){
         if(text != "<br>"){
-            console.log(text);
-            textDescr = (typeof text.description.length > 0 ? text.description : "N/A");
-            textGroup = (typeof text.groupMember.length > 0 ? text.groupMember : "N/A");
+            console.log(text.groupMember[0].length);
+            textDescr = (text.description.length > 0 ? text.description : "N/A");
+            textGroup = (text.groupMember[0].length > 1 ? text.groupMember : "N/A");
             text = text.title;
         }
         var projectText = '<div class="projectHolder" data-description="' + desc + '"><div class="dayContent" placement="top" data-toggle="tooltip" title="<div><h4>'+desc+'</h4><br><p>Descr: <br>'+ textDescr +'</p><br><p>Group: <br>'+textGroup+'</p></div>" data-html="true"><div class="dayTitle">' + text + '</div></div></div>';
         $('div[data-toggle=tooltip]').tooltip('destroy');
         $('div[data-toggle=tooltip]').tooltip();
-        //$('div[data-toggle=tooltip]').tooltip('destroy');
         return projectText;
     }
 
@@ -587,20 +611,28 @@
         }
     }
     
-    function checkDayAval(day,dateMill,desiredDate,occupiedDate,isValid){
-        console.log(day,dateMill,desiredDate,occupiedDate,isValid);
+    function checkDayAval(day,dateMill,desiredDate,occupiedDate){
+        console.log(day,dateMill,desiredDate,occupiedDate);
+        var valid = true;
         for(var i = 0; i < day; i++){
             var formattedDate = milliToDate(dateMill);
             if(occupiedDate.includes(formattedDate)){
-                isValid =  false;
+                valid =  false;
             } else {
                 desiredDate.push(formattedDate);
             }
             dateMill += 86400000;
         }
         var finalRes = new Object();
-        finalRes = {a: desiredDate, c: isValid};
+        finalRes = {a: desiredDate, c: valid};
         console.log(finalRes);
         return finalRes;
+    }
+    function attemptAddGroup(){
+        if(findGroupMember){
+            var groupResult = checkDayAval(days,dateMilli,desiredDates,occupiedDates);
+            var dayAval = groupResult.c;
+            if(dayAval){}
+        }
     }
 })();
