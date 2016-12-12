@@ -302,13 +302,13 @@
     // ============================================
 
     function attemptAddPhase(startingBlock,title,days,desc,group){
-
         var occupiedDates;
         var isValid = true;
         var result = {};
         var firstDateMilli = parseInt(startingBlock.attr('data-dateMilli'));
         var dateMilli = firstDateMilli;
         var phaseClass = startingBlock.attr('data-class');
+        var groupArray = {startingBlock:startingBlock, title: title,days: days, desc: desc, group: []};
         // Check if dates are available with firebase
         DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').once('value')
         .then(function(snapshot){
@@ -321,7 +321,7 @@
                 desiredDates = result.a;
                 var currentTime = new Date().getTime();
                 var phaseID = title + "::" + parseInt(currentTime) + "::" + days;
-                var groupArray = group.split(";");
+                groupArray.group = group.split(";");
                 
                 // Add phases to class
                 DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/projects/' + PROJECT_ID + '/' + phaseID).set({
@@ -332,7 +332,7 @@
                         startDateMilli: firstDateMilli,
                         course: phaseClass,
                         createdOn: firebase.database.ServerValue.TIMESTAMP,
-                        groupMember: groupArray,
+                        groupMember: groupArray.group,
                         done: false,
                     },
                     createdBy: {
@@ -346,7 +346,6 @@
                 // Add dates to occupied dates in DB
                 .then(function(){
                     var newOccupiedDates = occupiedDates.concat(desiredDates);
-
                     DB.ref('users/' + USER.uid + '/classes/' + phaseClass + '/occupiedDates').update(newOccupiedDates)
                     // Render phase into UI
                     .then(function(){
@@ -359,6 +358,7 @@
                 alert('Invalid Number of Days');
             }
         })
+        return groupArray;
     }
 
     function renderNewPhase(startingBlock,title,days,desc){
@@ -414,7 +414,8 @@
                 if(projectName.length > 0){
                     if(projectDuration != NaN){
                         console.log('attempting to add class');
-                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectGroup);
+                        var group = attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectGroup);
+                        attemptAddGroup(group);
                     } else {
                         alert('Duration must be an integer - ie: 2,16,etc');
                     }
@@ -628,11 +629,18 @@
         console.log(finalRes);
         return finalRes;
     }
-    function attemptAddGroup(){
-        if(findGroupMember){
-            var groupResult = checkDayAval(days,dateMilli,desiredDates,occupiedDates);
-            var dayAval = groupResult.c;
-            if(dayAval){}
-        }
+    function attemptAddGroup(groupArray){
+        DB.ref('users').on('value')
+        .then(function(snapchat){
+            for(i = 0; i < groupArray.length; i++){
+                snapchat.forEach(function(element){
+                    if(findGroupMember){
+                        var groupResult = checkDayAval(days,dateMilli,desiredDates,occupiedDates);
+                        var dayAval = groupResult.c;
+                            attemptAddPhase(groupArray.startingBlock,groupArray.title,groupArray.days,groupArray.desc,gourpArray); 
+                    }
+                })
+            }
+        })
     }
 })();
