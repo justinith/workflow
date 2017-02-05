@@ -8,8 +8,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">		
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link href="https://fonts.googleapis.com/css?family=Homemade+Apple" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
 		
 		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script> 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -22,8 +20,8 @@
 	<body>
 
 		<header>
-            <h3 id="topLogo">WorkFlow
-			<span id="signout">Sign Out</span></h3>	
+            <img class="topLogo" src="img/workflow_logo.png" alt="">
+			<span id="signout">Sign Out</span>	
     	</header>
 
 		<div class="container">
@@ -34,11 +32,11 @@
 					<button id="addClassButtonTop" class="addClassButtonTop">Add Class</button>
 				</div>
 				<div class="dayShiftButtons">
-					<button class="shiftDayViewBut" id="prevWeekBut"><<</button>
-					<button class="shiftDayViewBut" id="prevDayBut"><</button>
+					<button class="shiftDayViewBut" id="prevWeekBut"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
+					<button class="shiftDayViewBut" id="prevDayBut"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
 					<button class="shiftDayViewBut" id="showTodayBut">TODAY</button>
-					<button class="shiftDayViewBut" id="nextDayBut">></button>
-					<button class="shiftDayViewBut" id="nextWeekBut">>></button>
+					<button class="shiftDayViewBut" id="nextDayBut"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+					<button class="shiftDayViewBut" id="nextWeekBut"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
 				</div>
 			</div>
 			<div id="dateDayRow"></div>
@@ -59,6 +57,24 @@
 					<label for="about">Description</label>
 					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
 					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
+				</div>
+			</form>
+		</div>
+
+		<div id="editPhasePopup" class="hide">
+			<form action="/echo/html/" id="popForm" method="get">
+				<div>
+					<!--<label for="project-name">Project Name:</label>
+					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
+					<label for="project-duration">Durations (Day)</label>
+					<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+					<label for="about">Description</label>
+					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
+					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>-->
+					<p>Description:</p>
+					<p id="detailed_phase_desc" style="word-wrap: break-word;">test</p>
+					<button type="button" class="btn btn-primary" id="phase-update" data-loading-text="Sending info.."><em class="icon-ok"></em> Update</button>
+					<button type="button" class="btn btn-primary" id="phase-delete" data-loading-text="Sending info.."><em class="icon-ok"></em> Delete</button>
 				</div>
 			</form>
 		</div>

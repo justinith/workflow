@@ -1,45 +1,34 @@
 body {
-	font-family: 'News Cycle', sans-serif;
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
 	font-weight: 200;
 	height: 100%;
 	background-color: #FFF;
+	font-family: 'Helvetica Neue',Arial, Helvetica, sans-serif;
 }
 
 header {
 	background-position: top;
 	background-size: cover;
 	height: 80px;
-	background-color: #5AC7B2;
+	background-color: white;
 	position: fixed;
 	width: 100%;
 	z-index: 100;
 }
 
-#topLogo {
-	text-align: left;
-	color: #333745;
-	margin-top: 0px;
-	margin-left: 15px;
-	padding-top: 27px;
-	padding-left: 8px;
-	font-size: 33px;
-	font-family: 'Homemade Apple', cursive;
-	font-weight: 60;
-	color: white;
+.topLogo {
+	padding-left: 32px;
+	margin-top: 22px;
+	height: 40px;
 }
 
 #signout {
-    font-family: 'News Cycle', sans-serif;
- 	font-weight: bold;
-    font-size: 17px;
-    color: white;
+	margin-top: 27px;
+    font-size: 15px;
 	float: right;
 	margin-right: 25px;
-	letter-spacing: 5px;
-	text-transform: uppercase;
 }
 	#signout:hover {
 		cursor: pointer;
@@ -49,13 +38,16 @@ header {
 	height: 70px;
 	width: 100%;
 	position: fixed;
-	margin-top: 139px;
+	margin-top: 124px;
 	background: white;
 	z-index: 80;
 -webkit-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 -moz-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 }
+	#dateDayRow .numDayFormat {
+		font-weight: 500;
+	}
 
 	#dateDayRow .col-xs-1, #dateDayRow .col-xs-2, #dateDayRow .col-xs-3, #dateDayRow .col-xs-4 {
 		padding-top: 15px;
@@ -66,7 +58,7 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	position: fixed;
 	overflow: auto;
 	padding: 10px;
-	margin-top: 80px;
+	margin-top: 65px;
 	width: 100%;
 	background: white;
 	z-index: 100;
@@ -95,12 +87,12 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 			}
 
 		.addClassButtonTop {
-			background: #efc943;
-			border: solid 2px #efc943;
+			background: white;
+			border: none;
 			outline: none;
-			color: white;
-			padding: 7px 22px;
-			font-size: 15px;
+			color: #334d5c;
+			padding: 12px 22px;
+			font-size: 12px;
 			float: left;
 			text-transform: uppercase;
 			letter-spacing: 3px;
@@ -113,13 +105,13 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	}
 
 		#calControl .dayShiftButtons .shiftDayViewBut {
-			background-color: #334d5c;
-			color: white;
-			font-size: 15px;
+			background-color:white;
+			color: #334d5c;
+			font-size: 12px;
 			align-items: center;
 			border-radius: 3px;
 			border: none;
-			padding: 9px 17px;
+			padding: 9px 8px;
 			margin: 0px 4px;
 		}
 
@@ -128,12 +120,11 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	}*/
 
 #allClasses {
-	margin-top: 209px;
+	margin-top: 195px;
 }
 
 .categoryLane {
-	background: #FAAF84;
-	margin-bottom: 10px;
+	background: white;
 }
 	.categoryLane .col-xs-1, .categoryLane .col-xs-2, .categoryLane .col-xs-3, .categoryLane .col-xs-4 {
 		/*border-right: white 1px solid;*/
@@ -142,17 +133,18 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	}
 
 	.categoryLane .laneInfo {
-		background-color: #E27A3F;
-		color: white;
+		background-color: white;
+		color: black;
 		padding: 8px;
+		border-top: solid 1px #eaeced;
 	}
 		.categoryLane .laneInfo p {
 			margin: 0;
 		}
 
 	.categoryLane .dayBlock:hover {
-		background-color: #ffc9ad;
 		cursor: pointer;
+		border-bottom: solid 3px #65A3B2;
 	}
 
 	.categoryLane .categoryName {
@@ -179,9 +171,13 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	}
 
 	.categoryLane .projectHolder {
-		background-color: #ffc9ad;
-		padding: 15px 0px;
+		background-color: #75BBCC;
+		padding: 4px 0px;
 		margin: 20px 0px;
+	}
+
+	.categoryLane .weekendDay {
+		border-bottom: solid 2px #ecf0f1;
 	}
 
 	.categoryLane .dayContent {
@@ -295,8 +291,7 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 
 /*.form-control {width:120px;}*/
 .popover {
-	width: 100%;
-	max-width: 400px;
+	width: 800px;
 }
 
 #phase-submit {
