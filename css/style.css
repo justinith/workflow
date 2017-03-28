@@ -35,15 +35,14 @@ header {
 	}
 
 #dateDayRow {
-	height: 70px;
 	width: 100%;
 	position: fixed;
 	margin-top: 124px;
 	background: white;
 	z-index: 80;
--webkit-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
--moz-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
+	-webkit-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
+	-moz-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
+	box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 }
 	#dateDayRow .numDayFormat {
 		font-weight: 500;
@@ -51,7 +50,12 @@ box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 
 	#dateDayRow .col-xs-1, #dateDayRow .col-xs-2, #dateDayRow .col-xs-3, #dateDayRow .col-xs-4 {
 		padding-top: 15px;
+		padding-bottom: 15px;
 		text-align: center;
+	}
+
+	#dateDayRow .weekendDay {
+		border-bottom: solid 2px #f1c40f;
 	}
 
 #calControl {

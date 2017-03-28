@@ -115,9 +115,12 @@
         });
     }
     
+    // Renders the calender row of dates & days
     function renderDateRow(){
+        // Gets the current times
         var dayMilli = new Date().getTime();
         
+        // Adjusts the day based on the number of days ahead or behind the current view is
         if(DAYS_AHEAD > 0){
             dayMilli = dayMilli + (86400000 * DAYS_AHEAD);
         } else if(DAYS_AHEAD < 0){
@@ -134,11 +137,15 @@
         var start = '<div class="row">';
 
         for(var i = 0; i < dateColCount; i++){
-            
             currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D');
             var dayOfWeek = moment(dayMilli).format('dd');
             DATES_SHOWN.push(milliToDate(dayMilli));
-            start += '<div class="col-xs-' + btCol + '"><span class="numDayFormat">' + currentDayFormatted + '</span><br>' + dayOfWeek + '</div>';
+
+            start += '<div class="col-xs-' + btCol;
+            if(dayOfWeek == 'Su' | dayOfWeek == 'Sa'){
+                start += ' weekendDay';
+            }
+            start += '"><span class="numDayFormat">' + currentDayFormatted + '</span><br>' + dayOfWeek + '</div>';
             dayMilli += 86400000;
         }
 
@@ -230,7 +237,6 @@
         // Check if class name is empty
         if(className == ""){
             alert('Please write name');
-        // Check if value has any bad characters
         } else {
             // Check if user has made classes yet
             DB.ref('users').once('value')
@@ -251,6 +257,7 @@
                         })
                         .then(function(){
                             // Render class
+                            addClassToOrder(className,false);
                             renderClassRow(className);
                         });
                     }
@@ -262,10 +269,30 @@
                     })
                     .then(function(){
                         // Render class
+                        addClassToOrder(className,true);
                         renderClassRow(className);
                     });
                 }
             });
+        }
+    }
+
+    function addClassToOrder(className,isFirstClass){
+        // 1 - Get the current order of classes
+        // 2 - Add the new class to the order
+
+        var classOrder = [className];
+
+        if(!isFirstClass){
+            DB.ref('users/' + USER.uid + '/format').once('value')
+            .then(function(snapshot){
+                var userFormat = snapshot.val();
+                classOrder = userFormat['classOrder'];
+                classOrder.push(className);
+                setClassOrder(classOrder);
+            });
+        } else {
+            setClassOrder(classOrder);
         }
     }
 
