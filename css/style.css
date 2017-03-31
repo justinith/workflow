@@ -298,6 +298,16 @@ header {
 	width: 800px;
 }
 
+/*#project-duration {
+	width: 40%;
+	display: inline-block;
+}*/
+
+.popover .row .col-md-6 {
+	padding: 0;
+	padding-right: 15px; 
+}
+
 #phase-submit {
 	width: 100%;
     margin-top: 10px;

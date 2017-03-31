@@ -277,25 +277,6 @@
         }
     }
 
-    function addClassToOrder(className,isFirstClass){
-        // 1 - Get the current order of classes
-        // 2 - Add the new class to the order
-
-        var classOrder = [className];
-
-        if(!isFirstClass){
-            DB.ref('users/' + USER.uid + '/format').once('value')
-            .then(function(snapshot){
-                var userFormat = snapshot.val();
-                classOrder = userFormat['classOrder'];
-                classOrder.push(className);
-                setClassOrder(classOrder);
-            });
-        } else {
-            setClassOrder(classOrder);
-        }
-    }
-
     function renderClassRow(className){
         var dateColCount = getPageCol('total');
         var btCol = getPageCol('btcol');
@@ -334,6 +315,25 @@
         removeDayBlockListeners();
         addDayBlockListeners();
         addActivePhaseListeners();
+    }
+
+    function addClassToOrder(className,isFirstClass){
+        // 1 - Get the current order of classes
+        // 2 - Add the new class to the order
+
+        var classOrder = [className];
+
+        if(!isFirstClass){
+            DB.ref('users/' + USER.uid + '/format').once('value')
+            .then(function(snapshot){
+                var userFormat = snapshot.val();
+                classOrder = userFormat['classOrder'];
+                classOrder.push(className);
+                setClassOrder(classOrder);
+            });
+        } else {
+            setClassOrder(classOrder);
+        }
     }
 
     function setClassOrder(classOrder){

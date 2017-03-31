@@ -50,10 +50,23 @@
 		<div id="addPhasePopup" class="hide">
 			<form action="/echo/html/" id="popForm" method="get">
 				<div>
-					<label for="project-name">Project Name:</label>
+					<label for="project-name">Name</label>
 					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
-					<label for="project-duration">Durations (Day)</label>
-					<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<label for="project-duration"># of Days</label>
+							<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+						</div>
+						<div class="col-md-6">
+							<label for="project-type">Type</label><br>
+							<select id="project-type" name="project-type">
+								<option value="duedate">Due Date</option>
+								<option value="task">Task</option>
+							</select>
+						</div>
+					</div>
+
 					<label for="about">Description</label>
 					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
 					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
