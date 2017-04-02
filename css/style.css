@@ -55,7 +55,7 @@ header {
 	}
 
 	#dateDayRow .weekendDay {
-		border-bottom: solid 2px #f1c40f;
+		border-bottom: solid 3px #f1c40f;
 	}
 
 #calControl {
@@ -178,6 +178,11 @@ header {
 		background-color: #75BBCC;
 		padding: 4px 0px;
 		margin: 20px 0px;
+	}
+
+	.categoryLane .duedate {
+		background-color: #e74c3c;
+		padding-right: 4px; 
 	}
 
 	.categoryLane .weekendDay {

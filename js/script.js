@@ -119,6 +119,8 @@
     function renderDateRow(){
         // Gets the current times
         var dayMilli = new Date().getTime();
+
+        // goal: change current time to the monday of the current week
         
         // Adjusts the day based on the number of days ahead or behind the current view is
         if(DAYS_AHEAD > 0){
@@ -129,7 +131,6 @@
         
         var currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D' + '<br>' + 'dd');
         DATES_SHOWN.push(milliToDate(dayMilli));
-
         
         var dateColCount = getPageCol('total');
         var btCol = getPageCol('btcol');
@@ -197,7 +198,7 @@
                         var jquerySelector = formattedDateDivID(className,phaseStartDate);
                         var targetDayBlock = $("#" + jquerySelector);
 
-                        renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration,phaseInfo.description,phaseID);
+                        renderNewPhase(targetDayBlock,phaseInfo.title,phaseInfo.duration,phaseInfo.description,phaseID,phaseInfo.projectType);
                     // If it doesn't, render the partial view of the phase
                     } else {
                         var allDatesInPhase = getAllDatesInPhase(phaseInfo.startDateMilli,phaseInfo.duration);
@@ -217,7 +218,7 @@
                                 var jquerySelector = formattedDateDivID(className,newStartDateMilli);
                                 var targetDayBlock = $("#" + jquerySelector);
 
-                                renderNewPhase(targetDayBlock,phaseInfo.title,amountOfDays,phaseInfo.description,phaseID);
+                                renderNewPhase(targetDayBlock,phaseInfo.title,amountOfDays,phaseInfo.description,phaseID,phaseInfo.projectType);
                             }
                         }
                     }
@@ -351,7 +352,7 @@
     // ==                                        ==
     // ============================================
 
-    function attemptAddPhase(startingBlock,title,days,desc){
+    function attemptAddPhase(startingBlock,title,days,desc,pType){
 
         var occupiedDates;
         var isValid = true;
@@ -394,6 +395,7 @@
                         course: phaseClass,
                         createdOn: firebase.database.ServerValue.TIMESTAMP,
                         done: false,
+                        projectType: pType
                     },
                     createdBy: {
                         uid: USER.uid,                    //the unique user id
@@ -416,8 +418,8 @@
     }
 
 
-    function renderNewPhase(startingBlock,title,days,desc,phaseID){
-        var newBlock = addBlock(title,desc,phaseID);
+    function renderNewPhase(startingBlock,title,days,desc,phaseID,pType){
+        var newBlock = addBlock(title,desc,phaseID,pType);
         var blankBlock = addBlock("<br>");
         var btCol = getPageCol('btcol');
         
@@ -475,7 +477,7 @@
     function addDayBlockListeners(){
         $('.dayBlock').popover({
             placement: 'bottom',
-            title: 'Add Project',
+            title: 'Add Item',
             html:true,
             content:  $('#addPhasePopup').html()
         }).on('click', function (e) {
@@ -494,13 +496,13 @@
                 // Handle phase detail submission
 
                 var projectName = $('#project-name').val();
-                var projectDuration = parseInt($('#project-duration').val());
+                var projectDuration = $('#project-duration').val();
                 var projectDescr = $('#phaseDescription').val();
+                var projectType = $('#project-type').val();
 
                 if(projectName.length > 0){
-                    if(projectDuration != NaN){
-                        console.log('attempting to add class');
-                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr);
+                    if(!isNaN(parseFloat(projectDuration)) && isFinite(projectDuration)){
+                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectType);
                     } else {
                         alert('Duration must be an integer - ie: 2,16,etc');
                     }
@@ -644,12 +646,12 @@
         return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
     }
 
-    function addBlock(text,desc,phaseID){
+    function addBlock(text,desc,phaseID,pType){
         var projectText;
         if(text == "<br>"){
-            projectText = '<div class="projectHolder" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+            projectText = '<div class="projectHolder ' + pType + '" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
         } else {
-            projectText = '<div class="projectHolder phaseHead" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+            projectText = '<div class="projectHolder ' + pType + ' phaseHead" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
         }
         return projectText;
     }
