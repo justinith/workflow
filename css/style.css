@@ -11,21 +11,22 @@ body {
 header {
 	background-position: top;
 	background-size: cover;
-	height: 80px;
-	background-color: white;
+	height: 65px;
+	background-color: #75BBCC;
 	position: fixed;
 	width: 100%;
-	z-index: 100;
+	z-index: 1000;
+	padding-top: 12px;
 }
 
 .topLogo {
 	padding-left: 32px;
-	margin-top: 22px;
+	/*margin-top: 22px;*/
 	height: 40px;
 }
 
 #signout {
-	margin-top: 27px;
+	/*margin-top: 27px;*/
     font-size: 15px;
 	float: right;
 	margin-right: 25px;
@@ -34,12 +35,85 @@ header {
 		cursor: pointer;
 	}
 
+#calInfo {
+	padding: 0px;
+}
+
+.stickyPart {
+	position: fixed;
+	width: inherit;
+	z-index: 80;
+}
+
+#sideBar {
+	margin-top: 65px;
+	padding: 0px;	
+}
+
+.sideBarContent {
+	height: 100vh;
+	background: #ecf0f1;
+	z-index: 100;
+	position: fixed;
+	width: inherit;
+	padding: 10px;
+	-webkit-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
+	-moz-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
+	box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
+}
+	.sideBarContent .currentDateTitle {
+		text-align: center;
+		color: gray;
+		padding-bottom: 10px;
+	}
+
+
+
+#toDoListSection {
+	
+}
+	#toDoListSection p {
+		margin: 0;
+	}
+	#toDoList {
+		overflow: auto;
+	}
+
+	#toDoListSection .itemClass {
+		background-color: white;
+		padding: 13px;
+		/*border-radius: 7px;*/
+		margin-bottom: 10px;
+	}
+		#toDoListSection .itemClass .itemClassTitle {
+			letter-spacing: 2px;
+			margin: 0;
+			font-size: 10pt;
+			font-weight: 400;
+			color: #7f8c8d;
+		}
+
+		#toDoListSection .itemClass h3 {
+			margin: 10px 0px;
+			color: #66A4B2;
+			font-size: 1.2em;
+			font-weight: 400;
+		}
+
+		#toDoListSection .itemClass .notes {
+			word-wrap:break-word;
+			padding-left: 15px;
+		}
+
+
 #dateDayRow {
 	width: 100%;
-	position: fixed;
 	margin-top: 124px;
 	background: white;
-	z-index: 80;
+	position: absolute;
+	/*left: 50%;
+	transform: translateX(-50%);*/
+	
 	-webkit-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	-moz-box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
 	box-shadow: 0px 5px 82px -19px rgba(92,92,92,1);
@@ -49,13 +123,22 @@ header {
 	}
 
 	#dateDayRow .col-xs-1, #dateDayRow .col-xs-2, #dateDayRow .col-xs-3, #dateDayRow .col-xs-4 {
-		padding-top: 15px;
+		/*padding-top: 15px;*/
 		padding-bottom: 15px;
 		text-align: center;
 	}
 
 	#dateDayRow .weekendDay {
+		/*border-bottom: solid 3px #f1c40f;*/
+	}
+
+	#dateDayRow .todaysDate {
 		border-bottom: solid 3px #f1c40f;
+	}
+
+	#dateDayRow .specificDateButton:hover {
+		cursor: pointer;
+		border-bottom: solid 3px #BACFD4;
 	}
 
 #calControl {
@@ -124,7 +207,7 @@ header {
 	}*/
 
 #allClasses {
-	margin-top: 195px;
+	margin-top: 180px;
 }
 
 .categoryLane {
@@ -307,6 +390,16 @@ header {
 	width: 40%;
 	display: inline-block;
 }*/
+
+@media (min-width: 1200px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-xs-1,
+  .seven-cols .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
+  }
+}
 
 .popover .row .col-md-6 {
 	padding: 0;

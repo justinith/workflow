@@ -9,6 +9,7 @@
     var USER_CLASSES;
     var CLASS_ORDER;
     var SCREEN_SIZE = 'l';
+    var CURRENT_TODO_LIST_DATE = milliToDate(new Date().getTime());
 
     authenticateUser();
 
@@ -88,6 +89,8 @@
             $('.addClassArea').css('display','none');
         });
 
+        
+
         $(window).resize(function(){
             resizeScreen();
         });
@@ -118,6 +121,7 @@
     // Renders the calender row of dates & days
     function renderDateRow(){
         // Gets the current times
+        var theCurrentTime = new Date().getTime();
         var dayMilli = new Date().getTime();
 
         // goal: change current time to the monday of the current week
@@ -139,12 +143,16 @@
 
         for(var i = 0; i < dateColCount; i++){
             currentDayFormatted = moment(dayMilli).format('M' + '/' + 'D');
-            var dayOfWeek = moment(dayMilli).format('dd');
+            var dayOfWeek = moment(dayMilli).format('ddd');
+            var completeDate = milliToDate(dayMilli);
             DATES_SHOWN.push(milliToDate(dayMilli));
 
-            start += '<div class="col-xs-' + btCol;
-            if(dayOfWeek == 'Su' | dayOfWeek == 'Sa'){
+            start += '<div data-completeDate="' + completeDate + '" class="specificDateButton col-xs-' + btCol;
+            if(dayOfWeek == 'Sun' | dayOfWeek == 'Sat'){
                 start += ' weekendDay';
+            // Check if this date is the current day
+            } else if(milliToDate(theCurrentTime) == milliToDate(dayMilli)){
+                start += ' todaysDate';
             }
             start += '"><span class="numDayFormat">' + currentDayFormatted + '</span><br>' + dayOfWeek + '</div>';
             dayMilli += 86400000;
@@ -153,6 +161,10 @@
         start += '</div>';
 
         $('#dateDayRow').append(start);
+        $('.specificDateButton').click(function(){
+            CURRENT_TODO_LIST_DATE = $(this).attr('data-completedate');
+            populateToDoList($(this).attr('data-completedate'),true);
+        });
     }
 
     // Fetches the user's classes from Firebase
@@ -167,6 +179,7 @@
             // setClassOrder(tempClassOrder);
 
             renderUserData(USER_CLASSES,CLASS_ORDER);
+            populateToDoList(CURRENT_TODO_LIST_DATE,true);
         });
     }
 
@@ -225,6 +238,7 @@
                 }
             }
         }
+        populateToDoList(CURRENT_TODO_LIST_DATE,false);
     }
 
     // ============================================
@@ -419,8 +433,8 @@
 
 
     function renderNewPhase(startingBlock,title,days,desc,phaseID,pType){
-        var newBlock = addBlock(title,desc,phaseID,pType);
-        var blankBlock = addBlock("<br>");
+        var newBlock = addBlock("phaseHead",title,desc,phaseID,pType);
+        var blankBlock = addBlock("phaseBody",title,desc,"nonID",pType);
         var btCol = getPageCol('btcol');
         
         for(var i = 0; i < days; i++){
@@ -560,6 +574,61 @@
 
     // ============================================
     // ==                                        ==
+    // ==        To-Do List Functions            ==
+    // ==                                        ==
+    // ============================================
+
+    function populateToDoList(date,clear){
+        // Update date in sidebar
+        $("#toDoListSection .currentDateTitle").html(date + " Tasks");
+        // Clear current To Do List
+        if(clear){
+            $("#toDoList").html("");
+            console.log("Redrawing to do list...",date);
+            var datesToDoList = getToDoItems(date);
+            // Check if there are items on this date
+            if(Object.keys(datesToDoList).length > 0){
+                for(var itemClass in datesToDoList){
+                    // var newItemHTML = "<p>" + itemClass +":</p><ul><li>" + datesToDoList[itemClass].taskTitle + "</li><li>" + datesToDoList[itemClass].taskDescription + "</li></ul>";
+                    $("#toDoList").append(renderItem(itemClass,datesToDoList[itemClass].taskTitle,datesToDoList[itemClass].taskDescription));
+                }
+            } else {
+                $("#toDoList").append("No items on this date");
+            }
+        }
+    }
+
+    function getToDoItems(date){
+        // Find every day matching this date
+        // Get the task on that day and the class
+        var items = {};
+        $("div[data-date*='" + date + "']").each(function(index){
+            var item = {};
+            var itemClass = $(this).attr('data-class');
+            var itemTitle = $(this).find(".dayTitle").attr("data-itemtitle");
+            var itemDesc = $(this).find(".projectHolder").attr('data-description');
+            if(itemTitle != undefined){
+                item["taskTitle"] = itemTitle;
+                if(itemDesc != ""){
+                    item["taskDescription"] = itemDesc;
+                }
+                items[itemClass] = item;
+            }
+        });
+        return items;
+    }
+
+    function renderItem(itemClass,title,desc){
+        var newItemHTML = '<div class="itemClass"><p class="itemClassTitle">' + itemClass + '</p><h3>' + title + '</h3>';
+        if(desc != undefined){
+            newItemHTML += '<p class="notesTitle">Notes:</p><p class="notes">' + desc + '</p>';
+        }
+        newItemHTML += '</div>';
+        return newItemHTML;
+    }
+
+    // ============================================
+    // ==                                        ==
     // ==     Resize / Re-Render Functions       ==
     // ==                                        ==
     // ============================================
@@ -569,15 +638,15 @@
     function resizeScreen(){
         var screenWidth = window.innerWidth;
         // set as large but screen is smaller
-        if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 900){
+        if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 700){
             reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is smaller
-        } else if(SCREEN_SIZE == 'm' && screenWidth <= 900){
+        } else if(SCREEN_SIZE == 'm' && screenWidth <= 700){
             reRenderPage('localReset');
             SCREEN_SIZE = 's';
         // set as small but screen is medium
-        } else if(SCREEN_SIZE == 's' && screenWidth > 900 && screenWidth < 1300){
+        } else if(SCREEN_SIZE == 's' && screenWidth > 700 && screenWidth < 1300){
             reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is large
@@ -587,20 +656,20 @@
         }
     }
 
-    // Input:  Accepts the type of column length needed, either 
+     // Input:  Accepts the type of column length needed, either 
     //         'total' (the total columns in the page) or
     //         'btcol' (the width of each bootstrap column) 
     // Output: Returns the number value of either the total columns
     //         of the page, or the width of bootstrap columns
     function getPageCol(type){
         var pageWidth = window.innerWidth;
-        if(pageWidth < 1300 && pageWidth > 900){
+        if(pageWidth < 1300 && pageWidth > 700){
             if(type == 'total'){
                 return 6;
             } else if(type == 'btcol'){
                 return "2";
             }
-        } else if(pageWidth <= 900 && pageWidth){
+        } else if(pageWidth <= 700 && pageWidth){
             if(type == 'total'){
                 return 3;
             } else if(type == 'btcol'){
@@ -608,7 +677,7 @@
             }
         } else {
             if(type == 'total'){
-                return 12;
+                return 7;
             } else if(type == 'btcol'){
                 return "1";
             }
@@ -646,12 +715,12 @@
         return className.replace(' ','lol') + "lol" + day.replace('/','bb').replace('/','bb');
     }
 
-    function addBlock(text,desc,phaseID,pType){
+    function addBlock(blockType,text,desc,phaseID,pType){
         var projectText;
-        if(text == "<br>"){
-            projectText = '<div class="projectHolder ' + pType + '" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+        if(blockType == "phaseBody"){
+            projectText = '<div class="projectHolder ' + pType + '" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle" data-itemTitle="' + text + '"><br></div></div></div>';
         } else {
-            projectText = '<div class="projectHolder ' + pType + ' phaseHead" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle">' + text + '</div></div></div>';
+            projectText = '<div class="projectHolder ' + pType + ' phaseHead" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle" data-itemTitle="' + text + '">' + text + '</div></div></div>';
         }
         return projectText;
     }
@@ -706,29 +775,6 @@
         }
         else if (e.keyCode == '39') {
             shiftDaysX(1,'next');
-        }
-    }
-
-    function getPageCol(type){
-        var pageWidth = window.innerWidth;
-        if(pageWidth < 1300 && pageWidth > 900){
-            if(type == 'total'){
-                return 6;
-            } else if(type == 'btcol'){
-                return "2";
-            }
-        } else if(pageWidth <= 900 && pageWidth){
-            if(type == 'total'){
-                return 3;
-            } else if(type == 'btcol'){
-                return "4";
-            }
-        } else {
-            if(type == 'total'){
-                return 12;
-            } else if(type == 'btcol'){
-                return "1";
-            }
         }
     }
 
