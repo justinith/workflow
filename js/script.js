@@ -6,9 +6,9 @@
     var DB = firebase.database();
     var DAYS_AHEAD = 0;
     var DATES_SHOWN = [];
-    var USER_CLASSES;
+    var USER_CLASSES = null;
     var CLASS_ORDER;
-    var SCREEN_SIZE = 'l';
+    var SCREEN_SIZE = setInitialScreenSize();
     var CURRENT_TODO_LIST_DATE = milliToDate(new Date().getTime());
     var NEW_CLASS_ADDED = false;
 
@@ -22,6 +22,7 @@
     function initListeners(){
 
         $("#signout").click(function(){
+            mixpanel.track('User Sign Out',{'uid':USER.uid});
             firebase.auth().signOut().then(function() {
                 window.location.href = "signin.html";
             }, function(error) {
@@ -93,8 +94,8 @@
             resizeScreen();
         });
         
-
         document.onkeydown = checkKey;
+        mixpanel.track('Page Load',{'page':'dashboard','screenSize':SCREEN_SIZE});
     }
 
     // ============================================
@@ -108,6 +109,7 @@
             if (currUser) {
                 // User is signed in.
                 USER = currUser;
+                mixpanel.identify(USER.uid);
                 $('#userFirstName').html(USER.displayName);
                 fetchUserClasses();
             } else {
@@ -177,14 +179,12 @@
         DB.ref('users/' + USER.uid).once('value')
         .then(function(snapshot){
             var userInfo = snapshot.val();
-            CLASS_ORDER = userInfo.format['classOrder'];
-            USER_CLASSES = userInfo.classes;
-
-            // var tempClassOrder = ['INFO 498E','INFO 380','CSE 599','Capstone','Frontier','Freelancing','Z'];
-            // setClassOrder(tempClassOrder);
-
-            renderUserData(USER_CLASSES,CLASS_ORDER);
-            populateToDoList(CURRENT_TODO_LIST_DATE,true);
+            if(userInfo != null){
+                CLASS_ORDER = userInfo.format['classOrder'];
+                USER_CLASSES = userInfo.classes;
+                renderUserData(USER_CLASSES,CLASS_ORDER);
+                populateToDoList(CURRENT_TODO_LIST_DATE,true);
+            }
         });
     }
 
@@ -278,6 +278,7 @@
                         })
                         .then(function(){
                             // Render class
+                            mixpanel.track('Added Class',{'className':className});
                             NEW_CLASS_ADDED = true;
                             $('#addClassModal').modal('hide');
                             addClassToOrder(className,false);
@@ -292,6 +293,7 @@
                     })
                     .then(function(){
                         // Render class
+                        mixpanel.track('Added Class',{'className':className});
                         NEW_CLASS_ADDED = true;
                         $('#addClassModal').modal('hide');
                         addClassToOrder(className,true);
@@ -438,9 +440,16 @@
                     },
                     projectTask: {}
                 })
-
                 // Add dates to occupied dates in DB
                 .then(function(){
+                    mixpanel.track('Added Task',{
+                        title: title.trim(),
+                        duration: days,
+                        description: desc,
+                        startDateMilli: firstDateMilli,
+                        course: phaseClass,
+                        projectType: pType
+                    });
                     var newOccupiedDates = occupiedDates.concat(desiredDates);
                     updateOccupiedDates(phaseClass,newOccupiedDates);                    
                 });
@@ -591,6 +600,8 @@
                     console.log('NEW OCC DATES');
                     console.log(occupiedDates);
 
+                    mixpanel.track('Delete Task');
+
                     updateOccupiedDates(phaseClass,occupiedDates); 
                 });
             });
@@ -660,11 +671,24 @@
 
     // Checks the width of the window and rerenders the page if 
     // the width is in a different size category than current one 
+    function setInitialScreenSize(){
+        var screenWidth = window.innerWidth;
+        // set as large but screen is smaller
+        if(screenWidth <= 800){
+            return 's';
+        // set as small but screen is medium
+        } else if(screenWidth > 800 && screenWidth < 1300){
+            return 'm';
+        // set as medium but screen is large
+        } else if(screenWidth >= 1300){
+            return 'l';
+        }
+    }
+    
     function resizeScreen(){
         var screenWidth = window.innerWidth;
         // set as large but screen is smaller
         if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 800){
-            
             reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is smaller
@@ -683,6 +707,7 @@
             reRenderPage('localReset');
             SCREEN_SIZE = 'l';
         }
+        console.log(SCREEN_SIZE);
     }
 
     function hideToDoList(){
@@ -734,7 +759,9 @@
         if(type == 'fetchReset'){
             fetchUserClasses();
         } else if(type == 'localReset'){
-            renderUserData(USER_CLASSES,CLASS_ORDER);
+            if(USER_CLASSES != null){
+                renderUserData(USER_CLASSES,CLASS_ORDER);
+            }
         }
     }
 
@@ -797,6 +824,9 @@
     }
 
     function shiftDaysX(amount,direction){
+
+        mixpanel.track('Shift Days',{'days':amount,'direction':direction});
+
         if(direction == 'next'){
             DAYS_AHEAD += amount;
         } else {
