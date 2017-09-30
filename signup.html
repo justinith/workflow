@@ -3,57 +3,64 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>WorkFlow</title>
+    <title>Swimlain</title>
     <link rel="icon" href="img/page-icon.png">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">		
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Homemade+Apple" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:300|Zilla+Slab:300,400,600" rel="stylesheet">
+   
     <script defer src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
     <script defer src="js/common.js"></script>
     <script defer src="js/signup.js"></script>      
 </head>
 <body>
-<main>
-    <header>
-            <h3>WorkFlow</h3>
-    </header>
-       <div class="container">
-            <h2>Sign Up</h2>
+    <main>
+        <header>
+            <div class="container">
+                <img class="topLogo" src="img/logo.png" alt="">
+                <h1>Just keep swimming</h1>
+                <h3>Keep all your assignments organized into swimlains. Spend less time remembering what do and more time doing.</h3>
+                
+                <img class="screenshot" src="img/screenshot.png" alt="">
+            </div>
+        </header>
+        <div class="signupSection">
+            <div class="container">
+                <h1>Start swimming today</h1>
                 <form id="signup-form">
                     <div>
-                        <label for="email-input">Email:</label>
-                        <input id="email-input" 
-                            type="email" placeholder="ie: name@email.com" 
-                            autofocus>
-                    </div>
-                    <div>
-                        <label for="password-input">Password:</label>
-                        <input id="password-input" 
-                            type="password" placeholder="Must be at least 6 characters long">
-                    </div>
-
-                     <div>
-                        <label for="reenter-password-input">Re-enter Password:</label>
-                        <input id="reenter-password-input" 
-                            type="password">
-                    </div>
-                    <div>
-                        <label for="display-name-input">Choose Display Name:</label>
                         <input id="display-name-input" 
-                            type="text" placeholder="ie: Christina">
+                            type="text" placeholder="Name">
                     </div>
                     <div>
-                        <br><button type="submit">Sign Up</button>
+                        <input id="email-input" 
+                            type="email" placeholder="Email">
                     </div>
-                    <br>            
+                    <div>
+                        <input id="password-input" 
+                            type="password" placeholder="Password">
+                    </div>
+                    <button type="submit">Sign Up</button>
                 </form>
-                <p>Already part of WorkFlow? <br><a href="signin.html">Sign In</a></p>
+                <br><p>Already part of Swimlain? <a href="signin.html">Sign In</a></p>
+            </div>
         </div>
-        
-            <footer>
-                <p>Copyright &copy; info343 Group<br> All Rights Reserved</p>
-            </footer>
     </main>
+    <footer>
+        <div class="container">
+            <div class="col-sm-6">
+                <p>Swimlain helps keep all your assignments and projects organized into one timeline. Stemmed from the stress of worrying if you forgot about an assignment, Swimlain becomes your master list of what you need to do today, tomorrow, and the rest of the semester.</p>
+                <p>Special thanks to <a href="https://github.com/yangf6">Fan Linda Yan</a>, <a href="https://github.com/simsinghhh">Sim Singh</a>, <a href="https://github.com/mecrundle">Marika Rundle</a>, & <a href="http://artzgeo.ru/">George Zaalishvili</a> for their contributions.</p>
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+                <p>Have suggestions or want to improve a bug?</p>
+                <a href="mailto:justin.ith12@gmail.com">Contact Us</a>
+                <p style="font-size: 30pt;"><a href="https://github.com/justinith/workflow"><i class="fa fa-github" aria-hidden="true"></i></a></p>
+            </div>
+        </div>
+    </footer>
     <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
 </body>
 </html>

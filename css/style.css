@@ -2,22 +2,34 @@ body {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
-	font-weight: 200;
+	font-weight: 400;
+	color: #3d3d3d;
 	height: 100%;
 	background-color: #FFF;
-	font-family: 'Helvetica Neue',Arial, Helvetica, sans-serif;
+	font-family: 'Zilla Slab',Arial, Helvetica, sans-serif;
 }
 
 header {
 	background-position: top;
 	background-size: cover;
 	height: 65px;
-	background-color: #75BBCC;
+	background-color: #3498db;
 	position: fixed;
 	width: 100%;
 	z-index: 1000;
 	padding-top: 12px;
+	-webkit-box-shadow: 0px -5px 82px -19px rgba(92,92,92,1);
+	-moz-box-shadow: 0px -5px 82px -19px rgba(92,92,92,1);
+	box-shadow: 0px -5px 82px -19px rgba(92,92,92,1);
 }
+	header .introText {
+		color: white;
+		font-size: 14pt;
+		padding-left: 19px;
+		font-weight: 200;
+		letter-spacing: 1px;
+		font-family: 'Comfortaa', Helvetica, sans-serif;
+	}
 
 .topLogo {
 	padding-left: 32px;
@@ -26,8 +38,10 @@ header {
 }
 
 #signout {
-	/*margin-top: 27px;*/
-    font-size: 15px;
+	margin-top: 10px;
+	font-size: 13px;
+	color: white;
+	font-weight: 200;
 	float: right;
 	margin-right: 25px;
 }
@@ -65,6 +79,10 @@ header {
 		text-align: center;
 		color: gray;
 		padding-bottom: 10px;
+		margin-top: 10px;
+		font-size: 14pt;
+		font-weight: 400;
+		font-family: 'Comfortaa', Helvetica, sans-serif;
 	}
 
 
@@ -72,6 +90,7 @@ header {
 #toDoListSection {
 	
 }
+
 	#toDoListSection p {
 		margin: 0;
 	}
@@ -82,7 +101,6 @@ header {
 	#toDoListSection .itemClass {
 		background-color: white;
 		padding: 13px;
-		/*border-radius: 7px;*/
 		margin-bottom: 10px;
 	}
 		#toDoListSection .itemClass .itemClassTitle {
@@ -95,7 +113,7 @@ header {
 
 		#toDoListSection .itemClass h3 {
 			margin: 10px 0px;
-			color: #66A4B2;
+			color: #3498db;
 			font-size: 1.2em;
 			font-weight: 400;
 		}
@@ -149,23 +167,21 @@ header {
 	width: 100%;
 	background: white;
 	z-index: 100;
+	font-family: 'Comfortaa', Helvetica, sans-serif;
 }
 	#triggerAddClassTop {
 		border-radius: 3px;
 	}
 
-	#calControl .addClassArea {
-		float: left;
-		position: relative;
-		overflow: auto;
-		display: none;
+	#addClassModal {
+		text-align: center;
 	}
+
 		#addClassInputTop {
 			padding: 7px 10px;
 			font-size: 15px;
 			outline: none;
 			border: solid lightgray 2px;
-			float: left;
 			width: 40vw;
 			max-width: 300px;
 		}
@@ -180,7 +196,23 @@ header {
 			color: #334d5c;
 			padding: 12px 22px;
 			font-size: 12px;
+			text-transform: uppercase;
+			letter-spacing: 3px;
 			float: left;
+		}
+			.addClassButtonTop:hover {
+				background: #efc943;
+				color: white;
+			}
+
+		#addClassButtonModal {
+			margin-top: 10px;
+			background: #efc943;
+			outline: none;
+			border: none;
+			color: white;
+			padding: 12px 22px;
+			font-size: 12px;
 			text-transform: uppercase;
 			letter-spacing: 3px;
 		}
@@ -202,6 +234,10 @@ header {
 			margin: 0px 4px;
 		}
 
+		#calControl .dayShiftButtons .shiftDayViewBut:focus {
+			outline: none;
+		}
+
 	/*#nextWeekBut, #nextDayBut {
 		float: right;
 	}*/
@@ -214,8 +250,7 @@ header {
 	background: white;
 }
 	.categoryLane .col-xs-1, .categoryLane .col-xs-2, .categoryLane .col-xs-3, .categoryLane .col-xs-4 {
-		/*border-right: white 1px solid;*/
-		height: 150px;
+		height: 130px;
 		padding: 0px;
 	}
 
@@ -227,11 +262,16 @@ header {
 	}
 		.categoryLane .laneInfo p {
 			margin: 0;
+			font-family: 'Comfortaa', Helvetica, sans-serif;
 		}
 
 	.categoryLane .dayBlock:hover {
+		cursor: cell;
+		border-bottom: solid 3px #efc943;
+	}
+
+	.categoryLane .occupied:hover {
 		cursor: pointer;
-		border-bottom: solid 3px #65A3B2;
 	}
 
 	.categoryLane .categoryName {
@@ -258,7 +298,7 @@ header {
 	}
 
 	.categoryLane .projectHolder {
-		background-color: #75BBCC;
+		background-color: #3498db;
 		padding: 4px 0px;
 		margin: 20px 0px;
 	}
@@ -278,9 +318,10 @@ header {
 		color: #10222B;
 	}
 		.categoryLane .dayContent .dayTitle {
-			font-family: 'Helvetica Neue', sans-serif;
+			font-family: 'Zilla Slab', Helvetica, sans-serif;
 			padding-left: 8px;
 			padding-top: 3px;
+			font-size: 1.1em;
 		}
 
 .addCategoryButton {

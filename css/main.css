@@ -1,110 +1,89 @@
 body {
-	font-family: 'News Cycle', sans-serif;
-    font-size: 16px;
-    margin: 5px;
-    padding: 10px;
-    background-color: #fff;
-}
-
-.container {
-	max-width: 500px;
-    margin: 0 auto;
-    padding: 5px;
-    align-content: right;
-    text-align: center;
-    margin-top: 30px;
-    background-color: #FAF5F2;
+	font-family: 'Comfortaa', Helvetica, sans-serif;
 }
 
 header {
-	background-position: top;
-	background-size: cover;
-	height: 80px;
+	background: #3a7bd5;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #3a7bd5, #00d2ff);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #3a7bd5, #00d2ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	
+	text-align: center;
+	padding-top: 8vh;
+	color: white;
 }
+	header .topLogo {
+		height: 120px;
+	}
+
+	header .screenshot {
+		width: 100%;
+		
+	}
+
+	header h1 {
+		font-weight: 300;
+		font-size: 3em;
+	}
+	
+	header h3 {
+		font-size: 1.4em;
+		width: 95vw;
+		max-width: 500px;
+		display: inline-block;
+		font-family: 'Zilla Slab';
+		font-weight: 300;
+		line-height: 1.5;
+	}
+
+.signupSection {
+	padding: 8vh 0px;
+	text-align: center;
+	background-color: #86A21C;
+	color: white;
+}
+	.signupSection h1 {
+		margin-bottom: 5vh;
+	}
+
+	.signupSection input {
+		padding: 12px;
+		width: 100%;
+		max-width: 400px;
+		margin-bottom: 03px;
+		font-family: 'Zilla Slab';
+		font-size: 1.4em;
+		color: #86A21C;
+		border: 3px solid white;
+	}
+	.signupSection input:focus {
+		outline: none;
+		border: 3px solid #72881E;
+	}
+
+	.signupSection button {
+		padding: 15px;
+		width: 100%;
+		max-width: 400px;
+		margin-bottom: 5px;
+		font-size: 1.4em;
+		color: white;
+		background-color: #DC6152;
+		border: none;
+	}
+
+	.signupSection a {
+		color: white;
+		text-decoration: underline;
+	}
 
 footer {
-	height: 40px;
-	color: #333745;
-	font-size: 10px;
-	padding: 5px;
-	text-align: right;
+	background-color: #3d3d3d;
+	color: gray;
+	padding: 7vh 0;
+	font-family: 'Zilla Slab';
+	line-height: 1.8;
+	font-size: 1.2em;
 }
-
-img {
-	width: 80px;
-	height: 80px;
-}
-
-button {
-	margin-bottom: 10px;
-    padding-bottom: 0.5rem;
-    padding-top: 0.5rem;
-    padding-left: 7rem;
-    padding-right: 7rem;
-	font-family: 'News Cycle', sans-serif;
-    font-size: 20px;
-    color: #fff;
-    border-radius: 3px;
-    background-color: #5AC7B2;
-    border: none;
-}
-
-label {
-	display: block;
-    height: 30px;
-    border: 10px blue;
-}
-
-#email-input {
-	padding: 10px;
-	margin-bottom: 10px;
-	width: 400px;
-}
-
-#password-input {
-	padding: 10px;
-	margin-bottom: 10px;
-	width: 400px;
-}
-
-.password-input {
-	padding: 10px;
-}
-
-#reenter-password-input {
-	padding: 10px;
-	margin-bottom: 10px;
-	width: 400px;
-}
-
-#display-name-input {
-	padding: 10px;
-	margin-bottom: 10px;
-	width: 400px;
-}
-
-.signin-form {
-	padding: 10px;
-}
-
-input:focus {
-	/*outline: none;*/
-	outline: #5AC7B2 solid 1px;
-}
-
-input {
-    width: 20%;
-    padding: 0.5rem;
-    padding-left: 7rem;
-    padding-right: 7rem;
-}
-
-h3, h4 {
-	text-align: center;
-	color: #333745;
-	margin-top: 0;
-	padding-top: 10px;
-	font-size: 60px;
-	font-family: 'Homemade Apple', cursive;
-	font-weight: 100;
-}
+	footer a {
+		color: white;
+	}

@@ -5,7 +5,9 @@
 		<meta name="viewport" content="width=device-width">
 		<link rel="shortcut icon" href="img/favicon.ico">
 		
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa:300|Zilla+Slab:300,400,600" rel="stylesheet">
+		
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		
@@ -20,9 +22,10 @@
 	<body>
 
 		<header>
-            <img class="topLogo" src="img/workflow_logo.png" alt="">
+			<img class="topLogo" src="img/logo.png" alt="">
+			<span class="introText"><span id="userFirstName"></span>'s Swimlains</span>
 			<span id="signout">Sign Out</span>
-    	</header>
+		</header>
 
 		<div class="container">
 			<div id="sideBar" class="col-xs-3">
@@ -43,14 +46,15 @@
 					</div>
 				</div>
 			</div>
+			
 			<div id="calInfo" class="col-xs-9 seven-cols">
 				<div class="stickyPart">
 					<div id="calControl">
-						<button id="triggerAddClassTop" class="addClassButtonTop">Add Class</button>
-						<div class="addClassArea">
+						<button data-toggle="modal" data-target="#addClassModal" class="addClassButtonTop">Add Class</button>
+						<!-- <div class="addClassArea">
 							<input id="addClassInputTop" type="text" placeholder="Type class name">
 							<button id="addClassButtonTop" class="addClassButtonTop">Add Class</button>
-						</div>
+						</div> -->
 						<div class="dayShiftButtons">
 							<button class="shiftDayViewBut" id="prevWeekBut"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
 							<button class="shiftDayViewBut" id="prevDayBut"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
@@ -74,13 +78,9 @@
 			<form action="/echo/html/" id="popForm" method="get">
 				<div>
 					<label for="project-name">Name</label>
-					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
+					<input maxlength="40" type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
 					
 					<div class="row">
-						<div class="col-md-6">
-							<label for="project-duration"># of Days</label>
-							<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
-						</div>
 						<div class="col-md-6">
 							<label for="project-type">Type</label><br>
 							<select id="project-type" name="project-type">
@@ -88,9 +88,13 @@
 								<option value="duedate">Due Date</option>
 							</select>
 						</div>
+						<div class="col-md-6" id="taskDurationSection">
+							<label for="project-duration"># of Days</label>
+							<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
+						</div>
 					</div>
 
-					<label for="about">Description</label>
+					<label for="about">Notes</label>
 					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
 					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>
 				</div>
@@ -107,12 +111,30 @@
 					<label for="about">Description</label>
 					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
 					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>-->
-					<p>Description:</p>
+					<p>Notes:</p>
 					<p id="detailed_phase_desc" style="word-wrap: break-word;">test</p>
-					<button type="button" class="btn btn-primary" id="phase-update" data-loading-text="Sending info.."><em class="icon-ok"></em> Update</button>
-					<button type="button" class="btn btn-primary" id="phase-delete" data-loading-text="Sending info.."><em class="icon-ok"></em> Delete</button>
+					
+					<button type="button" class="deleteTaskBtn" id="phase-delete" data-loading-text="Sending info..">Delete Task</button>
 				</div>
 			</form>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClassModal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h3>Name of Class</h3>
+					<div class="addClassArea">
+						<input id="addClassInputTop" type="text" placeholder="Type class name"><br>
+						<button id="addClassButtonModal">Add Class</button>
+					</div>
+				</div>
+			</div>
+			</div>
 		</div>
 	</body>
 </html>

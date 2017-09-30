@@ -12,7 +12,7 @@ signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
 
 
-if (displayNameInput.value != "" && passwordInput.value == reenterPasswordInput.value) { 
+if (displayNameInput.value != "") { 
     	firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
         .then(function(user) {
             return user.updateProfile({

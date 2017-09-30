@@ -10,6 +10,7 @@
     var CLASS_ORDER;
     var SCREEN_SIZE = 'l';
     var CURRENT_TODO_LIST_DATE = milliToDate(new Date().getTime());
+    var NEW_CLASS_ADDED = false;
 
     authenticateUser();
 
@@ -47,7 +48,6 @@
                 attemptNewClass(val);
                 $("#triggerAddClassTop").css('display','inherit');
                 $("#addClassInputTop").val("");
-                $('.addClassArea').css('display','none');
             }
         });
 
@@ -81,15 +81,13 @@
             $('#addClassInputTop').focus();
         });
 
-        $('#addClassButtonTop').click(function(){
+        $('#addClassButtonModal').click(function(){
             var val = $('#addClassInputTop').val();
             attemptNewClass(val);
             $("#triggerAddClassTop").css('display','inherit');
             $("#addClassInputTop").val("");
             $('.addClassArea').css('display','none');
         });
-
-        
 
         $(window).resize(function(){
             resizeScreen();
@@ -110,6 +108,7 @@
             if (currUser) {
                 // User is signed in.
                 USER = currUser;
+                $('#userFirstName').html(USER.displayName);
                 fetchUserClasses();
             } else {
                 // No user is signed in.
@@ -120,6 +119,7 @@
     
     // Renders the calender row of dates & days
     function renderDateRow(){
+        
         // Gets the current times
         var theCurrentTime = new Date().getTime();
         var dayMilli = new Date().getTime();
@@ -138,6 +138,11 @@
         
         var dateColCount = getPageCol('total');
         var btCol = getPageCol('btcol');
+
+        // If the page is mobile on initial start, hide to do list sidebar
+        if(btCol == '4'){
+            hideToDoList();
+        }
         
         var start = '<div class="row">';
 
@@ -239,6 +244,7 @@
             }
         }
         populateToDoList(CURRENT_TODO_LIST_DATE,false);
+        addActivePhaseListeners();
     }
 
     // ============================================
@@ -272,6 +278,8 @@
                         })
                         .then(function(){
                             // Render class
+                            NEW_CLASS_ADDED = true;
+                            $('#addClassModal').modal('hide');
                             addClassToOrder(className,false);
                             renderClassRow(className);
                         });
@@ -284,6 +292,8 @@
                     })
                     .then(function(){
                         // Render class
+                        NEW_CLASS_ADDED = true;
+                        $('#addClassModal').modal('hide');
                         addClassToOrder(className,true);
                         renderClassRow(className);
                     });
@@ -293,6 +303,7 @@
     }
 
     function renderClassRow(className){
+        console.log('rendering row');
         var dateColCount = getPageCol('total');
         var btCol = getPageCol('btcol');
 
@@ -367,6 +378,9 @@
     // ============================================
 
     function attemptAddPhase(startingBlock,title,days,desc,pType){
+        if(pType == 'duedate'){
+            days = "1";
+        }
 
         var occupiedDates;
         var isValid = true;
@@ -397,6 +411,11 @@
             if(isValid){
                 
                 var currentTime = new Date().getTime();
+
+                if(title.includes("/")){
+                    title = title.replace("/","SPECIALCHARslashslashslash");
+                }
+                
                 var phaseID = title + "::" + parseInt(currentTime) + "::" + days;
 
                 // Add phases to class
@@ -459,17 +478,23 @@
     }
 
     function addActivePhaseListeners(){
+        $('.phaseHead').popover('destroy');
         $('.phaseHead').popover({
             placement: 'bottom',
             title: 'Edit Project',
             html:true,
             content:  $('#editPhasePopup').html()
         }).on('click', function (e) {
-
+            console.log('clicked phase head');
             var targetDayBlock = $(this);
             var phaseID = $(this).attr('data-phaseid');
             var phaseClass = $(this).parent().attr('data-class');
             var phaseDesc = $(this).attr('data-description');
+
+            // If there is no description of the phase, tell user
+            if(phaseDesc == ''){
+                phaseDesc = '<i>No notes added</i>';
+            }
 
             $('#detailed_phase_desc').html(phaseDesc);
 
@@ -491,7 +516,7 @@
     function addDayBlockListeners(){
         $('.dayBlock').popover({
             placement: 'bottom',
-            title: 'Add Item',
+            title: 'Add Task',
             html:true,
             content:  $('#addPhasePopup').html()
         }).on('click', function (e) {
@@ -580,7 +605,7 @@
 
     function populateToDoList(date,clear){
         // Update date in sidebar
-        $("#toDoListSection .currentDateTitle").html(date + " Tasks");
+        $("#toDoListSection .currentDateTitle").html(date.slice(0,date.length - 5) + " Tasks");
         // Clear current To Do List
         if(clear){
             $("#toDoList").html("");
@@ -593,7 +618,7 @@
                     $("#toDoList").append(renderItem(itemClass,datesToDoList[itemClass].taskTitle,datesToDoList[itemClass].taskDescription));
                 }
             } else {
-                $("#toDoList").append("No items on this date");
+                $("#toDoList").append('<p style="text-align: center;"><i>No tasks on this date</i></p>');
             }
         }
     }
@@ -619,9 +644,9 @@
     }
 
     function renderItem(itemClass,title,desc){
-        var newItemHTML = '<div class="itemClass"><p class="itemClassTitle">' + itemClass + '</p><h3>' + title + '</h3>';
+        var newItemHTML = '<div class="itemClass"><p class="itemClassTitle">' + itemClass + '</p><h3><input type="checkbox">&nbsp;&nbsp;' + title + '</h3>';
         if(desc != undefined){
-            newItemHTML += '<p class="notesTitle">Notes:</p><p class="notes">' + desc + '</p>';
+            newItemHTML += '<p class="notesTitle">' + desc + '</p>';
         }
         newItemHTML += '</div>';
         return newItemHTML;
@@ -638,22 +663,38 @@
     function resizeScreen(){
         var screenWidth = window.innerWidth;
         // set as large but screen is smaller
-        if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 700){
+        if(SCREEN_SIZE == 'l' && screenWidth < 1300 && screenWidth > 800){
+            
             reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is smaller
-        } else if(SCREEN_SIZE == 'm' && screenWidth <= 700){
+        } else if(SCREEN_SIZE == 'm' && screenWidth <= 800){
+            hideToDoList();
             reRenderPage('localReset');
             SCREEN_SIZE = 's';
         // set as small but screen is medium
-        } else if(SCREEN_SIZE == 's' && screenWidth > 700 && screenWidth < 1300){
+        } else if(SCREEN_SIZE == 's' && screenWidth > 800 && screenWidth < 1300){
+            showToDoList();
             reRenderPage('localReset');
             SCREEN_SIZE = 'm';
         // set as medium but screen is large
         } else if(SCREEN_SIZE == 'm' && screenWidth >= 1300){
+            showToDoList();
             reRenderPage('localReset');
             SCREEN_SIZE = 'l';
         }
+    }
+
+    function hideToDoList(){
+        $('#sideBar').css('display','none');
+        $('#calInfo').removeClass('col-xs-9');
+        $('#calInfo').addClass('col-xs-12');
+    }
+
+    function showToDoList(){
+        $('#sideBar').css('display','initial');
+        $('#calInfo').addClass('col-xs-9');
+        $('#calInfo').removeClass('col-xs-12');
     }
 
      // Input:  Accepts the type of column length needed, either 
@@ -663,13 +704,13 @@
     //         of the page, or the width of bootstrap columns
     function getPageCol(type){
         var pageWidth = window.innerWidth;
-        if(pageWidth < 1300 && pageWidth > 700){
+        if(pageWidth < 1300 && pageWidth > 800){
             if(type == 'total'){
                 return 6;
             } else if(type == 'btcol'){
                 return "2";
             }
-        } else if(pageWidth <= 700 && pageWidth){
+        } else if(pageWidth <= 800 && pageWidth){
             if(type == 'total'){
                 return 3;
             } else if(type == 'btcol'){
@@ -717,6 +758,7 @@
 
     function addBlock(blockType,text,desc,phaseID,pType){
         var projectText;
+        text = text.replace("SPECIALCHARslashslashslash","/");
         if(blockType == "phaseBody"){
             projectText = '<div class="projectHolder ' + pType + '" data-itemType="' + pType + '" data-phaseid="' + phaseID + '" data-description="' + desc + '"><div class="dayContent"><div class="dayTitle" data-itemTitle="' + text + '"><br></div></div></div>';
         } else {
@@ -761,7 +803,8 @@
             DAYS_AHEAD -= amount;
         }
 
-        if(USER_CLASSES == null){
+        if(USER_CLASSES == null || NEW_CLASS_ADDED){
+            NEW_CLASS_ADDED = false;
             reRenderPage('fetchReset');
         } else {
             reRenderPage('localReset');
