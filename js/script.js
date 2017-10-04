@@ -85,9 +85,7 @@
         $('#addClassButtonModal').click(function(){
             var val = $('#addClassInputTop').val();
             attemptNewClass(val);
-            $("#triggerAddClassTop").css('display','inherit');
             $("#addClassInputTop").val("");
-            $('.addClassArea').css('display','none');
         });
 
         $(window).resize(function(){
@@ -111,6 +109,7 @@
                 USER = currUser;
                 mixpanel.identify(USER.uid);
                 $('#userFirstName').html(USER.displayName);
+                console.log(USER.displayName);
                 fetchUserClasses();
             } else {
                 // No user is signed in.
@@ -549,16 +548,24 @@
                 var projectType = $('#project-type').val();
 
                 if(projectName.length > 0){
-                    if(!isNaN(parseFloat(projectDuration)) && isFinite(projectDuration)){
-                        attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectType);
+                    // Look out for special characters
+                    console.log(projectName.indexOf('#'));
+                    if(parseInt(projectName.indexOf('#')) > 0 || parseInt(projectName.indexOf('$')) > 0 || parseInt(projectName.indexOf('.')) > 0 || parseInt(projectName.indexOf('[')) > 0 || parseInt(projectName.indexOf(']')) > 0){
+                        alert("Project name cannot contain #, $, ., [, or ]");
                     } else {
-                        alert('Duration must be an integer - ie: 2,16,etc');
+                        if(!isNaN(parseFloat(projectDuration)) && isFinite(projectDuration)){
+                            attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectType);
+                            $('.dayBlock').popover('hide');
+                        } else if(isNaN(parseFloat(projectDuration)) && projectType == 'duedate'){
+                            attemptAddPhase(targetDayBlock,projectName,1,projectDescr,projectType);
+                            $('.dayBlock').popover('hide');
+                        } else {
+                            alert('Duration must be an integer - ie: 2,16,etc');
+                        }
                     }
-                }else{
+                } else {
                     alert("Project Name and Duration (Days) are required");
                 }
-
-                $('.dayBlock').popover('hide');
             });
             
         }).on('hide.bs.popover',function(){

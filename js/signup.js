@@ -9,31 +9,40 @@ var screenSize = setInitialScreenSize();
 
 authenticateUser();
 
+var videoWidth = window.innerWidth - 30;
+if(videoWidth > 560){
+    videoWidth = 560;
+}
+document.getElementById('howtovideo').setAttribute('width', videoWidth);
+
 mixpanel.track('Page Load',{'page':'landing','screenSize': screenSize});
 
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
 
+    document.getElementById('signupbutton').innerHTML = '<i class="fa fa-spinner fa-spin fa-fw"></i> Sign Up';
+
     if (displayNameInput.value != "") { 
-    	firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-        .then(function(user) {
-            console.log(user);
-            mixpanel.identify(user.uid);
-            mixpanel.people.set({
-                "$email": emailInput.value, 
-                "$name": displayNameInput.value,
-                "$created": new Date(),
-                "$last_login": new Date(),        
-            });
-            mixpanel.track('New Account Created',{'uid':user.uid,'name':displayNameInput.value,'email':emailInput.value});
-            return user.updateProfile({
+    	firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value).then(function() {
+            // mixpanel.identify(user.uid);
+            // mixpanel.people.set({
+            //     "$email": emailInput.value, 
+            //     "$name": displayNameInput.value,
+            //     "$created": new Date(),
+            //     "$last_login": new Date(),        
+            // });
+            // mixpanel.track('New Account Created',{'uid':user.uid,'name':displayNameInput.value,'email':emailInput.value});
+            var currUser = firebase.auth().currentUser;
+            console.log(displayNameInput.value);
+            currUser.updateProfile({
                 displayName: displayNameInput.value,
+            }).then(function() {
+                
+                // window.location = "index.html";
+            }).catch(function(err) {
+                alert(err.message);
             });
-        })
-        .then(function() {
-            window.location = "index.html";
-        })
-        .catch(function(err) {
+        }).catch(function(err) {
             alert(err.message);
         });
     return false;
@@ -43,8 +52,16 @@ signUpForm.addEventListener("submit", function(evt) {
 function authenticateUser(){
     firebase.auth().onAuthStateChanged(function(currUser) {
         if (currUser) {
-            // User is signed in.
-            window.location.href = "index.html";
+            if(currUser.displayName == null){
+                currUser.updateProfile({
+                    displayName: displayNameInput.value
+                }).then(function(){
+                    window.location.href = "index.html";
+                });
+            } else {
+                // User is signed in.
+                window.location.href = "index.html";
+            }
         }
     });
 }

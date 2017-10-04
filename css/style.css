@@ -382,14 +382,6 @@ header {
 		float: none;
 	}
 
-	.addCategoryButton {
-		display: inherit;
-	}
-
-	#triggerAddClassTop, .addClassArea {
-		display: none;
-	}
-
 	#calControl .dayShiftButtons {
 		float: none;
 	}
