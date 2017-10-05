@@ -108,6 +108,10 @@
                 // User is signed in.
                 USER = currUser;
                 mixpanel.identify(USER.uid);
+                mixpanel.people.set({
+                    "$name": USER.displayName,
+                    "$last_login": new Date()      
+                });
                 $('#userFirstName').html(USER.displayName);
                 console.log(USER.displayName);
                 fetchUserClasses();

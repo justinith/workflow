@@ -24,24 +24,8 @@ signUpForm.addEventListener("submit", function(evt) {
 
     if (displayNameInput.value != "") { 
     	firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value).then(function() {
-            // mixpanel.identify(user.uid);
-            // mixpanel.people.set({
-            //     "$email": emailInput.value, 
-            //     "$name": displayNameInput.value,
-            //     "$created": new Date(),
-            //     "$last_login": new Date(),        
-            // });
-            // mixpanel.track('New Account Created',{'uid':user.uid,'name':displayNameInput.value,'email':emailInput.value});
-            var currUser = firebase.auth().currentUser;
-            console.log(displayNameInput.value);
-            currUser.updateProfile({
-                displayName: displayNameInput.value,
-            }).then(function() {
-                
-                // window.location = "index.html";
-            }).catch(function(err) {
-                alert(err.message);
-            });
+            
+            
         }).catch(function(err) {
             alert(err.message);
         });
@@ -53,11 +37,28 @@ function authenticateUser(){
     firebase.auth().onAuthStateChanged(function(currUser) {
         if (currUser) {
             if(currUser.displayName == null){
-                currUser.updateProfile({
-                    displayName: displayNameInput.value
-                }).then(function(){
-                    window.location.href = "index.html";
+                mixpanel.identify(currUser.uid);
+                mixpanel.people.set({
+                    "$email": emailInput.value, 
+                    "$name": displayNameInput.value,
+                    "$created": new Date(),
+                    "$last_login": new Date(),        
+                },function(){
+                    mixpanel.track('New Account Created',{'uid':currUser.uid,'name':displayNameInput.value,'email':emailInput.value}, function(){
+                        currUser.updateProfile({
+                            displayName: displayNameInput.value,
+                        }).then(function() {
+                            window.location = "index.html";
+                        }).catch(function(err) {
+                            alert(err.message);
+                        });
+                    });                
                 });
+                // currUser.updateProfile({
+                //     displayName: displayNameInput.value
+                // }).then(function(){
+                //     window.location.href = "index.html";
+                // });
             } else {
                 // User is signed in.
                 window.location.href = "index.html";
