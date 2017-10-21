@@ -5,7 +5,7 @@ body {
 	font-weight: 400;
 	color: #3d3d3d;
 	height: 100%;
-	background-color: #FFF;
+	background-color: #3498db;
 	font-family: 'Zilla Slab',Arial, Helvetica, sans-serif;
 }
 
@@ -18,9 +18,6 @@ header {
 	width: 100%;
 	z-index: 1000;
 	padding-top: 12px;
-	-webkit-box-shadow: 0px -5px 82px -19px rgba(92,92,92,1);
-	-moz-box-shadow: 0px -5px 82px -19px rgba(92,92,92,1);
-	box-shadow: 0px -5px 82px -19px rgba(92,92,92,1);
 }
 	header .introText {
 		color: white;
@@ -59,6 +56,132 @@ header {
 	z-index: 80;
 }
 
+.clickable:hover {
+	cursor: pointer;
+}
+
+/* --------- Onboarding --------- */
+
+#onboarding {
+	padding-top: 20vh;
+	background-color: #3498db;
+	color: white;
+	text-align: center;
+	display: none;
+}
+	#onboarding .container {
+		width: 90vw;
+		margin-left: 5vw;
+	}
+
+	#onboarding h1 {
+		font-family: 'Comfortaa', Helvetica, sans-serif;
+		font-weight: 300;
+	}
+
+	#onboarding h3 {
+		max-width: 550px;
+		margin-right: auto;
+		margin-left: auto;
+		font-weight: 100;
+		font-size: 1.6em;
+	}
+
+	#onboarding .addClassSection {
+		width: 100%;
+		max-width: 550px;
+		display: inline-block;
+		margin: 20px 0px;
+	}
+
+		#onboarding .addClassSection input, #onboarding .addClassSection button {
+			padding: 20px;
+			border: 0;
+			float: left;
+			font-size: 1.4em;
+		}
+
+		#onboarding .addClassSection input {
+			width: 400px;
+			color: gray;
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+		}
+			#onboarding .addClassSection input:focus {
+				outline: none;
+			}
+
+		#onboarding .addClassSection button {
+			width: 150px;
+			background-color: #f1c40f;
+			color: white;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+	
+	#newClassesSection {
+		max-width: 550px;
+		margin-right: auto;
+		margin-left: auto;
+		margin-bottom: 40px;
+		background-color: #22638E;
+		padding: 20px;
+		text-align: left;
+		display: none;
+	}
+		#newClassesSection h3 {
+			border-bottom: solid 3px #3498db;
+			padding-bottom: 13px;
+			display: inline-block;
+			margin: 20px 0px;
+			font-family: 'Comfortaa', Arial, Helvetica, sans-serif;
+		}
+
+		#newClassesSection .class {
+			text-align: left;
+			font-size: 1.4em;
+			padding: 10px 0px;
+		}
+
+		#newClassesSection i {
+			float: right;
+		}
+			#newClassesSection i:hover {
+				cursor: pointer;
+				color: #DC6152;
+			}
+
+		#newClassesSection .continueNewClasses {
+			background-color: #DC6152;
+			padding: 18px;
+			text-align: center;
+			font-size: 1.4em;
+			margin-top: 20px;
+			border-radius: 3px;
+		}
+			#newClassesSection .continueNewClasses:hover {
+				background-color: #DC7468;
+			}
+
+/*Mobile View*/
+@media (max-width: 768px) {
+	#onboarding .addClassSection button, #onboarding .addClassSection input {
+		width: 100%;
+	}
+
+	#onboarding {
+		padding-top: 5vh;
+	}
+}
+
+/* --------- Core Product --------- */
+
+/* #core_product {
+	display: none;
+} */
+
+/* --------- SideBar --------- */
+
 #sideBar {
 	margin-top: 65px;
 	padding: 0px;	
@@ -84,7 +207,6 @@ header {
 		font-weight: 400;
 		font-family: 'Comfortaa', Helvetica, sans-serif;
 	}
-
 
 
 #toDoListSection {
@@ -347,18 +469,18 @@ header {
 	letter-spacing: 5px;
 	}
 
-	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	/* ::-webkit-input-placeholder { 
 	color: white;
 	}
-	::-moz-placeholder { /* Firefox 19+ */
+	::-moz-placeholder {
 	color: white;
 	}
-	:-ms-input-placeholder { /* IE 10+ */
+	:-ms-input-placeholder { 
 	color: white;
 	}
-	:-moz-placeholder { /* Firefox 18- */
+	:-moz-placeholder { 
 	color: white;
-	}
+	} */
 
 .nextWeekButton {
 	line-height: 150px;

@@ -12,11 +12,15 @@
     var CURRENT_TODO_LIST_DATE = milliToDate(new Date().getTime());
     var NEW_CLASS_ADDED = false;
 
+    // ONBOARDING VARIABLES
+    var OB_CLASSLIST = [];
+
     authenticateUser();
 
     window.onload = function(){
         renderDateRow();
         initListeners();
+        initOnboardingListeners();
     }
 
     function initListeners(){
@@ -113,7 +117,7 @@
                     "$last_login": new Date()      
                 });
                 $('#userFirstName').html(USER.displayName);
-                console.log(USER.displayName);
+                console.log(USER.uid);
                 fetchUserClasses();
             } else {
                 // No user is signed in.
@@ -187,6 +191,8 @@
                 USER_CLASSES = userInfo.classes;
                 renderUserData(USER_CLASSES,CLASS_ORDER);
                 populateToDoList(CURRENT_TODO_LIST_DATE,true);
+            } else {
+                showOnboarding();
             }
         });
     }
@@ -248,6 +254,88 @@
         }
         populateToDoList(CURRENT_TODO_LIST_DATE,false);
         addActivePhaseListeners();
+    }
+
+    // ============================================
+    // ==                                        ==
+    // ==        Onboarding Functions            ==
+    // ==                                        ==
+    // ============================================
+
+    function initOnboardingListeners(){
+        $('.addClassSection>button').click(function(){
+            obAddToClassList($('.addClassSection>input').val());
+        });
+
+        $('.addClassSection>input').keyup(function(event){
+            if(event.keyCode == 13){
+                obAddToClassList($('.addClassSection>input').val());
+            }
+        });
+
+        $('.continueNewClasses').click(function(){
+            if(OB_CLASSLIST.length > 0){
+                attemptAddBulkClasses();
+            } else {
+                showError('Please add classes first.');
+            }
+        });
+    }
+
+    function showOnboarding(){
+        $('#onboarding').css('display','block');
+        $('#core_product').css('display','none');
+        $('#usernameClasses').html(USER.displayName);
+    }
+
+    function obAddToClassList(newClass){
+        if(OB_CLASSLIST.indexOf(newClass) == -1){
+            if(OB_CLASSLIST.length < 1){
+                $('#newClassesSection').slideDown('fast');
+            }
+            OB_CLASSLIST.push(newClass);
+            var newClassString = '<div data-class="newclass-' + newClass + '" class="class"><span>' + newClass + '</span><i data-class="' + newClass + '" class="fa fa-times" aria-hidden="true"></i></div>';
+            $('#newClassesList').append(newClassString);
+            $('.addClassSection>input').val("");
+            addRemoveClassListener();
+        } else {
+            showError('You cannot add classes with the same exact name.');
+        }
+    }
+
+    function addRemoveClassListener(){
+        // Remove all remove listeners
+        $('#newClassesList>.class>i').off();
+        
+        // Add remove listener
+        $('#newClassesList>.class>i').click(function(){
+            var targetClass = $(this).attr('data-class');
+            // Remove class from master list
+            var classIndex = OB_CLASSLIST.indexOf(targetClass);
+            OB_CLASSLIST.splice(classIndex,1);
+            var classSelector = 'div[data-class="newclass-' + targetClass + '"]';
+            $(classSelector).slideUp('fast',function(){
+                $(classSelector).remove();
+            });
+            // If this removed the last class in the list
+            if(OB_CLASSLIST.length == 0){
+                $('#newClassesSection').slideUp('fast');
+            }
+        });
+    }
+
+    function attemptAddBulkClasses(){
+        for(var i = 0; i < OB_CLASSLIST.length; i++){
+            var className = OB_CLASSLIST[i];
+            DB.ref('users/' + USER.uid + '/classes/' + className).set({
+                occupiedDates: ['blank']
+            })
+            .then(() => {
+                mixpanel.track('Added Class',{'className':className});
+                NEW_CLASS_ADDED = true;
+                addClassToOrder(className,false);
+            });
+        }
     }
 
     // ============================================
@@ -718,7 +806,6 @@
             reRenderPage('localReset');
             SCREEN_SIZE = 'l';
         }
-        console.log(SCREEN_SIZE);
     }
 
     function hideToDoList(){
@@ -860,6 +947,14 @@
         else if (e.keyCode == '39') {
             shiftDaysX(1,'next');
         }
+    }
+
+    function showError(errMess){
+        alert(errMess);
+    }
+
+    function con(m) {
+        console.log(m);
     }
 
 })();

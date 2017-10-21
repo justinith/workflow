@@ -31,52 +31,57 @@ mixpanel.init("756b20112e7a2c60a05c083d55051874");</script><!-- end Mixpanel -->
 			<span id="signout">Sign Out</span>
 		</header>
 
-		<div class="container">
-			<div id="sideBar" class="col-xs-3">
-				<div class="sideBarContent">
-					<div id="toDoListSection">
-						<h2 class="currentDateTitle"></h2>
-						<div id="toDoList"></div>
-						<!--<div class="itemClass">
-							<p class="itemClassTitle">INFO 491</p>
-							<h3>Make wireframes</h3>
-							<p class="notesTitle">Notes:</p>
-							<p class="notes">https://canvas.uw.edu/courses/1139912/assignments/3646728</p>
-						</div>
-						<div class="itemClass">
-							<p class="itemClassTitle">INFO 491</p>
-							<h3>Come up with game dynamics</h3>
-						</div>-->
-					</div>
-				</div>
-			</div>
-			
-			<div id="calInfo" class="col-xs-9 seven-cols">
-				<div class="stickyPart">
-					<div id="calControl">
-						<button data-toggle="modal" data-target="#addClassModal" class="addClassButtonTop">Add Class</button>
-						<!-- <div class="addClassArea">
-							<input id="addClassInputTop" type="text" placeholder="Type class name">
-							<button id="addClassButtonTop" class="addClassButtonTop">Add Class</button>
-						</div> -->
-						<div class="dayShiftButtons">
-							<button class="shiftDayViewBut" id="prevWeekBut"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
-							<button class="shiftDayViewBut" id="prevDayBut"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-							<button class="shiftDayViewBut" id="showTodayBut">TODAY</button>
-							<button class="shiftDayViewBut" id="nextDayBut"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
-							<button class="shiftDayViewBut" id="nextWeekBut"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
-						</div>
-					</div>
-					<div id="dateDayRow"></div>
+		<div id="onboarding">
+			<div class="container">
+				<h1>Welcome to Swimlain!</h1>
+				<h3>Let's get started! What classes are you taking right now?</h3>
+				<div class="addClassSection">
+					<input type="text" placeholder="Class Name">
+					<button>Add Class</button>
 				</div>
 				
-				<div id="allClasses"></div>
-			</div>
-			<div class="addCategoryButton">
-				<span class="buttonTitle">Add Class</span>
-				<input id="newClassName" type="text" placeholder="Type name of class">
+				<div id="newClassesSection">
+					<h3><span id="usernameClasses"></span>'s Classes</h3>
+					<div id="newClassesList"></div>
+					<div class="continueNewClasses clickable">Done adding classes</div>
+				</div>
 			</div>
 		</div>
+
+		<div id="core_product">
+			<div class="container">
+				<div id="sideBar" class="col-xs-3">
+					<div class="sideBarContent">
+						<div id="toDoListSection">
+							<h2 class="currentDateTitle"></h2>
+							<div id="toDoList"></div>
+						</div>
+					</div>
+				</div>
+				<div id="calInfo" class="col-xs-9 seven-cols">
+					<div class="stickyPart">
+						<div id="calControl">
+							<button data-toggle="modal" data-target="#addClassModal" class="addClassButtonTop">Add Class</button>
+							<div class="dayShiftButtons">
+								<button class="shiftDayViewBut" id="prevWeekBut"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
+								<button class="shiftDayViewBut" id="prevDayBut"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+								<button class="shiftDayViewBut" id="showTodayBut">TODAY</button>
+								<button class="shiftDayViewBut" id="nextDayBut"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+								<button class="shiftDayViewBut" id="nextWeekBut"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+							</div>
+						</div>
+						<div id="dateDayRow"></div>
+					</div>
+					<div id="allClasses"></div>
+				</div>
+				<div class="addCategoryButton">
+					<span class="buttonTitle">Add Class</span>
+					<input id="newClassName" type="text" placeholder="Type name of class">
+				</div>
+			</div>
+		</div>
+
+		<!-- ========= Modals & Popups ========= -->
 
 		<div id="addPhasePopup" class="hide">
 			<form action="/echo/html/" id="popForm" method="get">
@@ -108,13 +113,6 @@ mixpanel.init("756b20112e7a2c60a05c083d55051874");</script><!-- end Mixpanel -->
 		<div id="editPhasePopup" class="hide">
 			<form action="/echo/html/" id="popForm" method="get">
 				<div>
-					<!--<label for="project-name">Project Name:</label>
-					<input type="text" name="project-name" id="project-name" placeholder="i.e: Develop product spec" class="form-control input-md" required>
-					<label for="project-duration">Durations (Day)</label>
-					<input type="text" name="project-duration" id="project-duration" placeholder="i.e: 2" class="form-control input-md" required>
-					<label for="about">Description</label>
-					<textarea rows="3" name="about" id="phaseDescription" class="form-control input-md" placeholder="Optional"></textarea>
-					<button type="button" class="btn btn-primary" id="phase-submit" data-loading-text="Sending info.."><em class="icon-ok"></em> Save</button>-->
 					<p>Notes:</p>
 					<p id="detailed_phase_desc" style="word-wrap: break-word;">test</p>
 					
