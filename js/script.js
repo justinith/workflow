@@ -263,6 +263,7 @@
     // ============================================
 
     function initOnboardingListeners(){
+        console.log(OB_CLASSLIST);
         $('.addClassSection>button').click(function(){
             obAddToClassList($('.addClassSection>input').val());
         });
@@ -298,6 +299,7 @@
             $('#newClassesList').append(newClassString);
             $('.addClassSection>input').val("");
             addRemoveClassListener();
+            console.log(OB_CLASSLIST);
         } else {
             showError('You cannot add classes with the same exact name.');
         }
@@ -333,9 +335,9 @@
             .then(() => {
                 mixpanel.track('Added Class',{'className':className});
                 NEW_CLASS_ADDED = true;
-                addClassToOrder(className,false);
             });
         }
+        setClassOrder(OB_CLASSLIST);
     }
 
     // ============================================
@@ -461,6 +463,7 @@
         })
         .then(function(){
             console.log('Updated class order!');
+            location.reload();
         });
     }
 
