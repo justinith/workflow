@@ -15,6 +15,24 @@
     // ONBOARDING VARIABLES
     var OB_CLASSLIST = [];
 
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
     authenticateUser();
 
     window.onload = function(){
@@ -351,7 +369,7 @@
 
         // Check if class name is empty
         if(className == ""){
-            alert('Please write name');
+            toastr.error('Please write name');
         } else {
             // Check if user has made classes yet
             DB.ref('users').once('value')
@@ -365,7 +383,7 @@
 
                     // Check if class already exists                
                     if(classes.includes(className)){
-                        alert('You already have a class with that name! Please use a different name.');
+                        toastr.error('You already have a class with that name! Please use a different name.');
                     } else {
                         DB.ref('users/' + USER.uid + '/classes/' + className).set({
                             occupiedDates: ['blank']
@@ -583,7 +601,7 @@
                     updateOccupiedDates(phaseClass,newOccupiedDates);                    
                 });
             } else {
-                alert('Invalid Number of Days');
+                toastr.error('Invalid Number of Days');
             }
         });
     }
@@ -681,7 +699,7 @@
                     // Look out for special characters
                     console.log(projectName.indexOf('#'));
                     if(parseInt(projectName.indexOf('#')) > 0 || parseInt(projectName.indexOf('$')) > 0 || parseInt(projectName.indexOf('.')) > 0 || parseInt(projectName.indexOf('[')) > 0 || parseInt(projectName.indexOf(']')) > 0){
-                        alert("Project name cannot contain #, $, ., [, or ]");
+                        toastr.error('Project name cannot contain #, $, ., [, or ]')
                     } else {
                         if(!isNaN(parseFloat(projectDuration)) && isFinite(projectDuration)){
                             attemptAddPhase(targetDayBlock,projectName,projectDuration,projectDescr,projectType);
@@ -690,11 +708,11 @@
                             attemptAddPhase(targetDayBlock,projectName,1,projectDescr,projectType);
                             $('.dayBlock').popover('hide');
                         } else {
-                            alert('Duration must be an integer - ie: 2,16,etc');
+                            toastr.error('Duration must be an integer - ie: 2,16,etc');
                         }
                     }
                 } else {
-                    alert("Project Name and Duration (Days) are required");
+                    toastr.error('Project Name and Duration (Days) are required');
                 }
             });
             
@@ -988,7 +1006,7 @@
     }
 
     function showError(errMess){
-        alert(errMess);
+        toastr.error(errMess);
     }
 
     function con(m) {

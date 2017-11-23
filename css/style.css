@@ -295,6 +295,36 @@ header {
 		border-radius: 3px;
 	}
 
+	#calControl .dayShiftButtons {
+		display: inline-block;
+		float: left;
+		margin-left: 20px;
+	}
+
+		#calControl .dayShiftButtons .shiftDayViewBut {
+			background-color:white;
+			color: #334d5c;
+			font-size: 12px;
+			align-items: center;
+			border-radius: 3px;
+			border: none;
+			padding: 9px 8px;
+			margin: 0px 4px;
+		}
+
+		#calControl .dayShiftButtons .shiftDayViewBut:focus {
+			outline: none;
+		}
+
+	#calenderOptionsButton {
+		float: left;
+		background-color:white;
+		border: none;
+		padding: 9px 8px;
+		margin: 0px 4px;
+		color: #3498db;
+	}
+
 	#addClassModal {
 		text-align: center;
 	}
@@ -338,31 +368,6 @@ header {
 			text-transform: uppercase;
 			letter-spacing: 3px;
 		}
-	
-	#calControl .dayShiftButtons {
-		display: inline-block;
-		float: left;
-		margin-left: 20px;
-	}
-
-		#calControl .dayShiftButtons .shiftDayViewBut {
-			background-color:white;
-			color: #334d5c;
-			font-size: 12px;
-			align-items: center;
-			border-radius: 3px;
-			border: none;
-			padding: 9px 8px;
-			margin: 0px 4px;
-		}
-
-		#calControl .dayShiftButtons .shiftDayViewBut:focus {
-			outline: none;
-		}
-
-	/*#nextWeekBut, #nextDayBut {
-		float: right;
-	}*/
 
 #allClasses {
 	margin-top: 180px;
