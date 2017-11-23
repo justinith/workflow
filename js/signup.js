@@ -20,7 +20,7 @@ mixpanel.track('Page Load',{'page':'landing','screenSize': screenSize});
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
 
-    document.getElementById('signupbutton').innerHTML = '<i class="fa fa-spinner fa-spin fa-fw"></i> Sign Up';
+    document.getElementById('signupbutton').innerHTML = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Signing Up';
 
     if (displayNameInput.value != "") { 
     	firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value).then(function() {

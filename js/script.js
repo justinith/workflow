@@ -254,6 +254,7 @@
         }
         populateToDoList(CURRENT_TODO_LIST_DATE,false);
         addActivePhaseListeners();
+        addClassOptionsListener();
     }
 
     // ============================================
@@ -410,7 +411,7 @@
             dayMilli = dayMilli - (86400000 * Math.abs(DAYS_AHEAD));
         }
         
-        var newLane = '<div class="categoryLane"><div class="laneInfo"><p>' + className + '</p></div><div class="row">';
+        var newLane = '<div class="categoryLane"><div class="laneInfo"><p class="laneClassTitle clickable" data-class="' + className + '">' + className + '</p></div><div class="row">';
 
         for(var i = 1; i <= dateColCount; i++){
             dayFormatted = milliToDate(dayMilli);
@@ -440,8 +441,6 @@
 
     function addClassToOrder(className,isFirstClass){
         // 1 - Get the current order of classes
-        // 2 - Add the new class to the order
-
         var classOrder = [className];
 
         if(!isFirstClass){
@@ -449,6 +448,8 @@
             .then(function(snapshot){
                 var userFormat = snapshot.val();
                 classOrder = userFormat['classOrder'];
+
+                // 2 - Add the new class to the order
                 classOrder.push(className);
                 setClassOrder(classOrder);
             });
@@ -464,6 +465,40 @@
         .then(function(){
             console.log('Updated class order!');
             location.reload();
+        });
+    }
+
+    function addClassOptionsListener(){
+        $('.laneClassTitle').popover({
+            placement: 'bottom',
+            html:true,
+            content:  $('#classOptionsModal').html()
+        }).on('click', function (e) {
+            // Hide any other option popovers
+            $('.laneClassTitle').not(this).popover('hide');
+
+            var className = $(this).attr('data-class');
+            console.log(className);
+
+            $('#classOptionsDeleteButton').click(function (){
+                if(confirm('Are you sure you want to delete ' + className + '? This cannot be undone and all your class data will be lost.')){                    
+                    // Remove class data
+                    DB.ref('users/' + USER.uid + '/classes/' + className).remove().then(function(){
+                        // Remove class from class order
+                        DB.ref('users/' + USER.uid + '/format').once('value')
+                        .then(function(snapshot){
+                            var userFormat = snapshot.val();
+                            classOrder = userFormat['classOrder'];
+            
+                            var index = classOrder.indexOf(className);
+                            if (index > -1) {
+                                classOrder.splice(index, 1);
+                            }
+                            setClassOrder(classOrder);
+                        });
+                    });
+                }
+            });
         });
     }
 

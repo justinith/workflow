@@ -385,6 +385,12 @@ header {
 		.categoryLane .laneInfo p {
 			margin: 0;
 			font-family: 'Comfortaa', Helvetica, sans-serif;
+			display: inline-block;
+			border-bottom: solid 2px transparent;
+		}
+
+		.categoryLane .laneInfo p:hover {
+			border-bottom: solid 2px #3498db;
 		}
 
 	.categoryLane .dayBlock:hover {
@@ -445,6 +451,16 @@ header {
 			padding-top: 3px;
 			font-size: 1.1em;
 		}
+
+#classOptionsDeleteButton {
+	width: 100%;
+	background: white;
+	border: solid 2px red;
+	color: red;
+	font-weight: 500;
+	padding: 10px;	
+}
+		
 
 .addCategoryButton {
 	width: 100vw;
@@ -577,3 +593,4 @@ header {
 	#newClassName:focus {
 		outline: none;
 	}
+
